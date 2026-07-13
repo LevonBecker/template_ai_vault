@@ -1,0 +1,66 @@
+---
+name: Tests Style
+run-name: "Tests Style (${{ github.head_ref || github.ref_name }})"
+
+on: [push, pull_request]
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Actionlint
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.actionlint
+
+  pylint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Pylint
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.pylint
+
+  ruff_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Ruff Lint
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.rufflint
+
+  yaml_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: YAML Lint
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.yamllint

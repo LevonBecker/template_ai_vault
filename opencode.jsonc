@@ -1,0 +1,98 @@
+{
+  // OpenCode config schema (enables validation + autocomplete)
+  "$schema": "https://opencode.ai/config.json",
+
+  // Default model for this repo
+  "model": "claude-sonnet-4-latest",
+
+  // Use AGENTS.md as the primary instruction file (cross-tool standard)
+  // AGENTS.md is also read by GitHub Copilot, Codex, Cursor, Amp, etc.
+  // Claude Code reads CLAUDE.md; see .claude/commands/ for Claude Code slash commands
+  "instructions": ["AGENTS.md"],
+
+  // Automatically update the OpenCode binary
+  "autoupdate": true,
+
+  // -------------------------------
+  // Security & automation permissions
+  // -------------------------------
+  "permission": {
+    // Ask once per session for shell commands
+    "bash": "allow",
+
+    // Allow AI to read files without asking
+    "read": "allow",
+
+    // Allow AI to modify existing files without asking
+    "edit": "allow",
+
+    // Allow AI to create new files without asking
+    "write": "allow",
+
+    // Ask once per session before fetching external URLs
+    "webfetch": "allow",
+
+    // Ask before deleting files
+    //"delete": "ask"
+  },
+
+  // -------------------------------
+  // Provider-specific configuration
+  // -------------------------------
+  "provider": {
+    "openai": {
+      "models": {
+        "gpt-5.2-chat-latest": {
+          "options": {
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "textVerbosity": "medium"
+          }
+        },
+        "gpt-5.1-chat-latest": {
+          "options": {
+            "reasoningEffort": "medium",
+            "textVerbosity": "medium"
+          }
+        }
+      }
+    },
+
+    // Claude 4+ models - using defaults with custom temperature
+    "anthropic": {
+      "options": {
+        "temperature": 0.3
+      }
+    },
+
+
+    // Google AI Studio / Gemini API models
+    // Get API key at: https://aistudio.google.com/app/apikey
+    "google": {
+      "options": {
+        "topP": 0.95
+      }
+    },
+
+    // GitHub Copilot Pro ($99/year) models
+    "github-copilot": {
+      "models": {
+        // OpenAI models
+        "gpt-5.1": {
+          "options": {
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "textVerbosity": "medium"
+          }
+        },
+        "gpt-5.2": {
+          "options": {
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "textVerbosity": "medium"
+          }
+        }
+      }
+    }
+  }
+}

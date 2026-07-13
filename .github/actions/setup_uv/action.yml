@@ -1,0 +1,28 @@
+---
+name: setup_uv
+author: Levon Becker
+description: Install and Setup Python UV
+runs:
+  using: composite
+  steps:
+    - name: Install UV
+      shell: bash
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH  # ensure uv is in PATH
+
+    - name: Create Python Virtual Environment
+      shell: bash
+      run: |
+        uv venv .venv --python 3.14
+
+    - name: Activate Python Virtual Environment
+      shell: bash
+      run: |
+        source .venv/bin/activate
+
+    - name: Download Project Libs
+      shell: bash
+      run: |
+        uv sync
+

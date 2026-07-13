@@ -1,0 +1,14 @@
+# Cache/env dirs — never needed for coding assistance
+.venv/
+.git/
+.pytest_cache/
+.ruff_cache/
+levonbecker_ai_researcher.egg-info/
+logs/
+tmp/
+
+# Research output data, not code — huge file count, biggest contributor
+# to prompt bloat. Remove this line if you want Cline working inside topics/.
+topics/
+
+# screenshots/ intentionally NOT ignored — /ss workflow needs read access to it

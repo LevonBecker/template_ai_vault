@@ -1,0 +1,9 @@
+---
+name: cicd_setup
+author: Levon Becker
+description: Install Dependencies for CICD
+runs:
+  using: composite
+  steps:
+    - name: Setup UV Env
+      uses: ./.github/actions/setup_uv

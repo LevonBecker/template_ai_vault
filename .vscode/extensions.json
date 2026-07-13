@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "saoudrizwan.claude-dev",
+    "codezombiech.gitignore",
+    "dotenv.dotenv-vscode",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "github.copilot-chat",
+    "github.remotehub",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "juggernautjp.less-toml",
+    "ms-python.debugpy",
+    "ms-python.isort",
+    "ms-python.pylint",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.vscode-python-envs",
+    "ms-vscode.live-server",
+    "ms-vscode.remote-explorer",
+    "ms-vscode.remote-repositories",
+    "redhat.vscode-xml",
+    "redhat.vscode-yaml",
+    "repreng.csv",
+    "ryu1kn.partial-diff",
+    "streetsidesoftware.code-spell-checker",
+    "tamasfe.even-better-toml",
+    "tomoki1207.pdf",
+    "twixes.pypi-assistant",
+    "yzane.markdown-pdf"
+  ],
+  "unwantedRecommendations": [
+    "mechatroner.rainbow-csv",
+    "eamodio.gitlens"
+  ]
+}

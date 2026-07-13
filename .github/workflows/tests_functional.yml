@@ -1,0 +1,21 @@
+---
+name: Tests Functional
+run-name: "Tests Functional (${{ github.head_ref || github.ref_name }})"
+
+on: [push, pull_request]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Pytest
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.pytest

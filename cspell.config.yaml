@@ -1,0 +1,57 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - automations
+  - awslabs
+  - bonusbits
+  - booleaness
+  - bridgesupport
+  - byebug
+  - cicd
+  - Customizer
+  - cutover
+  - Deboss
+  - dmypy
+  - dotenv
+  - financials
+  - fstring
+  - gemset
+  - genericize
+  - genericized
+  - htmlcov
+  - levelname
+  - magsafe
+  - Makerworld
+  - manufacturability
+  - mccabe
+  - mypy
+  - ollama
+  - OPENCODE
+  - Openscad
+  - parentless
+  - Presta
+  - pycache
+  - pyproject
+  - pyinvoke
+  - pylint
+  - pylintrc
+  - pytest
+  - pythonopenscad
+  - pyyaml
+  - qwen
+  - rcfile
+  - rdoc
+  - rubocop
+  - rufflint
+  - rvmrc
+  - sdist
+  - setuptools
+  - solidpython
+  - toolpath
+  - toolpaths
+  - venv
+  - yardoc
+ignoreWords: []
+import: []

@@ -1,0 +1,9 @@
+---
+# Active topic tracker
+# Managed by topic/switch.py
+# Do not edit manually
+
+base_path: topics/health/dental
+current_topic: health/dental
+switched_at: '2026-01-01 00:00:00'
+topic_full_path: $HOME/Development/levonbecker/template_ai_assistant/topics/health/dental

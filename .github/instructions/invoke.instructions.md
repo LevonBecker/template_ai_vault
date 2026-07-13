@@ -1,0 +1,108 @@
+---
+applyTo: "tasks/**"
+---
+# Invoke Task Runner Instructions
+
+## Overview
+
+Invoke is the task runner for CICD workflows (fix, test, upgrade). All tasks are defined in `tasks/` and called via `uv run --no-sync invoke <task>`. Never use invoke for business logic — business logic lives in Python modules.
+
+## Combo Tasks (use these most often)
+
+| Task | Command | Description |
+|------|---------|-------------|
+| AI Sync | `uv run --no-sync invoke ai.sync` | Sync all AI tool commands from `.github/prompts/` |
+| Fix | `uv run --no-sync invoke fix` | Run all auto-fixes (ruff fix + format) |
+| Test | `uv run --no-sync invoke test` | Run all tests (actionlint + pylint + ruff + yamllint) |
+
+## Test Tasks
+
+| Task | Command | Description |
+|------|---------|-------------|
+| actionlint | `uv run --no-sync invoke tests.actionlint` | GitHub Actions workflow validation |
+| pylint | `uv run --no-sync invoke tests.pylint` | Python code quality |
+| rufflint | `uv run --no-sync invoke tests.rufflint` | Python linting and formatting |
+| yamllint | `uv run --no-sync invoke tests.yamllint` | YAML file validation |
+
+## Ruff Tasks
+
+| Task | Command | Description |
+|------|---------|-------------|
+| fix | `uv run --no-sync invoke ruff.fix` | Auto-fix ruff lint issues |
+| format | `uv run --no-sync invoke ruff.format` | Auto-format Python code |
+
+## Upgrade Tasks
+
+| Task | Command | Description |
+|------|---------|-------------|
+| upgrade | `uv run --no-sync invoke upgrade.upgrade` | Upgrade Python + all dependencies |
+| python | `uv run --no-sync invoke upgrade.python` | Upgrade Python only |
+| libs | `uv run --no-sync invoke upgrade.libs` | Upgrade libraries only |
+| sync | `uv run --no-sync invoke upgrade.sync` | Sync dependencies (no version check) |
+
+## Invoke vs Direct Python
+
+| Use case | Command |
+|----------|---------|
+| Fix code style | `uv run --no-sync invoke fix` |
+| Run all tests | `uv run --no-sync invoke test` |
+| Run one linter | `uv run --no-sync invoke tests.pylint` |
+| Upgrade everything | `uv run --no-sync invoke upgrade.upgrade` |
+| Run a module | `uv run --no-sync python -m modules.chat.start --title="..."` |
+| Test a route | `uv run --no-sync python -m modules.chat.route "start my chat"` |
+
+## Canonical Workflow
+
+```bash
+# After modifying Python or YAML files:
+uv run --no-sync invoke fix    # auto-fix first
+uv run --no-sync invoke test   # verify 10/10
+```
+
+All `uv run` calls MUST use `--no-sync`. See `.github/instructions/tests.instructions.md`.
+
+## AI Sync Tasks
+
+`.github/prompts/` is the source of truth for all slash commands. Run after adding or modifying any `.github/prompts/*.prompt.md` file.
+
+| Task | Command | Description |
+|------|---------|-------------|
+| sync all | `uv run --no-sync invoke ai.sync` | Sync all AI tools at once (runs all four below) |
+| claude | `uv run --no-sync invoke claude.sync` | Sync `.claude/commands/` |
+| cline | `uv run --no-sync invoke cline.sync` | Sync `.clinerules/workflows/` |
+| hermes | `uv run --no-sync invoke hermes.sync` | Sync `~/.hermes/` config + SKILL.md |
+| opencode | `uv run --no-sync invoke opencode.sync` | Sync `.opencode/command/` |
+
+## Ollama Tasks
+
+| Task | Command | Description |
+|------|---------|-------------|
+| clean | `uv run --no-sync invoke ollama.clean` | Remove all downloaded models and blob cache |
+| install | `uv run --no-sync invoke ollama.install` | Install Ollama + a local coding LLM |
+| list | `uv run --no-sync invoke ollama.list` | List installed and available models |
+| restart | `uv run --no-sync invoke ollama.restart` | Restart Ollama service via Homebrew |
+| start | `uv run --no-sync invoke ollama.start` | Start Ollama service via Homebrew |
+| status | `uv run --no-sync invoke ollama.status` | Show Ollama service and running-model status |
+| stop | `uv run --no-sync invoke ollama.stop` | Stop Ollama service via Homebrew |
+| uninstall | `uv run --no-sync invoke ollama.uninstall` | Uninstall Ollama and remove all models |
+| update | `uv run --no-sync invoke ollama.update` | Update Ollama binary + all installed models |
+
+## Task Ordering
+
+Tasks within a file must be ordered **alphabetically by function name**. Do not order by addition date, logical grouping, or importance.
+
+## Task File Locations
+
+```
+tasks/
+├── claude.py        # claude.sync — syncs .claude/commands/
+├── cline.py         # cline.sync — syncs .clinerules/workflows/
+├── combos.py        # fix, test, ai.sync combo tasks
+├── debug.py         # debug utilities
+├── hermes.py        # hermes.sync — syncs ~/.hermes/ config + SKILL.md
+├── ollama.py        # ollama.install/list/update/uninstall/start/stop/status/restart/clean
+├── opencode.py      # opencode.sync — syncs .opencode/command/
+├── ruff.py          # ruff.fix + ruff.format
+├── tests.py         # actionlint, pylint, rufflint, yamllint
+└── upgrade.py       # upgrade, python, libs, sync
+```

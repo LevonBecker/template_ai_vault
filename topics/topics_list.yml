@@ -1,0 +1,20 @@
+topics_layout:
+  financials:
+    budget: {}
+    income_tax: {}
+    investments: {}
+  food_and_drink: {}
+  health:
+    dental: {}
+    fitness: {}
+    medical: {}
+    supplements: {}
+    vision: {}
+  help:
+    linux: {}
+    macos: {}
+    online: {}
+    projects: {}
+  home: {}
+  shopping: {}
+  travel: {}
