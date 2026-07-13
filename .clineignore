@@ -3,7 +3,7 @@
 .git/
 .pytest_cache/
 .ruff_cache/
-levonbecker_ai_researcher.egg-info/
+template_ai_vault.egg-info/
 logs/
 tmp/
 

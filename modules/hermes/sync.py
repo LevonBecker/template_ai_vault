@@ -152,22 +152,16 @@ def load_commands() -> list[PromptCommand]:
 
 
 def generate_quick_commands(cmds: list[PromptCommand]) -> dict:
-    """Return dict for config.yaml quick_commands (exec + alias entries).
+    """Return dict for config.yaml quick_commands (exec-style, zero-token only).
 
-    - exec: zero-token instant commands with no user arguments
-    - alias: AI-routed commands (arg, exec_long, ai_guided) wired as aliases
-      to /r-research so the user's arguments are forwarded with command context.
-      e.g. /r-chat list → /r-research r-chat list → AI routes via skill.
+    Only "exec" classified commands are wired here. Commands classified as
+    arg, exec_long, or ai_guided require AI reasoning and are instead routed
+    via the r-research SKILL.md (see generate_skill_md).
     """
     result: dict = {}
     for cmd in cmds:
         if cmd.classification == "exec":
             result[cmd.r_name] = {"type": "exec", "command": cmd.shell_command()}
-        elif cmd.classification in ("arg", "exec_long", "ai_guided"):
-            # Wire as alias so the user's args are forwarded to the skill.
-            # target = "/r-research r-<slug>" ensures the skill sees the full
-            # command context (e.g. "r-chat list") and can route unambiguously.
-            result[cmd.r_name] = {"type": "alias", "target": f"/r-research {cmd.r_name}"}
     return result
 
 
