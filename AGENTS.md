@@ -1,4 +1,4 @@
-# AI Agent Instructions - template_ai_assistant Repository
+# AI Agent Instructions - template_ai_vault Repository
 ## Project-Wide Instructions — Always Read First
 Before working in any topic, read these instruction files from `.github/instructions/`. They apply to every chat and file in the repo:
 
@@ -388,13 +388,13 @@ slash_command: /your_command
 - **CREDIT CARDS CSV RULE**: When editing `topics/financials/budget/docs/credit_cards.csv`, always recalculate:
   - `available_credit` for every card affected by balance/limit changes
   - `TOTAL` row fields for `balance`, `credit_limit`, and `available_credit`
-- **NEVER** write files outside the repository path (`$HOME/Development/levonbecker/template_ai_assistant`) without explicit user permission
+- **NEVER** write files outside the repository path (`$HOME/Development/levonbecker/template_ai_vault`) without explicit user permission
   - Repository root is defined in `properties.yml` under `repo.local`
   - All file operations must stay within this boundary
   - If user requests a file outside repo, ask for confirmation first
 - **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `skeleton.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
-  - ✅ `"$HOME/Development/levonbecker/template_ai_assistant"`
-  - ❌ `"$HOME/Development/levonbecker/template_ai_assistant"`
+  - ✅ `"$HOME/Development/levonbecker/template_ai_vault"`
+  - ❌ `"$HOME/Development/levonbecker/template_ai_vault"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper
   - This keeps `properties.yml` portable across machines/usernames; only update the helper if a new path format is introduced
 - **DEFAULT PATH RULE**: Treat the active topic as the root for user-requested relative paths
@@ -432,7 +432,7 @@ slash_command: /your_command
 
 **WRONG ❌**:
 - Auto-creating research docs without being asked
-- Creating files in repo root: `$HOME/Development/levonbecker/template_ai_assistant/research.md`
+- Creating files in repo root: `$HOME/Development/levonbecker/template_ai_vault/research.md`
 - Creating any file directly in the topic root instead of `docs/`
 
 **RIGHT ✅**:

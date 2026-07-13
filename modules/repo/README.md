@@ -275,7 +275,7 @@ PR notes and opens the Pull Request — combines `pr_push` + `/pr` in one comman
 ## Directory Structure
 Repository management affects the entire repository:
 ```
-template_ai_assistant/                                  (Git repository)
+template_ai_vault/                                  (Git repository)
 ├── topics/
 │   ├── mac/
 │   │   └── fusion/
@@ -297,7 +297,7 @@ template_ai_assistant/                                  (Git repository)
 ├── .git/                                    (synced by repo-sync)
 └── ...
 
-iCloud/Documents/template_ai_assistant/                (iCloud Obsidian)
+iCloud/Documents/template_ai_vault/                (iCloud Obsidian)
 ├── topics/                                  (synced by repo-sync)
 ├── screenshots/                             (synced by repo-sync)
 ├── agents/                                  (synced by repo-sync)
@@ -391,7 +391,7 @@ rsync -avz --update \
 ## Configuration
 Default settings in `config.yml`:
 - `repo_path`: "${repo_local}"
-- `icloud_path`: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/template_ai_assistant/"
+- `icloud_path`: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/template_ai_vault/"
 
 ## Permissions Required
 - `git_pull` - Pull from remote repository

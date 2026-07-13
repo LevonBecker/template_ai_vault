@@ -43,7 +43,7 @@ When working in this topic with your AI tool:
    - Previous chat is committed with message "Research session: [title]"
 2. **Screenshots**: Type "ss" or "/ss" to examine the latest screenshot
    - **STEP 1 - MANDATORY**: Run `/ss` (copies newest file to latest.png)
-   - **STEP 2**: Read `/Users/levon/Development/levonbecker/template_ai_assistant/screenshots/latest.png` (only AFTER step 1 - otherwise you get a stale image)
+   - **STEP 2**: Read `/Users/levon/Development/levonbecker/template_ai_vault/screenshots/latest.png` (only AFTER step 1 - otherwise you get a stale image)
    - **NEVER** read latest.png without running /ss first
 3. **Resuming work**: Use `/chat resume` to continue a previous chat
    - **AUTO-CLOSE**: Automatically closes any active chat before resuming
@@ -159,7 +159,7 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 - Exception: chat files always go in `chats/`, instruction files stay in their defined locations
 - Exception: user explicitly specifies a different path → use that path
 
-**Note**: Screenshots are stored centrally at repo root (`/Users/levon/Development/levonbecker/template_ai_assistant/screenshots`), NOT in topic-specific folders.
+**Note**: Screenshots are stored centrally at repo root (`/Users/levon/Development/levonbecker/template_ai_vault/screenshots`), NOT in topic-specific folders.
 
 ### Date Format — MANDATORY
 - **Filenames**: Use `YYYYMMDD_description.md` (e.g. `20260409_filming_gear.md`)
@@ -199,7 +199,7 @@ Use `/ss` (alias for `/repo view_screenshot`). It copies the most recent screens
 
 ### Step 2 - Read the copied file
 ```
-/Users/levon/Development/levonbecker/template_ai_assistant/screenshots/latest.png
+/Users/levon/Development/levonbecker/template_ai_vault/screenshots/latest.png
 ```
 Only read this AFTER step 1 completes successfully.
 

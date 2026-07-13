@@ -28,7 +28,7 @@ Both are git-ignored.
 
 ## Repository Boundaries
 
-- **NEVER** write files outside `$HOME/Development/levonbecker/template_ai_assistant`
+- **NEVER** write files outside `$HOME/Development/levonbecker/template_ai_vault`
 - Repo root is defined in `properties.yml` under `repo.local`
 - Use `modules/repo/fetch_properties.py` for all path resolution
 

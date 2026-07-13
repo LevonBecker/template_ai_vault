@@ -1,7 +1,7 @@
 ---
 applyTo: "**"
 ---
-# template_ai_assistant Project Instructions
+# template_ai_vault Project Instructions
 
 This is a **personal research and documentation workspace**. It is configured as an AI agent project with custom slash commands and Python module automation. Topics cover whatever areas of your life you organize into `topics/` — home, health, shopping, travel, finances, hobbies, and more.
 
@@ -96,13 +96,13 @@ Use `/upgrade` or `uv run --no-sync invoke upgrade.sync` when you intentionally 
 - **USE** ISO 8601 date format everywhere:
   - Filenames: `YYYYMMDD_description.md`
   - CSV date fields: `YYYY-MM-DD` (e.g. `2025-05-15`) — see `.github/instructions/docs.instructions.md`
-- **NEVER** write files outside the repository path (`$HOME/Development/levonbecker/template_ai_assistant`) without explicit user permission
+- **NEVER** write files outside the repository path (`$HOME/Development/levonbecker/template_ai_vault`) without explicit user permission
   - Repository root is defined in `properties.yml` under `repo.local`
   - All file operations must stay within this boundary
   - If user requests a file outside repo, ask for confirmation first
 - **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `skeleton.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
-  - ✅ `"$HOME/Development/levonbecker/template_ai_assistant"`
-  - ❌ `"/Users/yourname/Development/template_ai_assistant"`
+  - ✅ `"$HOME/Development/levonbecker/template_ai_vault"`
+  - ❌ `"/Users/yourname/Development/template_ai_vault"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper
   - This keeps `properties.yml` portable across machines/usernames; only update the helper if a new path format is introduced
 - **DEFAULT PATH RULE**: Treat the active topic as the root for user-requested relative paths
@@ -141,7 +141,7 @@ Use `/upgrade` or `uv run --no-sync invoke upgrade.sync` when you intentionally 
 
 **WRONG ❌**:
 - Auto-creating research docs without being asked
-- Creating files in repo root: `$HOME/Development/levonbecker/template_ai_assistant/research.md`
+- Creating files in repo root: `$HOME/Development/levonbecker/template_ai_vault/research.md`
 
 **RIGHT ✅**:
 - Keep research in chat file until user requests a doc

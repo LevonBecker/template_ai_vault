@@ -82,7 +82,7 @@ uv run --no-sync python -m modules.topic.list
 
 ## Repository Structure
 ```
-template_ai_assistant/
+template_ai_vault/
 ├── topics/                                    # Research topics organized hierarchically
 │   │
 │   ├── travel/                               # Example: single-level topic
@@ -211,7 +211,7 @@ modules/
 All automation can be run without slash commands:
 
 ```bash
-cd $HOME/Development/levonbecker/template_ai_assistant
+cd $HOME/Development/levonbecker/template_ai_vault
 source .venv/bin/activate
 
 # Chat management

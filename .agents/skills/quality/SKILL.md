@@ -1,6 +1,6 @@
 ---
 name: quality
-description: Use for template_ai_assistant quality workflows: run tests, fix lint failures, apply formatting, or use /test, /fix, or /claude equivalents.
+description: Use for template_ai_vault quality workflows: run tests, fix lint failures, apply formatting, or use /test, /fix, or /claude equivalents.
 ---
 
 # Quality Workflow

@@ -1,13 +1,13 @@
 ---
-# AI Assistant Repository Properties
+# AI Vault Repository Properties
 # Central configuration for all scripts and automation
 
 icloud:
-  path: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/template_ai_assistant/"
+  path: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/template_ai_vault/"
 
 repo:
-  local: "$HOME/Development/levonbecker/template_ai_assistant"
-  remote: "github.com/LevonBecker/template_ai_assistant"
+  local: "$HOME/Development/levonbecker/template_ai_vault"
+  remote: "github.com/LevonBecker/template_ai_vault"
 
 # Where /sync-setup pulls shared tooling updates from (modules/, tasks/, .github/, .claude/, etc.).
 skeleton:
@@ -23,6 +23,6 @@ screenshots:
     - "*.JPG"
     - "*.JPEG"
   latest_file: "latest.png"
-  location: "$HOME/Development/levonbecker/template_ai_assistant/screenshots"
+  location: "$HOME/Development/levonbecker/template_ai_vault/screenshots"
   preserve_files:
     - "latest.png"

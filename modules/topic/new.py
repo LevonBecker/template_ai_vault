@@ -32,12 +32,12 @@ def main(path: str, description: str | None = None) -> None:
     topic_dir.mkdir(parents=True, exist_ok=True)
     info(f"Created topic directory: topics/{path}")
 
-    # Run init from repo root, pointing AI_ASSISTANT_ORIGINAL_CWD at new topic dir
+    # Run init from repo root, pointing AI_VAULT_ORIGINAL_CWD at new topic dir
     cmd = [sys.executable, "-m", "modules.topic.init"]
     if description:
         cmd.append(f"--description={description}")
     env = os.environ.copy()
-    env["AI_ASSISTANT_ORIGINAL_CWD"] = str(topic_dir)
+    env["AI_VAULT_ORIGINAL_CWD"] = str(topic_dir)
     subprocess.run(cmd, cwd=repo_local, env=env, check=False)
 
     click.echo(f"✅ New topic ready: topics/{path}")

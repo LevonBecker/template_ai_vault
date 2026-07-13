@@ -1,1 +1,1 @@
-"""Tests for AI assistant automation."""
+"""Tests for AI Vault automation."""

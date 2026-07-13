@@ -1,5 +1,5 @@
 # Common Utilities Module
-Shared utilities and helper functions used across all modules in the template_ai_assistant repository.
+Shared utilities and helper functions used across all modules in the template_ai_vault repository.
 
 ## Overview
 This module provides common functionality that is used by other modules throughout the repository, including configuration parsing and utility functions.
@@ -64,7 +64,7 @@ Test the screenshot module:
 
 ```bash
 # Navigate to repo root first
-cd $HOME/Development/levonbecker/template_ai_assistant
+cd $HOME/Development/levonbecker/template_ai_vault
 
 # Run the module
 uv run python -m modules.repo.view_screenshot

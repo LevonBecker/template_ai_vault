@@ -31,7 +31,7 @@ def run_from_root(ctx, command: str, **kwargs):
 
     # Store original CWD in environment variable for scripts to access
     env = kwargs.pop("env", None) or {}
-    env["AI_ASSISTANT_ORIGINAL_CWD"] = str(original_cwd)
+    env["AI_VAULT_ORIGINAL_CWD"] = str(original_cwd)
 
     # Change to repo root and execute
     with ctx.cd(str(repo_root)):
@@ -53,7 +53,7 @@ def get_original_cwd() -> Path:
         >>> if "/topics/" in str(original_dir):
         >>>     print(f"User is in topic: {original_dir}")
     """
-    original_cwd = os.environ.get("AI_ASSISTANT_ORIGINAL_CWD")
+    original_cwd = os.environ.get("AI_VAULT_ORIGINAL_CWD")
     if original_cwd:
         return Path(original_cwd)
     return Path.cwd()

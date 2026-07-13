@@ -1,5 +1,5 @@
 [project]
-name = "template-ai-assistant"
+name = "template-ai-vault"
 dynamic = ["version"]
 description = "A local-first AI research workspace for VS Code — every conversation and doc lives in one git-tracked repo, so you can freely switch between AI providers and models while syncing the same context across all your devices."
 readme = "README.md"
@@ -24,8 +24,8 @@ dependencies = [
 packages = []
 
 [project.urls]
-homepage = "https://github.com/LevonBecker/template_ai_assistant"
-repository = "https://github.com/LevonBecker/template_ai_assistant"
+homepage = "https://github.com/LevonBecker/template_ai_vault"
+repository = "https://github.com/LevonBecker/template_ai_vault"
 
 [tool.ruff]
 line-length = 120

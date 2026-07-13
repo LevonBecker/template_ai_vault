@@ -46,7 +46,7 @@ Any file the user asks to create goes in `docs/` by default — `.md`, `.csv`, `
 - Work from git-tracked paths only (`topics/`, `agents/`)
 - Use ISO 8601 date format: `YYYYMMDD_description.md` for chat files
 - Screenshots stored centrally at repo root `screenshots/` — NOT in topic folders
-- Never write files outside `$HOME/Development/levonbecker/template_ai_assistant` without explicit permission
+- Never write files outside `$HOME/Development/levonbecker/template_ai_vault` without explicit permission
 
 ## Instruction File Sync
 

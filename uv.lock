@@ -255,7 +255,7 @@ wheels = [
 ]
 
 [[package]]
-name = "template-ai-assistant"
+name = "template-ai-vault"
 source = { virtual = "." }
 dependencies = [
     { name = "actionlint-py" },

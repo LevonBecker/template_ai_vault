@@ -1,6 +1,6 @@
 ---
 name: version
-description: Use for template_ai_assistant version and upgrade requests: check Python or library versions, update configs, run upgrades, sync dependencies, /version, or /upgrade equivalents.
+description: Use for template_ai_vault version and upgrade requests: check Python or library versions, update configs, run upgrades, sync dependencies, /version, or /upgrade equivalents.
 ---
 
 # Version Workflow

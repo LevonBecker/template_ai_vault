@@ -1,4 +1,4 @@
-"""Properties management for AI assistant repository."""
+"""Properties management for AI Vault repository."""
 
 import os
 from functools import lru_cache

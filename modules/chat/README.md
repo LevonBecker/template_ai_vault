@@ -1,5 +1,5 @@
 # Chat Manager
-The chat module handles the complete lifecycle of research chat sessions within the AI assistant workspace.
+The chat module handles the complete lifecycle of research chat sessions within the AI Vault workspace.
 
 ## Features
 - **Start Chats**: Initialize new research sessions with timestamped files

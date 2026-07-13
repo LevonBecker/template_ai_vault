@@ -39,9 +39,9 @@ def get_active_topic_path(repo_root: Path) -> Path | None:
 
 
 def build_env(repo_root: Path) -> dict[str, str]:
-    """Build environment with AI_ASSISTANT_ORIGINAL_CWD if available."""
+    """Build environment with AI_VAULT_ORIGINAL_CWD if available."""
     env = os.environ.copy()
     active_topic = get_active_topic_path(repo_root)
     if active_topic:
-        env["AI_ASSISTANT_ORIGINAL_CWD"] = str(active_topic)
+        env["AI_VAULT_ORIGINAL_CWD"] = str(active_topic)
     return env
