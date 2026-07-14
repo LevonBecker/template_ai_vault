@@ -115,6 +115,18 @@ def get_skeleton_remote() -> str:
     return props["skeleton"]["remote"]
 
 
+def get_icloud_enabled() -> bool:
+    """
+    Whether iCloud sync is enabled. Off by default — an opt-in feature, not every
+    setup uses (or has) an iCloud Obsidian vault.
+
+    Returns:
+        True if /push and /pull should sync with iCloud.
+    """
+    props = get_properties()
+    return bool(props.get("icloud", {}).get("enabled", False))
+
+
 def get_icloud_path() -> Path:
     """
     Get iCloud sync path as Path object.

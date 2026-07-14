@@ -42,7 +42,8 @@ committed — and generated for you:
 
 | Key | What it's for |
 |---|---|
-| `icloud.path` | Your own iCloud Obsidian vault path — only needed for `/repo push`'s iCloud sync |
+| `icloud.enabled` | Turns iCloud sync on for `/push`/`/pull` — **`false` by default**. Set `true` only if you use the iCloud Obsidian mobile workflow (see [Mobile Access](../README.md#mobile-access)) |
+| `icloud.path` | Your own iCloud Obsidian vault path — only read when `icloud.enabled: true` |
 | `skeleton.local` / `skeleton.remote` | A shared-tooling repo to pull from via `/sync-setup` — leave as-is unless you maintain your own |
 
 `screenshots.location` **is** auto-derived (`<repo.local>/screenshots`) every time `setup.properties`

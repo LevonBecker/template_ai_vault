@@ -1,10 +1,14 @@
 # Repo Manager Agent
-The repo module handles repository-level operations including git synchronization, iCloud backup, and cleanup tasks.
+The repo module handles repository-level operations including git synchronization, optional iCloud backup, and cleanup tasks.
+
+**iCloud sync is off by default** (`icloud.enabled: false` in `properties.yml`) — `/push` and `/pull`
+skip it entirely unless you turn it on. Everything below describing iCloud behavior only applies when
+enabled. See [`docs/setup.md`](../../docs/setup.md).
 
 ## Features
-- **Repository Push/Pull**: Full git operations and iCloud synchronization
+- **Repository Push/Pull**: Full git operations, plus optional iCloud synchronization
 - **Screenshot Cleanup**: Remove old screenshots from centralized repo screenshots/ folder
-- **Cross-Device Sync**: Keep work synchronized via git and iCloud Obsidian
+- **Cross-Device Sync**: Keep work synchronized via git, and optionally iCloud Obsidian
 - **Automated Commits**: Timestamp-based commit messages
 - **Error Handling**: Graceful handling of push/pull failures
 
