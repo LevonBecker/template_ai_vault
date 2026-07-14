@@ -8,13 +8,14 @@ Because it's just files in git, we own it outright. It works with almost any AI 
 The result: one portable, permanent home for our AI-assisted work, instead of it scattered across a dozen chat histories we don't control.
 
 ## Setup
+#### macOS + brew
 ```bash
 git clone https://github.com/LevonBecker/template_ai_vault.git ai_vault
 cd ai_vault
 ./setup.sh
 ```
 
-This creates the Python virtual environment, installs dependencies, and configures repo paths. For AI service authentication and optional CLI tool installs, see [`docs/`](docs/README.md).
+This creates the Python virtual environment, installs dependencies, and configures repo paths. For AI service authentication and optional CLI tool installs, see [`docs/setup.md`](docs/setup.md).
 
 ## Topics
 Our content is organized into `topics/`, nested however makes sense for us — a simple topic can live at the root, like `topics/shopping/`, or nest deeper, like `topics/health/medical/`, with `topics/health/` just being a folder and not a topic itself.
@@ -28,6 +29,11 @@ Our content is organized into `topics/`, nested however makes sense for us — a
 Once we're in a topic, `/chat start [title]` begins a new conversation file, or `/chat resume [title]` picks up an existing one. That file becomes the **active chat**, so we can just keep talking without re-running the command.
 
 When we're done, run `/chat end` — this writes the full conversation to that chat's markdown file so nothing is lost. From there we can `/chat start` a fresh conversation, `/clear` to wipe context, or just close whatever AI tool we're using — either way, our work is already saved to disk.
+
+## Screenshots
+One of the fastest ways to get help: instead of typing out an error message or describing a UI problem, just screenshot it and say `/ss` — the AI looks at the image directly as context for the conversation. No copy-pasting stack traces, no trying to describe what a broken layout looks like.
+
+Screenshots save to a shared `screenshots/` folder at the repo root (once configured with `/repo set_screenshots`), so this works the same way across every topic. See [`docs/screenshots.md`](docs/screenshots.md) for the full workflow and setup commands.
 
 ## Our Content
 Everything — topics, chats, docs — is saved locally in our own private git repo, so we're never locked into one AI provider or model. Because it's just files, we can switch tools freely while keeping one shared history, and sync that same content across every computer or device with a simple push and pull.
@@ -58,3 +64,8 @@ I've run AI Vault through all of these — pick whichever fits how you like to w
 
 ## Learn More
 The full setup guide (AI service auth, CLI installs), command reference, and architecture docs live in [`docs/`](docs/README.md).
+- [`docs/setup.md`](docs/setup.md) — install, AI service auth, optional CLI tools
+- [`docs/commands.md`](docs/commands.md) — every slash command
+- [`docs/architecture.md`](docs/architecture.md) — how the multi-tool automation is built
+- [`docs/screenshots.md`](docs/screenshots.md) — `/ss` workflow and macOS setup commands
+- [`docs/custom_prompts.md`](docs/custom_prompts.md) — adding or editing a slash command

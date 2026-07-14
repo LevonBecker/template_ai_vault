@@ -160,7 +160,7 @@ topics/
 └── food_and_drink/   # Single topic — docs/ split by category (appliances, favorites, recipes)
 ```
 
-See `docs/README.md` and `modules/topic/README.md` for the group-topic vs. single-topic pattern.
+See `docs/architecture.md` and `modules/topic/README.md` for the group-topic vs. single-topic pattern.
 
 ## Documentation Standards
 
