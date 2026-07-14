@@ -8,11 +8,19 @@ Because it's just files in git, we own it outright. It works with almost any AI 
 The result: one portable, permanent home for our AI-assisted work, instead of it scattered across a dozen chat histories we don't control.
 
 ## Setup
-#### macOS + brew
+#### Clone Repo
 ```bash
 git clone https://github.com/LevonBecker/template_ai_vault.git ai_vault
 cd ai_vault
+```
+#### Run Setup
+##### Bash
+```bash
 ./setup.sh
+```
+##### Windows
+```powershell
+pwsh -ExecutionPolicy Bypass -File setup.ps1
 ```
 
 This creates the Python virtual environment, installs dependencies, and configures repo paths. For AI service authentication and optional CLI tool installs, see [`docs/setup.md`](docs/setup.md).

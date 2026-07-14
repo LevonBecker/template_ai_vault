@@ -42,7 +42,11 @@ def get_repo_root() -> Path:
         if props_file.exists():
             return parent
 
-    msg = "Could not find repository root (properties.yml not found)"
+    msg = (
+        "properties.yml not found. This repo needs a machine-specific properties.yml "
+        "(gitignored) — run `uv run --no-sync invoke setup.properties` to create and "
+        "configure it, then try again."
+    )
     raise FileNotFoundError(msg)
 
 

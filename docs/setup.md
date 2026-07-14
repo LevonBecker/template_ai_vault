@@ -3,14 +3,52 @@
 ```bash
 git clone https://github.com/LevonBecker/template_ai_vault.git ai_vault
 cd ai_vault
+
+# macOS or Linux
 ./setup.sh
+
+# Windows (PowerShell)
+.\setup.ps1
 ```
 
-`./setup.sh` (also available as `/setup` once an AI tool is running) creates the Python virtual
-environment, installs dependencies, sets up the test automation tasks, and configures repository
-properties (`properties.yml`).
+Both scripts do the same thing: install `uv` (user-local — Homebrew on macOS, the official per-user
+installer script on Linux/Windows, no `sudo`/admin needed), create the `.venv` virtual environment,
+run `uv sync` to install dependencies, then hand off to Python for everything else:
+`uv run --no-sync invoke setup.properties` creates and configures `properties.yml` (see step 2).
 
-## 2. AI Service Authentication
+`setup.sh` also works as `/setup` once an AI tool is running. It's structured as small functions
+(`install_tools_macos` / `install_tools_linux` / `setup_python_env` / `configure_properties`) with a
+`main()` that branches on `uname` — see `setup.sh` itself for the exact logic.
+
+**Screenshots are macOS-only.** `/repo set_screenshots` and the `/ss` workflow rely on macOS's
+`defaults write com.apple.screencapture` — everything else in the repo works the same on all three
+platforms.
+
+## 2. `properties.yml` (automatic)
+`properties.yml` at the repo root is the central config every module reads paths from (see
+[`architecture.md`](architecture.md#configuration-files)). It's gitignored — machine-specific, never
+committed — and generated for you:
+
+- **First run**: `inv setup.properties` creates `properties.yml` from a built-in template, then
+  detects and stamps `repo.local` (this repo's actual path on disk) and `repo.remote` (from
+  `git remote get-url origin`, if you've forked it).
+- **Re-run any time**: `uv run --no-sync invoke setup.properties` — safe and idempotent. Run it again
+  after moving the repo on disk, renaming it, or pointing it at a new fork; it just re-stamps the same
+  three fields.
+- If any module can't find `properties.yml` at all, it raises a clear error telling you to run this
+  command — you'll never silently get someone else's paths.
+
+**Not auto-detected** — edit `properties.yml` by hand for these, only if you use the feature:
+
+| Key | What it's for |
+|---|---|
+| `icloud.path` | Your own iCloud Obsidian vault path — only needed for `/repo push`'s iCloud sync |
+| `skeleton.local` / `skeleton.remote` | A shared-tooling repo to pull from via `/sync-setup` — leave as-is unless you maintain your own |
+
+`screenshots.location` **is** auto-derived (`<repo.local>/screenshots`) every time `setup.properties`
+runs, so don't hand-edit it — it'll get overwritten on the next run.
+
+## 3. AI Service Authentication
 If you're using OpenCode:
 1. Open opencode
 2. `CTRL+P`
@@ -32,7 +70,7 @@ If you're using OpenCode:
 2. Copy/paste the URL to your browser
 3. Copy/paste the auth key back into OpenCode
 
-## 3. Optional — Install AI Model CLI Tools
+## 4. Optional — Install AI Model CLI Tools
 Only needed if you want an agent to shell out to another model's CLI, or if you want to use one of
 these tools directly instead of/alongside OpenCode.
 
@@ -80,7 +118,7 @@ export ANTHROPIC_API_KEY="your_api_key_here"
 export GEMINI_API_KEY="your_api_key_here"
 ```
 
-## 4. Optional — Local LLM (Ollama)
+## 5. Optional — Local LLM (Ollama)
 For fully offline/local model use on Apple Silicon:
 ```bash
 uv run --no-sync invoke ollama.install
@@ -89,7 +127,7 @@ uv run --no-sync invoke ollama.install
 This is invoke-task-only (no slash command) — see `inv ollama.list` / `inv ollama.status` /
 `inv ollama.update` / `inv ollama.uninstall` and `modules/ollama/`.
 
-## 5. Configure Screenshots (macOS)
+## 6. Configure Screenshots (macOS)
 ```bash
 uv run --no-sync python -m modules.repo.route "set_screenshots"
 # or, once an AI tool is running: /repo set_screenshots
@@ -98,7 +136,7 @@ uv run --no-sync python -m modules.repo.route "set_screenshots"
 Points macOS screenshot captures at the repo's `screenshots/` folder instead of the Desktop. See
 [`screenshots.md`](screenshots.md) for the full workflow and the manual `defaults write` commands.
 
-## 6. Verify Setup
+## 7. Verify Setup
 ```bash
 uv run --no-sync python -m modules.topic.list
 ```
