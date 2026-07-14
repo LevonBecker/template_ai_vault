@@ -9,6 +9,8 @@ The result: one portable, permanent home for our AI-assisted work, instead of it
 
 ## Setup
 ```bash
+git clone https://github.com/LevonBecker/template_ai_vault.git ai_vault
+cd ai_vault
 ./setup.sh
 ```
 
