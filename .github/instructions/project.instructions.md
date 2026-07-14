@@ -10,7 +10,7 @@ This is a **personal research and documentation workspace**. It is configured as
 - **Research workspace**: Chat-based research sessions saved as markdown files under `topics/`
 - **Multi-tool**: Works with Claude Code (`.claude/commands/`), OpenCode (`.opencode/command/`), and GitHub Copilot (`.github/prompts/`)
 - **Python-powered**: Business logic lives in `modules/` — commands are thin wrappers
-- **Git-tracked**: All research syncs via git to iCloud for mobile access
+- **Git-tracked**: All research syncs via git; optional iCloud sync for mobile access (`icloud.enabled` in `properties.yml`, off by default)
 
 ## Instruction Files by Domain
 

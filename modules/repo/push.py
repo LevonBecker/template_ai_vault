@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 from ..common import cli as click
-from ..common.properties import get_icloud_path, get_repo_local
+from ..common.properties import get_icloud_enabled, get_icloud_path, get_repo_local
 from ..common.utils import error, success, warning
 
 
@@ -277,10 +277,10 @@ def main(no_confirm: bool) -> None:
     4. Prompt user to confirm push
     5. Pull latest changes from git remote
     6. Commit and push any local changes to GitHub
-    7. Push to iCloud using rsync (excludes .git and hidden files)
+    7. Push to iCloud using rsync (excludes .git and hidden files) — only if icloud.enabled
     """
     repo_path = get_repo_local()
-    icloud_path = get_icloud_path()
+    icloud_enabled = get_icloud_enabled()
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     click.echo("🔄 Starting repository push...")
@@ -293,19 +293,24 @@ def main(no_confirm: bool) -> None:
     click.echo()
 
     # Prompt user to confirm push only in interactive terminals
-    if not no_confirm and sys.stdin.isatty():
-        if not click.confirm("✅ Tests passed! Push to GitHub and iCloud?", default=True):
-            click.echo("Push cancelled by user.")
-            raise SystemExit(0)
+    confirm_message = (
+        "✅ Tests passed! Push to GitHub and iCloud?" if icloud_enabled else "✅ Tests passed! Push to GitHub?"
+    )
+    if not no_confirm and sys.stdin.isatty() and not click.confirm(confirm_message, default=True):
+        click.echo("Push cancelled by user.")
+        raise SystemExit(0)
 
     click.echo()
     push_git(repo_path, timestamp)
-    push_icloud(repo_path, icloud_path)
+    if icloud_enabled:
+        push_icloud(repo_path, get_icloud_path())
+    else:
+        click.echo("⏭️  iCloud sync disabled (icloud.enabled: false in properties.yml) — skipping")
 
     click.echo()
     click.echo("🎉 Repository push completed!")
     click.echo("   - Git: up to date")
-    click.echo("   - iCloud: pushed")
+    click.echo(f"   - iCloud: {'pushed' if icloud_enabled else 'skipped (disabled)'}")
 
 
 if __name__ == "__main__":

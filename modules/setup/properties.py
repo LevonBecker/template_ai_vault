@@ -35,7 +35,11 @@ _TEMPLATE = """---
 # screenshots.location on every run. icloud.path and skeleton.* are not
 # auto-detected — edit those by hand if you use those features.
 
+# Optional — off by default. Only needed if you sync this repo to an iCloud
+# Obsidian vault for mobile access (see docs/). Set enabled: true and fill in
+# path to turn on iCloud sync in /push and /pull.
 icloud:
+  enabled: false
   path: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/<your-vault-name>/"
 
 repo:
@@ -91,8 +95,9 @@ def _detect_repo_remote() -> str | None:
     return url
 
 
-def _replace_scalar(lines: list[str], section: str, key: str, value: str) -> bool:
-    """Rewrite `key: ...` to `key: "value"` within a top-level `section:` block, in place."""
+def _replace_scalar(lines: list[str], section: str, key: str, value: str, *, quote: bool = True) -> bool:
+    """Rewrite `key: ...` to `key: value` within a top-level `section:` block, in place."""
+    formatted = f'"{value}"' if quote else value
     in_section = False
     for i, line in enumerate(lines):
         if line.rstrip("\n") == f"{section}:":
@@ -104,15 +109,27 @@ def _replace_scalar(lines: list[str], section: str, key: str, value: str) -> boo
             return False  # reached the next top-level key without finding it
         match = re.match(rf"^(\s*{re.escape(key)}:\s*).*$", line)
         if match:
-            lines[i] = f'{match.group(1)}"{value}"\n'
+            lines[i] = f"{match.group(1)}{formatted}\n"
             return True
     return False
+
+
+def _prompt_icloud_enabled(lines: list[str]) -> None:
+    """Ask (interactively) whether to turn on iCloud sync for a freshly created properties.yml."""
+    enabled = cli.confirm(
+        "Enable iCloud sync for /push and /pull? (most people don't need this — off by default)",
+        default=False,
+    )
+    _replace_scalar(lines, "icloud", "enabled", "true" if enabled else "false", quote=False)
+    if enabled:
+        info("iCloud sync enabled — edit icloud.path in properties.yml to your Obsidian vault path")
 
 
 @cli.command()
 def main() -> None:
     """Create properties.yml from the built-in template (if missing) and stamp local paths into it."""
-    if not _PROPERTIES_FILE.exists():
+    just_created = not _PROPERTIES_FILE.exists()
+    if just_created:
         _PROPERTIES_FILE.write_text(_TEMPLATE)
         info("Created properties.yml")
 
@@ -124,6 +141,8 @@ def main() -> None:
     if repo_remote:
         _replace_scalar(lines, "repo", "remote", repo_remote)
     _replace_scalar(lines, "screenshots", "location", f"{repo_local}/screenshots")
+    if just_created:
+        _prompt_icloud_enabled(lines)
     _PROPERTIES_FILE.write_text("".join(lines))
 
     success(f"properties.yml: repo.local = {repo_local}")

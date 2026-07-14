@@ -49,7 +49,9 @@ Everything — topics, chats, docs — is saved locally in our own private git r
 Once we've made changes, run `/push` to commit and push them to our remote; run `/pull` on another machine to bring them down. That's the whole sync story — no special service required, just git.
 
 ## Mobile Access
-Cloning a git repo to a phone isn't really practical, and the GitHub app isn't built for browsing markdown and CSV. My workaround: a small automation syncs the repo to an iCloud folder, which Obsidian (with a CSV viewer plugin) reads on my phone — free, and I can browse any topic, chat, or doc from anywhere.
+Cloning a git repo to a phone isn't really practical, and the GitHub app isn't built for browsing markdown and CSV. My workaround: a small automation can sync the repo to an iCloud folder, which Obsidian (with a CSV viewer plugin) reads on my phone — free, and I can browse any topic, chat, or doc from anywhere.
+
+This is **off by default** — `/push` and `/pull` skip iCloud entirely unless you turn it on. To enable it, set `icloud.enabled: true` and fill in `icloud.path` in `properties.yml` (see [`docs/setup.md`](docs/setup.md)).
 
 Obsidian is just one option — anything that can read a synced folder of markdown/CSV works. Some AI tools solve this differently: Hermes, for example, can run as a Telegram bot so you can chat with your own setup straight from your phone.
 
