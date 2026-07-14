@@ -51,7 +51,7 @@ Requires `gh` (GitHub CLI) authenticated — see [`setup.md`](setup.md).
 ## Setup, Testing & Sync
 | Command | Purpose | Details |
 |---------|---------|---------|
-| `/setup` | Run initial project setup | Runs `./setup.sh` — creates `.venv`, installs deps |
+| `/setup` | Run initial project setup | Runs `./setup.sh` (macOS) — creates `.venv`, installs deps, and configures `properties.yml` via `inv setup.properties` |
 | `/fix` | Auto-fix lint issues | `ruff check --fix` + `ruff format` |
 | `/test` | Run all tests and linters | ruff, pylint, yamllint, actionlint — must be 10/10 for `.py`/`.yml` changes |
 | `/sync-setup` | Pull shared tooling updates | Compares this repo against the `template_python` skeleton repo (`modules/`, `tasks/`, `.github/`, `.claude/`, config files) and syncs in changes, asking about anything ambiguous |

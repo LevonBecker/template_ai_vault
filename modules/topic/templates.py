@@ -2,7 +2,8 @@
 
 from pathlib import Path
 
-from ..common.properties import get_screenshots_location
+# Repo-relative — never an absolute machine path (see .github/instructions/screenshots.instructions.md)
+_LATEST_SCREENSHOT = "screenshots/latest.png"
 
 # ---------------------------------------------------------------------------
 # Private section helpers - keep each small for linter compliance
@@ -67,7 +68,7 @@ def _parent_index_section(subtopics: list[tuple[str, str, str]]) -> str:
     return "\n".join(lines)
 
 
-def _screenshot_section(latest_file: Path) -> str:
+def _screenshot_section() -> str:
     """Return the Screenshots Workflow section."""
     return f"""## Screenshots Workflow
 When user types `ss` or `/ss` to view a screenshot, follow these steps IN ORDER:
@@ -77,7 +78,7 @@ Use `/ss` (alias for `/repo view_screenshot`). It copies the most recent screens
 
 ### Step 2 - Read the copied file
 ```
-{latest_file}
+{_LATEST_SCREENSHOT}
 ```
 Only read this AFTER step 1 completes successfully.
 
@@ -123,11 +124,10 @@ def _slash_command_section(tool_name: str = "OpenCode", command_dir: str = ".ope
 ```"""
 
 
-def _workflow_section(latest_file: Path, tool_name: str = "OpenCode") -> str:
+def _workflow_section(tool_name: str = "OpenCode") -> str:
     """Return the AI Tool Workflow section.
 
     Args:
-        latest_file: Path to the latest screenshot file.
         tool_name: Display name of the AI tool.
     """
     return f"""## {tool_name} Workflow
@@ -138,7 +138,7 @@ When working in this topic with {tool_name}:
    - Previous chat is committed with message "Research session: [title]"
 2. **Screenshots**: Type "ss" or "/ss" to examine the latest screenshot
    - **STEP 1 - MANDATORY**: Run `/ss` (copies newest file to latest.png)
-   - **STEP 2**: Read `{latest_file}` (only AFTER step 1 - otherwise you get a stale image)
+   - **STEP 2**: Read `{_LATEST_SCREENSHOT}` (only AFTER step 1 - otherwise you get a stale image)
    - **NEVER** read latest.png without running /ss first
 3. **Resuming work**: Use `/chat resume` to continue a previous chat
    - **AUTO-CLOSE**: Automatically closes any active chat before resuming
@@ -222,9 +222,9 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 4. ❌ Does NOT push to remote (push manually when ready)"""
 
 
-def _file_org_section(screenshots_dir: Path) -> str:
+def _file_org_section() -> str:
     """Return the File Organization section."""
-    return f"""## File Organization
+    return """## File Organization
 - **chats/**: Saved AI chat logs with complete chat history (YYYYMMDD_title.md format)
 - **docs/**: User-requested summary documents and reference materials
 - **AGENTS.md**: Topic instruction source of truth
@@ -243,7 +243,7 @@ def _file_org_section(screenshots_dir: Path) -> str:
 - Exception: chat files always go in `chats/`, instruction files stay in their defined locations
 - Exception: user explicitly specifies a different path → use that path
 
-**Note**: Screenshots are stored centrally at repo root (`{screenshots_dir}`), NOT in topic-specific folders.
+**Note**: Screenshots are stored centrally at the repo-root `screenshots/` folder, NOT in topic-specific folders.
 
 ### Date Format — MANDATORY
 - **Filenames**: Use `YYYYMMDD_description.md` (e.g. `20260409_filming_gear.md`)
@@ -306,9 +306,6 @@ def _build_opencode_md(
     Returns:
         Complete instruction file content string.
     """
-    screenshots_dir = get_screenshots_location()
-    latest_file = screenshots_dir / "latest.png"
-
     parts = [
         f"# {tool_name} Instructions for {topic_name}",
         f"This file provides {tool_name}-specific guidance when working in this topic directory.",
@@ -349,7 +346,7 @@ def _build_opencode_md(
         f"- {tool_name} is the primary interface (works with any AI model: Claude, GPT, Gemini, etc.)",
         "- Git is used for local version control and optional sync across devices via /push",
         "",
-        _workflow_section(latest_file, tool_name),
+        _workflow_section(tool_name),
         "",
         _commands_section(tool_name),
         "",
@@ -357,9 +354,9 @@ def _build_opencode_md(
         "",
         _chat_end_section(),
         "",
-        _file_org_section(screenshots_dir),
+        _file_org_section(),
         "",
-        _screenshot_section(latest_file),
+        _screenshot_section(),
         "",
         "## Best Practices",
         "- Keep chats focused on specific topics or problems",

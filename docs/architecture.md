@@ -148,6 +148,8 @@ modules/
 │   ├── upgrade.py / uv_sync.py  # Actual install/sync (used by /upgrade)
 │   ├── route.py                 # /versioning routing
 │   └── README.md
+├── setup/                       # One-time/idempotent repo bootstrapping, called by setup.sh
+│   └── properties.py            # Creates + stamps properties.yml (inv setup.properties)
 ├── skeleton/                    # Locates the shared template_python skeleton repo for /sync-setup
 │   ├── sync.py / route.py
 │   └── README.md
@@ -228,6 +230,14 @@ Central configuration at the repo root. Keys: `repo` (local path + remote), `icl
 Obsidian sync path), `skeleton` (shared-tooling source for `/sync-setup`), `screenshots` (location,
 cleanup rules, preserved files). Every absolute path uses `$HOME` instead of a hardcoded username, so
 the file stays portable across machines.
+
+**`properties.yml` is gitignored — it's machine-specific, never committed.** `modules/setup/properties.py`
+(invoked as `inv setup.properties`, run automatically by `setup.sh` and safe to re-run any time —
+e.g. after moving or renaming the repo) creates it from a built-in template on first run, then
+re-stamps `repo.local`, `repo.remote`, and `screenshots.location` with values detected for the
+current machine on every run — see [`setup.md`](setup.md#2-propertiesyml-automatic). Every module
+that reads `properties.yml` and finds it missing raises an error pointing at that command, rather than
+silently falling back to defaults.
 
 Load it via `modules.common.properties` — see `modules/repo/README.md` for the full property list.
 
