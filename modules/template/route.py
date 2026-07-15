@@ -1,4 +1,4 @@
-"""Route /sync_template arguments to template sync modules."""
+"""Route /template arguments to template sync modules."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def main() -> int:
     first = args[0]
     module = _SUBCOMMAND_MODULES.get(first)
     if module is None:
-        sys.stderr.write(f"Unknown sync_template subcommand: {first}\n")
+        sys.stderr.write(f"Unknown template subcommand: {first}\n")
         return 1
 
     return _run(module, args[1:])

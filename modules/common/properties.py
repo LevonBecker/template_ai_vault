@@ -88,7 +88,7 @@ def get_repo_remote() -> str:
 
 def get_template_local() -> Path:
     """
-    Get the local path to the shared template repo (template_ai_vault), used by /sync_template.
+    Get the local path to the shared template repo (template_ai_vault), used by /template.
 
     A relative path is resolved against this repo's root.
 

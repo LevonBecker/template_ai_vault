@@ -15,7 +15,7 @@ would only be replaceable once, breaking re-runs after a move/rename). Every
 other line, including comments and the business-specific sections, is left
 exactly as-is.
 
-template.* (this repo's parent template repo, used by /sync_template) is
+template.* (this repo's parent template repo, used by /template) is
 auto-detected from GitHub's generated-from link when possible, with an
 interactive prompt as fallback — and is only ever written while it still
 holds the built-in placeholder, so a hand-configured parent is never
@@ -39,7 +39,7 @@ _TEMPLATE = """---
 # `inv setup.properties` (run automatically by setup.sh, and safe to re-run any time — e.g. after
 # moving this repo, renaming it, or forking it to a new remote) creates this file from a built-in
 # template on first run and re-stamps repo.local / repo.remote / screenshots.location on every
-# run. template.* (the parent template repo for /sync_template) is auto-detected from GitHub's
+# run. template.* (the parent template repo for /template) is auto-detected from GitHub's
 # generated-from link (or prompted for) while it still holds the placeholder — edit by hand any
 # time. icloud.path is never auto-detected.
 
@@ -54,7 +54,7 @@ repo:
   local: "$HOME/path/to/this/repo"
   remote: "github.com/<your-username>/<your-repo-name>"
 
-# This repo's parent template repo — where /sync_template pulls shared tooling updates (modules/,
+# This repo's parent template repo — where /template pulls shared tooling updates (modules/,
 # tasks/, .github/, .claude/, etc.) from, and pushes generic improvements to as PRs. Repos chain
 # (e.g. root skeleton -> domain template -> project repo); point this at the direct parent only.
 # Optional — leave the placeholders if this repo doesn't sync with a template.
@@ -182,7 +182,7 @@ def _prompt_icloud_enabled(lines: list[str]) -> None:
 
 
 def _stamp_template_parent(lines: list[str], repo_local: str, repo_remote: str | None) -> None:
-    """Fill in template.* (the /sync_template parent) while it still holds the placeholder.
+    """Fill in template.* (the /template parent) while it still holds the placeholder.
 
     Auto-detects via GitHub's generated-from link, falling back to an interactive prompt.
     A hand-configured (non-placeholder) parent is never touched.
@@ -194,7 +194,7 @@ def _stamp_template_parent(lines: list[str], repo_local: str, repo_remote: str |
     remote = _detect_template_remote(repo_remote)
     if remote:
         info(f"Detected parent template repo (GitHub generated-from): {remote}")
-    elif cli.confirm("Sync shared tooling with a parent template repo via /sync_template?", default=False):
+    elif cli.confirm("Sync shared tooling with a parent template repo via /template?", default=False):
         remote = cli.prompt("Parent template remote (e.g. github.com/<user>/<template-repo>)")
 
     if not remote:

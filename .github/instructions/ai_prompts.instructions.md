@@ -235,6 +235,6 @@ no dedicated slash command — call them directly:
 
 ### Template Sync
 ```
-/sync_template [pull]  → modules.template.route → modules.template.pull
-/sync_template push    → modules.template.route → modules.template.push
+/template [pull]  → modules.template.route → modules.template.pull
+/template push    → modules.template.route → modules.template.push
 ```
