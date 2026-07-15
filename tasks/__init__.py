@@ -15,7 +15,7 @@ namespace.add_collection(ruff, name="ruff")
 namespace.add_collection(setup, name="setup")
 namespace.add_collection(tests, name="tests")
 namespace.add_collection(upgrade, name="upgrade")
-namespace.add_collection(versioning, name="versioning")
+namespace.add_collection(versioning, name="ver")
 
 # Combo Tasks
 ai_collection = Collection("ai")
@@ -24,3 +24,4 @@ namespace.add_collection(ai_collection)
 
 namespace.add_task(combos.fix, name="fix")
 namespace.add_task(combos.test, name="test")
+namespace.add_task(versioning.update, name="update")

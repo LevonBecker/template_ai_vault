@@ -236,9 +236,9 @@ def main(dry_run: bool, no_confirm: bool) -> None:
     constraint operators (~=, ==, >=, etc.).
 
     Examples:
-        /version libs              # Interactive mode
-        /version libs --dry-run    # Preview changes
-        /version libs --yes        # Auto-confirm
+        /update libs              # Interactive mode
+        /update libs --dry-run    # Preview changes
+        /update libs --yes        # Auto-confirm
     """
     info("Checking for dependency updates...")
 

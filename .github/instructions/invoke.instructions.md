@@ -53,9 +53,10 @@ see Upgrade Tasks above for that).
 
 | Task | Command | Description |
 |------|---------|-------------|
-| all | `uv run --no-sync invoke versioning.all` | Run every version check (libs, workflows) |
-| libs | `uv run --no-sync invoke versioning.libs` | Check `pyproject.toml` deps against latest releases |
-| workflows | `uv run --no-sync invoke versioning.workflows` | Check `.github/workflows/` action refs against latest versions |
+| update | `uv run --no-sync invoke ver.update` | Run every version check (libs, python, workflows) |
+| libs | `uv run --no-sync invoke ver.libs` | Check `pyproject.toml` deps against latest releases |
+| python | `uv run --no-sync invoke ver.python` | Check the pinned Python version against the latest release |
+| workflows | `uv run --no-sync invoke ver.workflows` | Check `.github/workflows/` action refs against latest versions |
 
 ## Invoke vs Direct Python
 

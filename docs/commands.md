@@ -97,6 +97,6 @@ uv run --no-sync python -m modules.repo.set_screenshots
 uv run --no-sync python -m modules.repo.view_screenshot
 
 # Versioning
-uv run --no-sync invoke versioning.all --dry-run
+uv run --no-sync invoke ver.update --dry-run
 uv run --no-sync invoke upgrade
 ```

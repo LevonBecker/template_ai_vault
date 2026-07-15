@@ -229,9 +229,9 @@ def main(dry_run: bool, no_confirm: bool) -> None:
     - .github/actions/setup_uv/action.yml
 
     Examples:
-        /version python              # Interactive mode
-        /version python --dry-run    # Preview changes
-        /version python --yes        # Auto-confirm
+        /update python              # Interactive mode
+        /update python --dry-run    # Preview changes
+        /update python --yes        # Auto-confirm
     """
     info("Checking Python version...")
 
