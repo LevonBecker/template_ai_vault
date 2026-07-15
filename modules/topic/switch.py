@@ -124,7 +124,7 @@ def main(path: str) -> None:  # pylint: disable=too-many-branches,too-many-state
         click.echo()
 
     # Update active_topic.yml tracker at repo root
-    write_active_topic(repo_root, path, target_topic)
+    write_active_topic(repo_root, path)
 
     # Check for active chat in new topic
     new_active_data = read_chat_active(target_topic)

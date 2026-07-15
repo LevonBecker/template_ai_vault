@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-ACTIVE_TOPIC_YML_HEADER = "# Active topic tracker\n# Managed by topic/switch.py\n# Do not edit manually\n\n"
+ACTIVE_TOPIC_YML_HEADER = "# Active topic tracker\n# Managed by topic/switch.py\n# Do not edit manually\n---\n"
 
 
 def read_active_topic(repo_root: Path) -> str | None:
@@ -32,21 +32,22 @@ def read_active_topic(repo_root: Path) -> str | None:
         return None
 
 
-def write_active_topic(repo_root: Path, topic_path: str, topic_full_path: Path) -> None:
+def write_active_topic(repo_root: Path, topic_path: str) -> None:
     """
     Write active_topic.yml at repository root.
+
+    Paths are stored repo-relative only — the absolute topic path is derived at
+    read time from the repo root, so the file stays portable across machines.
 
     Args:
         repo_root: Path to repository root.
         topic_path: Relative topic path (e.g. workshop/tig_welding).
-        topic_full_path: Absolute path to topic directory.
     """
     active_topic_file = repo_root / "active_topic.yml"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     active_topic_data = {
         "current_topic": topic_path,
-        "topic_full_path": str(topic_full_path),
         "base_path": f"topics/{topic_path}",
         "switched_at": timestamp,
     }
