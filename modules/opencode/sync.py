@@ -14,8 +14,8 @@ Usage:
 from pathlib import Path
 
 from ..common import cli
+from ..common.prompt_commands import load_commands
 from ..common.route_utils import find_repo_root
-from ..hermes.sync import load_commands
 
 _REPO_ROOT = find_repo_root()
 _OPENCODE_COMMAND_DIR = _REPO_ROOT / ".opencode" / "command"
@@ -31,6 +31,8 @@ def _command_content(slug: str, description: str, body: str) -> str:
 def main(force: bool = False) -> None:
     """Sync .opencode/command/ from .github/prompts/ source of truth."""
     _OPENCODE_COMMAND_DIR.mkdir(parents=True, exist_ok=True)
+    # Unlike Claude Code and Cline, /claude is legitimate here — it proxies to the real `claude`
+    # CLI from within OpenCode, so nothing is skipped.
     cmds = load_commands()
     written = skipped = 0
     for cmd in cmds:

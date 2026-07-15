@@ -1,6 +1,6 @@
 # upgrade - Upgrade Python and/or Dependencies
 
-Executes upgrades to Python and/or package dependencies after you've reviewed changes via `/version`.
+Executes upgrades to Python and/or package dependencies after you've reviewed changes via `/update`.
 
 ## Usage
 
@@ -42,7 +42,7 @@ The upgrade command performs actual installations and syncs:
 ## Workflow
 
 Best practice:
-1. Run `/version` to review and update config files
+1. Run `/update` to review and update config files
 2. Check `git diff` to see what changed
 3. If satisfied, run `/upgrade` to execute the upgrades
 4. If not satisfied, run `git restore` and adjust
@@ -51,17 +51,17 @@ Best practice:
 
 ```bash
 # Full workflow
-/version                    # Review and update all configs
+/update                    # Review and update all configs
 git diff                    # Review changes
 /upgrade                    # Execute upgrades
 
 # Python-only workflow
-/version python             # Review and update Python configs
+/update python             # Review and update Python configs
 git diff                    # Review changes
 /upgrade python             # Execute Python upgrade
 
 # Libs-only workflow
-/version libs               # Review and update lib versions in pyproject.toml
+/update libs               # Review and update lib versions in pyproject.toml
 git diff                    # Review changes
 /upgrade libs               # Execute libs upgrade
 ```

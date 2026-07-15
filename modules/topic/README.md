@@ -1,7 +1,9 @@
 # Topic Manager Agent
+
 The topic module handles navigation and management of topic directories within the AI agents workspace.
 
 ## Features
+
 - **Topic Discovery**: List all available topics in organized tree format
 - **Smart Navigation**: Navigate to existing topics or create new ones
 - **Auto-YAML Update**: Automatically updates topics_list.yml when new topics are created
@@ -10,6 +12,7 @@ The topic module handles navigation and management of topic directories within t
 - **Path Validation**: Ensures proper topic directory structure
 
 ## Commands
+
 ### `/topic list`
 Display all available topics from the repository in a tree format.
 
@@ -29,20 +32,21 @@ Display all available topics from the repository in a tree format.
 📚 Available Topics
 ==================
 
-⭐ Active Topic: health/dental
+⭐ Active Topic: mac/fusion
 
-health/
-  ├─ ⭐ dental
-  ├─ fitness
-  ├─ medical
-  ├─ supplements
-  └─ vision
-
-financials/
-  ├─ budget
-  ├─ income_tax
-  └─ investments
+fireball/
+  accounting/
+    └─ bookkeeping
+  brands/
+    ├─ fireball_3d
+    ├─ fireball_enterprise
+    └─ fireball_gear
   ...
+
+mac/
+  ├─ ⭐ fusion
+  ├─ blender
+  └─ obsidian
 ```
 
 **Use Cases:**
@@ -55,8 +59,8 @@ Switch to specific topic with automatic chat management.
 
 **Usage:**
 ```
-/topic switch health/dental
-/topic health/dental          # shorthand
+/topic switch mac/fusion
+/topic mac/fusion          # shorthand
 ```
 
 **Workflow:**
@@ -68,9 +72,9 @@ Switch to specific topic with automatic chat management.
 6. **Auto-resumes active chat** in new topic (if exists)
 
 **Examples:**
-- `/topic switch health/dental` → Switch to the Dental topic
-- `/topic financials/budget` → Switch to the Budget topic
-- `/topic travel` → Switch to the Travel topic
+- `/topic switch mac/fusion` → Switch to Fusion 360 topic
+- `/topic fireball/accounting/quickbooks` → Switch to QuickBooks topic
+- `/topic travel/2026_japan` → Switch to Japan travel planning
 
 **Features:**
 - **Intelligent fuzzy matching** - helps with typos
@@ -125,22 +129,26 @@ Update OPENCODE.md files across all topics with latest templates.
 - Fast workflow (no git operations)
 
 ## Directory Structure
+
 Topics are organized under `topics/` with hierarchical structure:
 ```
 topics/
-├── health/
-│   ├── dental/
-│   └── medical/
-├── financials/
-│   ├── budget/
-│   └── investments/
+├── mac/
+│   ├── fusion/
+│   └── affinity_designer_2/
+├── fireball/
+│   ├── accounting/
+│   └── marketing/
 └── travel/
+    └── 2026_japan/
 ```
 
 ## Dependencies
+
 - `start_conversation` - Conversation management
 
 ## Files
+
 - `list.py` - Display all topics from YAML in tree format (used by `/topic list`)
 - `switch.py` - Switch between topics with fuzzy matching (used by `/topic switch`)
 - `init.py` - Initialize topic with AI instruction files (used by `/topic init`)
@@ -152,6 +160,7 @@ topics/
 ---
 
 ## templates.py Change Rule — CRITICAL
+
 `templates.py` is the single source of truth for all topic instruction file content. It drives what `/topic init` and `/topic update` generate for every topic's OPENCODE.md.
 
 **When you modify anything in `modules/topic/` that affects topic instruction content:**
@@ -162,6 +171,7 @@ topics/
 This applies any time you touch `templates.py`, `init.py`, `update.py`, or any logic that affects what gets written to topic instruction files.
 
 ## Active State Files
+
 These files are managed by this module and are git-ignored:
 
 - `active.yml` — per-topic tracker for the currently active chat (lives inside each topic directory)

@@ -1,61 +1,51 @@
 ---
 description: Upgrade Python and/or Dependencies
+agent: general
+subtask: false
+slash_command: /upgrade
+allowed-tools: Bash(uv run --no-sync *)
 ---
 
 # upgrade - Upgrade Python and/or Dependencies
 
-Executes upgrades to Python and/or package dependencies after you've reviewed changes via `/version`.
+Executes upgrades to Python and/or package dependencies after config changes were reviewed
+via `/update`. This performs actual installations and syncs:
 
-## Usage
-
-Upgrade everything (interactive):
-!`uv run --no-sync invoke upgrade`
-
-Upgrade only Python:
-!`uv run --no-sync invoke upgrade.python`
-
-Upgrade only libs:
-!`uv run --no-sync invoke upgrade.libs`
-
-Sync dependencies without checking for updates:
-!`uv run --no-sync invoke upgrade.sync`
-
-## Description
-
-The upgrade command performs actual installations and syncs:
 - Downloads and installs new Python versions (if updated)
-- Rebuilds virtual environment (if Python changed)
+- Rebuilds the virtual environment (if Python changed)
 - Runs `uv sync --upgrade` to install updated dependencies
+
+## Arguments
+
+`$ARGUMENTS`
 
 ## Workflow
 
-Best practice:
-1. Run `/version` to review and update config files
-2. Check `git diff` to see what changed
-3. If satisfied, run `/upgrade` to execute the upgrades
-4. If not satisfied, run `git restore` and adjust
+Run exactly ONE of the following with the Bash tool, chosen by the arguments given:
+
+- No arguments (upgrade everything): `uv run --no-sync invoke upgrade`
+- `python` (Python only): `uv run --no-sync invoke upgrade.python`
+- `libs` (libs only): `uv run --no-sync invoke upgrade.libs`
+- `sync` (sync deps without checking for updates): `uv run --no-sync invoke upgrade.sync`
+
+Interpret the exit code: 0 = success (upgrades completed or nothing needed), 2 = cancelled.
+On any failure, show the full output to the user and ask how to proceed — do not retry
+automatically. If a task tries to prompt interactively and fails because there is no TTY,
+tell the user and ask whether they want to run it themselves in a terminal.
 
 ## Examples
 
 ```bash
 # Full workflow
-/version                    # Review and update all configs
+/update                    # Review and update all configs
 git diff                    # Review changes
 /upgrade                    # Execute upgrades
 
 # Python-only workflow
-/version python             # Review and update Python configs
-git diff                    # Review changes
+/update python             # Review and update Python configs
 /upgrade python             # Execute Python upgrade
 
 # Libs-only workflow
-/version libs               # Review and update lib versions in pyproject.toml
-git diff                    # Review changes
+/update libs               # Review and update lib versions in pyproject.toml
 /upgrade libs               # Execute libs upgrade
 ```
-
-## Exit Codes
-
-- 0: Success (upgrades completed or nothing needed)
-- 1: Error occurred
-- 2: Cancelled by user

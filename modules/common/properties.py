@@ -1,4 +1,4 @@
-"""Properties management for AI Vault repository."""
+"""Properties management for AI research repository."""
 
 import os
 from functools import lru_cache
@@ -42,11 +42,7 @@ def get_repo_root() -> Path:
         if props_file.exists():
             return parent
 
-    msg = (
-        "properties.yml not found. This repo needs a machine-specific properties.yml "
-        "(gitignored) — run `uv run --no-sync invoke setup.properties` to create and "
-        "configure it, then try again."
-    )
+    msg = "Could not find repository root (properties.yml not found)"
     raise FileNotFoundError(msg)
 
 
@@ -90,41 +86,29 @@ def get_repo_remote() -> str:
     return props["repo"]["remote"]
 
 
-def get_skeleton_local() -> Path:
+def get_template_local() -> Path:
     """
-    Get the local path to the shared skeleton repo (template_python), used by /sync-setup.
+    Get the local path to the shared template repo (template_ai_vault), used by /sync_template.
 
     A relative path is resolved against this repo's root.
 
     Returns:
-        Path to the skeleton repository.
+        Path to the template repository.
     """
     props = get_properties()
-    local = _expand_path(props["skeleton"]["local"])
+    local = _expand_path(props["template"]["local"])
     return local if local.is_absolute() else get_repo_root() / local
 
 
-def get_skeleton_remote() -> str:
+def get_template_remote() -> str:
     """
-    Get the skeleton repo's remote (e.g. "github.com/LevonBecker/template_python").
+    Get the template repo's remote (e.g. "github.com/LevonBecker/template_ai_vault").
 
     Returns:
         Remote repository reference, without a URL scheme.
     """
     props = get_properties()
-    return props["skeleton"]["remote"]
-
-
-def get_icloud_enabled() -> bool:
-    """
-    Whether iCloud sync is enabled. Off by default — an opt-in feature, not every
-    setup uses (or has) an iCloud Obsidian vault.
-
-    Returns:
-        True if /push and /pull should sync with iCloud.
-    """
-    props = get_properties()
-    return bool(props.get("icloud", {}).get("enabled", False))
+    return props["template"]["remote"]
 
 
 def get_icloud_path() -> Path:
@@ -180,3 +164,51 @@ def get_screenshots_cleanup_patterns() -> list[str]:
     """
     props = get_properties()
     return props["screenshots"]["cleanup_patterns"]
+
+
+def get_expense_csv_path(year: int | None = None) -> Path:
+    """
+    Get expense CSV path.
+
+    Args:
+        year: Optional year override for expense CSV (defaults to configured path)
+
+    Returns:
+        Path to expense CSV file.
+    """
+    props = get_properties()
+    repo_local = get_repo_local()
+
+    csv_template = props["fireball"]["expense_csv"]
+    if year is None:
+        csv_path = csv_template
+    else:
+        csv_path = csv_template.format(year=year)
+
+    return repo_local / csv_path
+
+
+def get_disposed_equipment_csv_path() -> Path:
+    """
+    Get disposed equipment CSV path.
+
+    Returns:
+        Path to disposed equipment CSV file.
+    """
+    props = get_properties()
+    repo_local = get_repo_local()
+    csv_path = props["fireball"]["disposed_equipment_csv"]
+    return repo_local / csv_path
+
+
+def get_card_progress_csv() -> Path:
+    """
+    Get card progress CSV path.
+
+    Returns:
+        Path to card progress CSV file.
+    """
+    props = get_properties()
+    repo_local = get_repo_local()
+    csv_path = props["financials"]["card_progress_csv"]
+    return repo_local / csv_path

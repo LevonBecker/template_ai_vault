@@ -7,39 +7,19 @@ from pathlib import Path
 import yaml
 
 from ..common import cli as click
+from ..common.chat_state import read_active
 from ..common.utils import error
 
 ACTIVE_YML_HEADER = "# Active chat tracker\n# This file is managed by the chat scripts\n# Do not edit manually\n\n"
 
-
-def _normalize_active_data(data: object) -> dict | None:
-    """Return validated active data or None if invalid."""
-    if not isinstance(data, dict):
-        return None
-
-    filename = data.get("filename")
-    title = data.get("title")
-    topic = data.get("topic")
-
-    if not isinstance(filename, str) or not filename.strip():
-        return None
-    if not isinstance(title, str) or not title.strip():
-        return None
-    if not isinstance(topic, str) or not topic.strip():
-        return None
-
-    normalized = dict(data)
-    normalized["filename"] = filename.strip()
-    normalized["title"] = title.strip()
-    normalized["topic"] = topic.strip()
-
-    status = normalized.get("status")
-    if not isinstance(status, str) or not status.strip():
-        normalized["status"] = "active"
-    else:
-        normalized["status"] = status.strip()
-
-    return normalized
+__all__ = [
+    "ACTIVE_YML_HEADER",
+    "abort_if_active",
+    "clear_active",
+    "create_slug",
+    "read_active",
+    "write_active",
+]
 
 
 def create_slug(text: str) -> str:
@@ -56,30 +36,6 @@ def create_slug(text: str) -> str:
     slug = "".join(c for c in slug if c.isalnum() or c in ("_", "-"))
     slug = re.sub(r"[_-]+", lambda m: m.group()[0], slug)
     return slug
-
-
-def read_active(topic_dir: Path) -> dict | None:
-    """
-    Read active.yml from topic directory.
-
-    Args:
-        topic_dir: Path to topic directory.
-
-    Returns:
-        Parsed active.yml data, or None if file does not exist.
-    """
-    active_file = topic_dir / "active.yml"
-    if not active_file.exists():
-        return None
-
-    try:
-        with active_file.open() as f:
-            data = yaml.safe_load(f)
-            return _normalize_active_data(data)
-    except OSError:
-        return None
-    except yaml.YAMLError:
-        return None
 
 
 def write_active(

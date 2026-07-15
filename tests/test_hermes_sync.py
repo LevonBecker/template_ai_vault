@@ -7,7 +7,6 @@ from pathlib import Path
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -25,20 +24,32 @@ def _write_prompt(pd: Path, name: str, description: str, body: str, argument_hin
 
 
 def _load_sync_module(prompts_dir: Path, monkeypatch: pytest.MonkeyPatch):
-    """Import modules.hermes.sync with REPO_ROOT and PROMPTS_DIR monkeypatched."""
-    import modules.common.route_utils as ru  # pylint: disable=import-outside-toplevel
+    """Import modules.hermes.sync with REPO_ROOT and PROMPTS_DIR monkeypatched.
+
+    PROMPTS_DIR/REPO_ROOT are computed in modules.common.prompt_commands (the shared
+    .prompt.md parser hermes/sync.py delegates to) — both modules must be force-reimported
+    together so hermes.sync picks up prompt_commands' freshly patched constants.
+    """
+    import modules.common.route_utils as ru  # noqa: PLC0415  # pylint: disable=import-outside-toplevel
 
     repo = prompts_dir.parent.parent  # tmp_path root acts as repo root
     monkeypatch.setattr(ru, "find_repo_root", lambda: repo)
 
     # Force reimport so module-level constants pick up patched find_repo_root
-    if "modules.hermes.sync" in sys.modules:
-        del sys.modules["modules.hermes.sync"]
+    for mod_name in ("modules.hermes.sync", "modules.common.prompt_commands"):
+        if mod_name in sys.modules:
+            del sys.modules[mod_name]
 
-    import modules.hermes.sync as sync_mod  # pylint: disable=import-outside-toplevel
+    import modules.common.prompt_commands as prompt_commands_mod  # noqa: PLC0415  # pylint: disable=import-outside-toplevel
+    import modules.hermes.sync as sync_mod  # noqa: PLC0415  # pylint: disable=import-outside-toplevel
 
+    monkeypatch.setattr(prompt_commands_mod, "REPO_ROOT", repo)
+    monkeypatch.setattr(prompt_commands_mod, "PROMPTS_DIR", prompts_dir)
     monkeypatch.setattr(sync_mod, "REPO_ROOT", repo)
-    monkeypatch.setattr(sync_mod, "PROMPTS_DIR", prompts_dir)
+    # generate_skill_md reads screenshot settings from properties.yml, which fresh
+    # template checkouts don't have — stub them so tests never touch real properties.
+    monkeypatch.setattr(sync_mod, "get_screenshots_location", lambda: repo / "screenshots")
+    monkeypatch.setattr(sync_mod, "get_screenshots_latest_file", lambda: "latest.png")
     return sync_mod
 
 
@@ -100,7 +111,7 @@ class TestPromptCommandParser:
 
     def test_r_name_uses_slug_with_hyphens(self, prompts_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
         _write_prompt(prompts_dir, "add-expense", "Add expense",
-                      "!`uv run --no-sync python -m modules.example.route \"add_expense\"`")
+                      '!`uv run --no-sync python -m modules.example.route "add_expense"`')
         sync = _load_sync_module(prompts_dir, monkeypatch)
         cmds = sync.load_commands()
         assert cmds[0].r_name == "r-add-expense"
@@ -108,7 +119,7 @@ class TestPromptCommandParser:
     def test_description_parsed_from_frontmatter(
         self, prompts_dir: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        _write_prompt(prompts_dir, "ss", "View the latest screenshot", "!`uv run --no-sync python -m modules.repo.route \"view_screenshot\"`")
+        _write_prompt(prompts_dir, "ss", "View the latest screenshot", '!`uv run --no-sync python -m modules.repo.route "view_screenshot"`')
         sync = _load_sync_module(prompts_dir, monkeypatch)
         cmds = sync.load_commands()
         assert cmds[0].description == "View the latest screenshot"

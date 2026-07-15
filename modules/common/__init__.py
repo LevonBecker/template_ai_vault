@@ -1,1 +1,1 @@
-"""Common utilities for AI Vault automation."""
+"""Common utilities for AI research automation."""

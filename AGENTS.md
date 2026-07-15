@@ -55,14 +55,14 @@ Run after adding or modifying any `.github/prompts/*.prompt.md` file. `.github/p
 - `/push`, `/pull`, `/ss` - Aliases
 
 ### Version Management
-- `/version` - Check Python + libs, update config files (does NOT install)
-- `/version libs` - Check/update only library versions in pyproject.toml
-- `/version python` - Check/update only Python version in config files
+- `/update` - Check Python + libs + workflow action refs, update config files (does NOT install)
+- `/update libs` - Check/update only library versions in pyproject.toml
+- `/update python` - Check/update only Python version in config files
 - `/upgrade` - Execute upgrades (install Python, rebuild .venv, sync dependencies)
 - `/upgrade python` - Upgrade only Python and rebuild .venv
 - `/upgrade libs` - Upgrade only libraries (uv sync --upgrade)
 
-**Workflow**: Run `/version` to review and update configs → check `git diff` → run `/upgrade` to install
+**Workflow**: Run `/update` to review and update configs → check `git diff` → run `/upgrade` to install
 
 ## Important Conventions
 ### uv run --no-sync
@@ -139,7 +139,7 @@ Each module contains:
 - `*.py` - Python modules with all business logic
 - `README.md` - Complete documentation and usage
 
-**See `.github/instructions/arch.instructions.md` for complete details.**
+**See `.github/instructions/logic.instructions.md` for complete details.**
 
 ### Python Module CLI Standards - MANDATORY
 **CRITICAL RULE: All Python modules MUST use named options (`@cli.option`), NOT positional arguments.**
@@ -392,7 +392,7 @@ slash_command: /your_command
   - Repository root is defined in `properties.yml` under `repo.local`
   - All file operations must stay within this boundary
   - If user requests a file outside repo, ask for confirmation first
-- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `skeleton.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
+- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `template.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
   - ✅ `"$HOME/Development/levonbecker/template_ai_vault"`
   - ❌ `"$HOME/Development/levonbecker/template_ai_vault"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper

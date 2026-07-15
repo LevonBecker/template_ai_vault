@@ -5,23 +5,28 @@ applyTo: "modules/**"
 
 ## Architecture
 
-**Commands are thin wrappers. Logic lives in Python modules.**
+See `.github/instructions/logic.instructions.md` for the Core Principle and The Stack — commands
+and invoke tasks are both thin CLI wrappers, all business logic lives here in `modules/`.
 
-```
-User → AI Tool Slash Command → Router Module → Python Module
-        (tool command dir)       (modules/*)     (modules/)
-```
+## Module Layout Consistency
 
-## Module Organization
+Every module folder under `modules/` follows the same shape so any module is navigable without
+reading its source first:
 
-```
-modules/
-├── chat/         # Chat lifecycle (start, end, resume, list)
-├── topic/        # Topic navigation and setup (init, switch, update, templates)
-├── repo/         # Repository maintenance (push, pull, cleanup, screenshots)
-├── accounting/   # Expense tracking and cost calculation
-└── common/       # Shared utilities (cli, utils, properties, route_utils)
-```
+- **`route.py`** — required in every module reachable from a slash command; dispatch only (see
+  `ai_prompts.instructions.md` for the router template). Sync-only modules with no slash command
+  (e.g. `ollama/`) may omit it.
+- **`README.md`** — required in every module folder; documents the module's purpose and what each
+  file does.
+- **One file per verb/subcommand** — e.g. `chat/` has `start.py`, `end.py`, `list.py`, `resume.py`,
+  not one large file. The filename matches the CLI subcommand name exactly
+  (`fireball/add_expense.py` → `/fireball add_expense`).
+- **Naming** — module directory names are lowercase `snake_case` nouns matching the domain/tool
+  they wrap (`fireball`, `financials`, `opencode`) — never mixed case or a `_module` suffix.
+- **Sync-only modules** (`claude/`, `cline/`, `hermes/`, `opencode/`) are the lightweight
+  exception: just `sync.py`, plus `route.py` only where a slash command exists.
+- **`common/`** is the only module importable from every other module — it holds no domain logic
+  of its own, only shared plumbing.
 
 ## Mandatory Standards
 
@@ -41,10 +46,10 @@ def main(title):
 
 ### Path Resolution
 
-Always use `modules/repo/fetch_properties.py` — never hardcode paths:
+Always use `modules/common/properties.py` — never hardcode paths:
 
 ```python
-from ..repo.fetch_properties import get_repo_local, get_screenshots_location
+from ..common.properties import get_repo_local, get_screenshots_location
 
 repo_root = get_repo_local()
 screenshots = get_screenshots_location()
@@ -53,8 +58,7 @@ screenshots = get_screenshots_location()
 ### Inter-Module Import Rules
 
 - `common/` utilities: importable from any module
-- `repo/fetch_properties.py`: importable from any module
-- No cross-imports between `chat/`, `topic/`, `repo/`, `accounting/`
+- No cross-imports between domain modules (`chat/`, `topic/`, `repo/`, `fireball/`, etc.)
 - If truly shared: move to `common/`
 
 ## Code Quality
@@ -118,6 +122,23 @@ modules/
 │   └── sync.py         # Syncs .claude/commands/ from .github/prompts/
 ├── cline/
 │   └── sync.py         # Syncs .clinerules/workflows/ from .github/prompts/
+├── common/
+│   ├── cli.py            # Click-like CLI wrapper
+│   ├── invoke_runner.py
+│   ├── properties.py     # Central properties.yml loader — use for all paths
+│   ├── route_utils.py    # find_repo_root, build_env
+│   └── utils.py
+├── financials/
+│   ├── route.py
+│   └── update_card_limit.py
+├── fireball/
+│   ├── add_expense.py
+│   ├── add_equipment_disposal.py
+│   ├── f3d_calc_product_cost.py
+│   ├── interactive_add_expense.py
+│   ├── list_expenses.py
+│   ├── route.py
+│   └── show_total.py
 ├── hermes/
 │   └── sync.py         # Syncs ~/.hermes/ config + SKILL.md from .github/prompts/
 ├── ollama/
@@ -131,12 +152,21 @@ modules/
 │   └── sync.py         # Syncs .opencode/command/ from .github/prompts/
 ├── repo/
 │   ├── cleanup.py
-│   ├── fetch_properties.py  # Central properties loader — use for all paths
 │   ├── pull.py
 │   ├── push.py
+│   ├── rebase.py
 │   ├── route.py
 │   ├── set_screenshots.py
+│   ├── squash.py
 │   └── view_screenshot.py
+├── setup/
+│   └── properties.py   # Creates/stamps properties.yml (inv setup.properties)
+├── template/
+│   ├── pull.py          # /sync_template pull — resolve template_ai_vault local path
+│   ├── push.py          # /sync_template push — diff/apply/create-pr against template_ai_vault
+│   ├── resolve.py        # Shared local-path-or-clone resolution
+│   ├── route.py          # /sync_template routing
+│   └── scope.py          # Push include/exclude scope rules
 ├── topic/
 │   ├── active.py       # Active topic state (active_topic.yml)
 │   ├── init.py
@@ -148,17 +178,22 @@ modules/
 │   │                   # ⚠️  See topics.instructions.md → "templates.py Change Rule" when modifying this file.
 │   ├── update.py
 │   └── update_list.py
-└── common/
-    ├── cli.py            # Click-based CLI wrapper
-    ├── invoke_runner.py
-    ├── properties.py
-    ├── route_utils.py    # find_repo_root, build_env
-    └── utils.py
+└── versioning/
+    ├── libs.py          # pyproject.toml deps vs. latest release
+    ├── python.py        # Pinned Python version vs. latest release
+    ├── upgrade.py       # Actual install/sync (used by /upgrade)
+    └── workflows.py     # .github/workflows/ action refs vs. latest tag
 ```
+
+`/update` and `/upgrade` route through `tasks/versioning.py` (the invoke `ver` collection, see
+`invoke.instructions.md`), not a `route.py` — there's no per-slash-command router module for this
+one, unlike most other modules.
 
 ## AI Tool Sync Modules
 
-`.github/prompts/` is the single source of truth for all slash commands. Three sync modules generate the tool-specific formats from it:
+`.github/prompts/` is the single source of truth for all slash commands — see
+`.github/instructions/logic.instructions.md` for why. Four sync modules generate the tool-specific
+formats from it:
 
 | Module | Output | Invoke command |
 |---|---|---|
@@ -179,7 +214,7 @@ Usage:
     uv run --no-sync python -m modules.<group>.<name> [--option value]
 """
 from modules.common import cli
-from modules.repo.fetch_properties import get_repo_local
+from modules.common.properties import get_repo_local
 
 
 @cli.command()

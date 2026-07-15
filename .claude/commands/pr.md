@@ -1,10 +1,13 @@
 ---
 description: Draft PR notes for the current feature branch and open a Pull Request via gh (does not push).
+subtask: false
+agent: general
+slash_command: /pr
+allowed-tools: Bash(uv run --no-sync *)
 ---
 
-Gather the branch and diff context:
-
-!`uv run --no-sync invoke repo.pr_diff`
+Gather the branch and diff context by running `uv run --no-sync invoke repo.pr_diff` using the Bash
+tool. If it fails, show the full output to the user and ask how they'd like to proceed.
 
 Using the branch, commit log, and diff above, write a Pull Request description (same as `/pr-notes`,
 but do NOT save it to a file this time — just hold it in context):

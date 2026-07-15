@@ -1,18 +1,17 @@
 # Repo Manager Agent
-The repo module handles repository-level operations including git synchronization, optional iCloud backup, and cleanup tasks.
 
-**iCloud sync is off by default** (`icloud.enabled: false` in `properties.yml`) — `/push` and `/pull`
-skip it entirely unless you turn it on. Everything below describing iCloud behavior only applies when
-enabled. See [`docs/setup.md`](../../docs/setup.md).
+The repo module handles repository-level operations including git synchronization, iCloud backup, and cleanup tasks.
 
 ## Features
-- **Repository Push/Pull**: Full git operations, plus optional iCloud synchronization
+
+- **Repository Push/Pull**: Full git operations and iCloud synchronization
 - **Screenshot Cleanup**: Remove old screenshots from centralized repo screenshots/ folder
-- **Cross-Device Sync**: Keep work synchronized via git, and optionally iCloud Obsidian
+- **Cross-Device Sync**: Keep work synchronized via git and iCloud Obsidian
 - **Automated Commits**: Timestamp-based commit messages
 - **Error Handling**: Graceful handling of push/pull failures
 
 ## Commands
+
 ### `/repo push` (alias: `/push`)
 Push changes to git remote and iCloud Obsidian folder from any location.
 
@@ -86,10 +85,10 @@ Pull updates from git remote and iCloud Obsidian folder to local repository.
 
 **iCloud Sync Scope:**
 - ✅ `topics/` - Entire directory recursively
-  - `topics/health/dental/chats/*.md`
-  - `topics/health/dental/docs/*.md`
+  - `topics/help/mac/shapr3d/chats/*.md`
+  - `topics/help/mac/shapr3d/docs/*.md`
   - `topics/shopping/electronics/docs/*.csv`
-  - `topics/food_and_drink/docs/**/*`
+  - `topics/fireball/accounting/bookkeeping/docs/**/*`
 - ❌ Root-level files (code, configs, scripts)
 - ❌ Python modules
 - ❌ Git files
@@ -237,23 +236,7 @@ Configure macOS to save all screenshots to the central repository `screenshots/`
 
 **Module:** `modules.repo.set_screenshots` (via `/repo set_screenshots`)
 
-## Feature Branch / PR Workflow
-A separate set of commands for a git-flow style feature-branch → Pull Request workflow. These are
-independent of `/repo push` and `/repo pull` (which handle the primary tracked branch plus iCloud
-sync) — use them when working on a feature branch that needs a GitHub Pull Request.
-
-### `/pr-notes`
-Compare the current branch to its detected base branch (`development`/`develop`/`main`/`master`)
-and draft a `## Summary` / `## Changes` PR description, saving it to `tmp/pull_requests/`.
-
-**Module:** `modules.repo.pr_diff` + `modules.repo.pr_notes` (via `/pr-notes`)
-
-### `/pr`
-Same diff/notes drafting as `/pr-notes`, but opens the Pull Request directly via `gh pr create`
-instead of saving notes to a file. Does not push — run `/punch-it-chewy` or `/pr_push` first if the
-branch isn't already pushed.
-
-**Module:** `modules.repo.pr_diff` + `modules.repo.pr_create` (via `/pr`)
+## Branch Maintenance
 
 ### `/rebase`
 Rebase the current branch onto the remote default branch (`origin/main` or `origin/master`).
@@ -269,14 +252,8 @@ squash, and optionally force-push (`--force-with-lease`).
 
 **Module:** `modules.repo.squash` (via `/squash`)
 
-### `/punch-it-chewy`
-Pushes the current feature branch (fix → test → commit → `git push --set-upstream`), then drafts
-PR notes and opens the Pull Request — combines `pr_push` + `/pr` in one command.
-
-**Module:** `modules.repo.pr_push` (push step) + `modules.repo.pr_diff` / `modules.repo.pr_create`
-(PR step), via `/punch-it-chewy`
-
 ## Directory Structure
+
 Repository management affects the entire repository:
 ```
 template_ai_vault/                                  (Git repository)
@@ -309,7 +286,9 @@ iCloud/Documents/template_ai_vault/                (iCloud Obsidian)
 ```
 
 ## Git Integration
+
 ### Push/Pull Operations
+
 **Pull Sequence:**
 ```bash
 git status --porcelain                            # Check for uncommitted changes (block if dirty)
@@ -335,6 +314,7 @@ Push repository: Automated commit YYYY-MM-DD HH:MM:SS
 ```
 
 ### Cleanup Operations
+
 **Detection:**
 ```bash
 find . -type f -path "*/screenshots/*" \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \)
@@ -349,7 +329,9 @@ git status --porcelain | grep "^.D"  # Show deleted files
 Files are staged for deletion but not committed. User must run `/push` to commit.
 
 ## iCloud Synchronization
+
 ### Rsync Configuration
+
 **Push Command (local → iCloud):**
 ```bash
 rsync -avz --delete \
@@ -393,11 +375,13 @@ rsync -avz --update \
 - Cross-device topic and active chat synchronization
 
 ## Configuration
+
 Default settings in `config.yml`:
 - `repo_path`: "${repo_local}"
 - `icloud_path`: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/template_ai_vault/"
 
 ## Permissions Required
+
 - `git_pull` - Pull from remote repository
 - `git_push` - Push to remote repository
 - `git_commit` - Create commits
@@ -408,11 +392,13 @@ Default settings in `config.yml`:
 - `bash_execute` - Run shell scripts
 
 ## Dependencies
+
 - `git` - Version control operations
 - `rsync` - iCloud synchronization
 - `find` - Locate screenshot files
 
 ## Best Practices
+
 1. **Pull/Push Regularly**: Run `/repo pull` at start, `/repo push` at end of sessions
 2. **Clean Periodically**: Run `/repo cleanup` when screenshots accumulate
 3. **Commit First**: Use `/chat end` for topic work, `/repo push` for repo-level push
@@ -422,6 +408,7 @@ Default settings in `config.yml`:
 7. **Backup Important**: Always push before major changes or deletions
 
 ## Workflow Examples
+
 **Typical Research Session:**
 ```
 1. /topic switch <path>      # Switch to topic (auto-saves current chat)
@@ -449,12 +436,14 @@ Device B (later):
 ```
 
 ## Related Commands
+
 - `/chat end` - Save conversation and commit topic changes
 - `/repo push` - Push all commits to remote and iCloud (alias: `/push`)
 - `/topic switch <path>` - Switch between topics with auto-save
 - `/repo view_screenshot` - View latest screenshot from central folder (alias: `/ss`)
 
 ## Files
+
 - `push.py` - Push to git and iCloud (used by `/repo push`, alias `/push`)
 - `pull.py` - Pull from git and iCloud (used by `/repo pull`, alias `/pull`)
 - `cleanup.py` - Screenshot cleanup module (used by `/repo cleanup`)
@@ -464,6 +453,7 @@ Device B (later):
 - `README.md` - This file
 
 ## Command Aliases
+
 - `/push` → Push to git and iCloud
 - `/pull` → Pull from git and iCloud
 - `/ss` → View latest screenshot

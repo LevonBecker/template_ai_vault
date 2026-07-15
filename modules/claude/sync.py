@@ -14,11 +14,14 @@ Usage:
 from pathlib import Path
 
 from ..common import cli
+from ..common.prompt_commands import load_commands
 from ..common.route_utils import find_repo_root
-from ..hermes.sync import load_commands
 
 _REPO_ROOT = find_repo_root()
 _CLAUDE_COMMANDS_DIR = _REPO_ROOT / ".claude" / "commands"
+
+# A /claude command inside Claude Code itself would just proxy back to the running tool — skip it.
+_SKIP_COMMANDS: frozenset[str] = frozenset({"claude"})
 
 
 def _command_content(description: str, body: str) -> str:
@@ -31,7 +34,7 @@ def _command_content(description: str, body: str) -> str:
 def main(force: bool = False) -> None:
     """Sync .claude/commands/ from .github/prompts/ source of truth."""
     _CLAUDE_COMMANDS_DIR.mkdir(parents=True, exist_ok=True)
-    cmds = load_commands()
+    cmds = load_commands(skip=_SKIP_COMMANDS)
     written = skipped = 0
     for cmd in cmds:
         out: Path = _CLAUDE_COMMANDS_DIR / f"{cmd.slug}.md"
