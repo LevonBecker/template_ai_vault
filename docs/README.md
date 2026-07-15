@@ -12,7 +12,7 @@ This directory covers everything else, split by topic:
 
 AI-agent-facing **rules** (what Claude Code / Copilot / OpenCode should do, file placement
 conventions, etc.) live in `.github/instructions/` — start at
-`.github/instructions/project.instructions.md` if you're customizing agent behavior rather than
+`.github/instructions/index.instructions.md` if you're customizing agent behavior rather than
 using the repo. Those files are the source of truth for behavior; the pages above are the source of
 truth for how a human sets up and drives the repo. See
 [`architecture.md`](architecture.md#two-separate-sync-systems) for how the two relate.
