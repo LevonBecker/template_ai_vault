@@ -1,6 +1,6 @@
 ---
 name: sync_template
-description: Pull shared tooling updates from template_ai_vault into this project (default), or push new generic tooling from this project into template_ai_vault as a PR (sync_template push).
+description: Pull shared tooling updates from the parent template repo into this project (default), or push new generic tooling from this project into the parent template repo as a PR (sync_template push).
 argument-hint: "[pull|push]"
 agent: agent
 ---
@@ -50,7 +50,7 @@ be reconciled by hand.
 
 ## Push
 
-Push proposes NEW generic improvements made in template_ai_vault into `template_ai_vault` as a pull
+Push proposes NEW generic improvements made in this repo into its parent template repo as a pull
 request. Only genuinely generic, non-business content may be proposed — never fireball/
 product-metadata content.
 

@@ -1,4 +1,4 @@
-"""Resolve the local path to the shared template repo (template_ai_vault)."""
+"""Resolve the local path to this repo's parent template repo."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ def clone_remote(remote: str) -> Path:
 
 def resolve_template_repo() -> Path:
     """
-    Resolve the local path to the shared template_ai_vault repo.
+    Resolve the local path to the parent template repo configured in properties.yml.
 
     If `template.local` exists on disk, use it directly. Otherwise shallow-clone
     `template.remote` into tmp/template_sync/.
