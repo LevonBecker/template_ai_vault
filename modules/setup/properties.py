@@ -6,12 +6,13 @@ renaming it, or forking it to a new remote. Run via `inv setup.properties`
 (called automatically by setup.sh, but you can re-run it directly whenever
 the repo's location or remote changes).
 
-properties.yml is gitignored — machine-specific, never committed. There's no
-separate template file: if it's missing, it's created here from _TEMPLATE.
-Only repo.local, repo.remote, and screenshots.location are ever touched, by
+properties.yml is committed in this repo (it also holds business-specific
+config like Fireball COGS rates and financials paths), so unlike a fresh
+fork's gitignored copy, this only ever rewrites specific keys in place. Only
+repo.local, repo.remote, and screenshots.location are ever touched, by
 targeting those specific keys (not a placeholder token — a token would only
 be replaceable once, breaking re-runs after a move/rename). Every other line,
-including comments, is left exactly as-is.
+including comments and the business-specific sections, is left exactly as-is.
 """
 
 import re
@@ -28,12 +29,11 @@ _TEMPLATE = """---
 # AI Vault Repository Properties
 # Central configuration for all scripts and automation.
 #
-# This file is gitignored (machine-specific). `inv setup.properties` (run
-# automatically by setup.sh, and safe to re-run any time — e.g. after moving
-# this repo, renaming it, or forking it to a new remote) creates it from a
-# built-in template on first run and re-stamps repo.local / repo.remote /
-# screenshots.location on every run. icloud.path and skeleton.* are not
-# auto-detected — edit those by hand if you use those features.
+# `inv setup.properties` (run automatically by setup.sh, and safe to re-run any time — e.g. after
+# moving this repo, renaming it, or forking it to a new remote) creates this file from a built-in
+# template on first run and re-stamps repo.local / repo.remote / screenshots.location on every
+# run. icloud.path and template.* are not auto-detected — edit those by hand if you use those
+# features.
 
 # Optional — off by default. Only needed if you sync this repo to an iCloud
 # Obsidian vault for mobile access (see docs/). Set enabled: true and fill in
@@ -46,11 +46,11 @@ repo:
   local: "$HOME/path/to/this/repo"
   remote: "github.com/<your-username>/<your-repo-name>"
 
-# Where /sync-setup pulls shared tooling updates from (modules/, tasks/, .github/, .claude/, etc.).
-# Optional — only needed if you maintain your own "skeleton" repo of shared tooling to sync from.
-skeleton:
-  local: "$HOME/path/to/your/skeleton/repo"
-  remote: "github.com/<your-username>/<your-skeleton-repo>"
+# Where /sync_template pulls shared tooling updates from (modules/, tasks/, .github/, .claude/,
+# etc.). Optional — only needed if you maintain your own template repo to sync from.
+template:
+  local: "$HOME/path/to/your/template/repo"
+  remote: "github.com/<your-username>/<your-template-repo>"
 
 screenshots:
   cleanup_patterns:

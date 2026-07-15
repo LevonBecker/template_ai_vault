@@ -392,7 +392,7 @@ slash_command: /your_command
   - Repository root is defined in `properties.yml` under `repo.local`
   - All file operations must stay within this boundary
   - If user requests a file outside repo, ask for confirmation first
-- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `skeleton.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
+- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `template.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
   - ✅ `"$HOME/Development/levonbecker/template_ai_vault"`
   - ❌ `"$HOME/Development/levonbecker/template_ai_vault"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper

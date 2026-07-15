@@ -1,11 +1,17 @@
 ---
-applyTo: ".opencode/command/**,.claude/commands/**,.github/prompts/**"
+applyTo: ".opencode/command/**,.claude/commands/**,.clinerules/workflows/**,.github/prompts/**"
 ---
-# Slash Commands Instructions
+# AI Prompts Instructions
+
+Standards for the AI custom prompts / slash commands synced across all four tool directories
+(`.github/prompts/`, `.claude/commands/`, `.opencode/command/`, `.clinerules/workflows/`).
 
 ## Architecture
 
-Commands MUST be thin wrappers that call router modules. No business logic in command files.
+Commands are the AI-facing entrypoint layer described in `.github/instructions/logic.instructions.md`
+(Core Principle + The Stack) — thin wrappers only, no business logic. See that file for
+why prompts are the AI's decision-capture layer, and how this differs from
+`invoke.instructions.md`'s plain CLI automation.
 
 ## Required Frontmatter
 
@@ -37,9 +43,13 @@ agent: agent
 ---
 ```
 
+### Cline (.clinerules/workflows/*.md)
+No frontmatter — Cline workflows are plain markdown body only. The filename (minus extension) is
+the command name.
+
 ## Command Body
 
-All three formats use the same execution syntax:
+OpenCode, Claude Code, and Copilot use the same inline-execution syntax:
 
 ```
 !`uv run --no-sync python -m modules.your_module.route "$ARGUMENTS"`
@@ -47,11 +57,22 @@ All three formats use the same execution syntax:
 
 The `!` prefix runs bash. `$ARGUMENTS` receives everything after the command name.
 
+Cline doesn't support inline `!`...`` execution — its workflow body instead tells the agent to run
+the command explicitly:
+
+```markdown
+Run this terminal command:
+
+\`\`\`
+uv run --no-sync python -m modules.your_module.route "$ARGUMENTS"
+\`\`\`
+```
+
 ## Creating a New Command
 
 1. Create Python module: `modules/your_module/your_task.py` (ALL logic here)
 2. Create router: `modules/your_module/route.py` (argument dispatch)
-3. Create command files in all three tool dirs with the thin wrapper body
+3. Create command files in all four tool dirs with the thin wrapper body
 4. Run `uv run invoke fix && uv run invoke test` (must be 10/10 for .py changes)
 
 ## Cache Restart Requirement
@@ -71,7 +92,8 @@ All `uv run` calls in commands MUST use `--no-sync`:
 ```
 User: /chat resume wire_tunnels
   ↓
-AI tool reads command file (.opencode/command/chat.md or equivalent)
+AI tool reads command file (.opencode/command/chat.md, .claude/commands/chat.md,
+  .clinerules/workflows/chat.md, or .github/prompts/chat.prompt.md)
   ↓
 Command file executes: uv run --no-sync python -m modules.chat.route "resume wire_tunnels"
   ↓
@@ -120,9 +142,11 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-### Step 3: Create Command Files in All Three Tool Dirs
+### Step 3: Create Command Files in All Four Tool Dirs
 
-Create equivalent files in `.opencode/command/`, `.claude/commands/`, and `.github/prompts/` using the appropriate frontmatter format (see above) with the same execution body:
+Create equivalent files in `.opencode/command/`, `.claude/commands/`, `.clinerules/workflows/`, and
+`.github/prompts/` using the appropriate frontmatter format (see above), with the same execution
+body (adjusted for Cline's non-`!` syntax, see Command Body above):
 
 ```
 !`uv run --no-sync python -m modules.your_module.route "$ARGUMENTS"`
@@ -165,6 +189,8 @@ AI tools cache command files at startup. After editing a command file you MUST r
 /repo cleanup          → modules.repo.route → modules.repo.cleanup
 /repo set_screenshots  → modules.repo.route → modules.repo.set_screenshots
 /repo view_screenshot  → modules.repo.route → modules.repo.view_screenshot
+/rebase                → invoke repo.rebase → modules.repo.rebase
+/squash                → invoke repo.squash → modules.repo.squash
 /push (alias)          → /repo push
 /pull (alias)          → /repo pull
 /ss (alias)            → /repo view_screenshot
@@ -175,20 +201,40 @@ AI tools cache command files at startup. After editing a command file you MUST r
 /topic list              → modules.topic.route → modules.topic.list
 /topic switch <path>     → modules.topic.route → modules.topic.switch
 /topic <path>            → modules.topic.route → modules.topic.switch
-/topic init              → modules.topic.route → modules.topic.init
-/topic update            → modules.topic.route → modules.topic.update
+/topic init               → modules.topic.route → modules.topic.init
+/topic update             → modules.topic.route → modules.topic.update
 ```
 
-### Feature Branch / PR Workflow
+### Fireball
 ```
-/pr-notes        → modules.repo.route → modules.repo.pr_diff, modules.repo.pr_notes
-/pr              → modules.repo.route → modules.repo.pr_diff, modules.repo.pr_create
-/rebase          → modules.repo.route → modules.repo.rebase
-/squash          → modules.repo.route → modules.repo.squash
-/punch-it-chewy  → modules.repo.route → modules.repo.pr_push, modules.repo.pr_diff, modules.repo.pr_create
+/fireball                → modules.fireball.route → modules.fireball (no args)
+/add_expense             → (AI-guided) → modules.fireball.add_expense
+/list_expenses           → modules.fireball.route → modules.fireball.list_expenses
+/calc_cost               → modules.fireball.route → modules.fireball.f3d_calc_product_cost
+/add_size_chart          → (AI-guided) → topics/fireball/marketing/product_metadata size chart map
+/new_product_metadata    → (AI-guided) → topics/fireball/marketing/product_metadata CSVs
+```
+`add_equipment_disposal.py` and `show_total.py` back the same `fireball` module but currently have
+no dedicated slash command — call them directly:
+`uv run --no-sync python -m modules.fireball.add_equipment_disposal` /
+`uv run --no-sync python -m modules.fireball.show_total`.
+
+### Financials
+```
+/financials              → modules.financials.route → modules.financials (no args)
+/update_card_limit       → (AI-guided) → modules.financials.update_card_limit
 ```
 
-### Skeleton Sync
+### Version Checks & Upgrades
 ```
-/sync-setup → modules.skeleton.route → modules.skeleton.sync
+/update [libs|python|workflows]  → invoke ver.update → modules.versioning.{libs,python,workflows}
+/upgrade [python|libs|sync]      → invoke upgrade    → modules.versioning.upgrade
+```
+`/update` and `invoke ver.update`/`invoke update` are equivalent, as are `/upgrade` and
+`invoke ver.upgrade`/`invoke upgrade` — mirrors `apt update && apt upgrade`.
+
+### Template Sync
+```
+/sync_template [pull]  → modules.template.route → modules.template.pull
+/sync_template push    → modules.template.route → modules.template.push
 ```
