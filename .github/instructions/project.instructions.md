@@ -3,14 +3,14 @@ applyTo: "**"
 ---
 # template_ai_vault Project Instructions
 
-This is a **personal research and documentation workspace**. It is configured as an AI agent project with custom slash commands and Python module automation. Topics cover whatever areas of your life you organize into `topics/` — home, health, shopping, travel, finances, hobbies, and more.
+This is a **research and documentation workspace** for Fireball Enterprise. It is configured as an AI agent project with custom slash commands and Python module automation. Topics cover business operations, applications, infrastructure, health, gaming, shopping, and more.
 
 ## What This Repo Is
 
 - **Research workspace**: Chat-based research sessions saved as markdown files under `topics/`
 - **Multi-tool**: Works with Claude Code (`.claude/commands/`), OpenCode (`.opencode/command/`), and GitHub Copilot (`.github/prompts/`)
 - **Python-powered**: Business logic lives in `modules/` — commands are thin wrappers
-- **Git-tracked**: All research syncs via git; optional iCloud sync for mobile access (`icloud.enabled` in `properties.yml`, off by default)
+- **Git-tracked**: All research syncs via git to iCloud for mobile access
 
 ## Instruction Files by Domain
 
@@ -18,14 +18,16 @@ For detailed instructions, read the relevant domain file:
 
 - **Topics & research workflow**: `.github/instructions/topics.instructions.md`
 - **Python module architecture**: `.github/instructions/modules.instructions.md`
-- **Slash command creation**: `.github/instructions/commands.instructions.md`
+- **AI custom prompts / slash command creation**: `.github/instructions/ai_prompts.instructions.md`
 - **Testing requirements**: `.github/instructions/tests.instructions.md`
-- **AI decision architecture (thin-wrapper logic, provider-agnostic design)**: `.github/instructions/logic.instructions.md`
+- **AI decision architecture (thin-wrapper logic, prompts as the AI's source of truth, provider-agnostic design)**: `.github/instructions/logic.instructions.md`
+- **Repository & directory layout**: `.github/instructions/layout.instructions.md`
 - **Invoke task runner**: `.github/instructions/invoke.instructions.md`
 - **Docs file standards (CSV, etc.)**: `.github/instructions/docs.instructions.md`
 - **Markdown style standards**: `.github/instructions/style.instructions.md`
 - **Screenshots folder rules**: `.github/instructions/screenshots.instructions.md`
 - **Travel topic preferences**: `.github/instructions/travel.instructions.md`
+- **Product metadata (Fireball store listings)**: `.github/instructions/product_metadata.instructions.md`
 
 ## Instruction File Sync Rule
 
@@ -59,11 +61,14 @@ When updating topic instructions, update `AGENTS.md` as the topic content source
 - `/update` — Check Python + libs + workflow action refs, update config files (does NOT install)
 - `/update libs` — Check/update only library versions in pyproject.toml
 - `/update python` — Check/update only Python version in config files
+- `/update workflows` — Check/update only `.github/workflows/` action refs
 - `/upgrade` — Execute upgrades (install Python, rebuild .venv, sync dependencies)
 - `/upgrade python` — Upgrade only Python and rebuild .venv
 - `/upgrade libs` — Upgrade only libraries (uv sync --upgrade)
 
-**Workflow**: Run `/update` to review and update configs → check `git diff` → run `/upgrade` to install
+**Workflow**: Run `/update` to review and update configs → check `git diff` → run `/upgrade` to
+install. (Mirrors `apt update && apt upgrade`.) `invoke update`/`invoke ver.update` and
+`invoke upgrade`/`invoke ver.upgrade` are equivalent aliases for each.
 
 ## Important Conventions
 
@@ -96,13 +101,13 @@ Use `/upgrade` or `uv run --no-sync invoke upgrade.sync` when you intentionally 
 - **USE** ISO 8601 date format everywhere:
   - Filenames: `YYYYMMDD_description.md`
   - CSV date fields: `YYYY-MM-DD` (e.g. `2025-05-15`) — see `.github/instructions/docs.instructions.md`
-- **NEVER** write files outside the repository path (`$HOME/Development/levonbecker/template_ai_vault`) without explicit user permission
+- **NEVER** write files outside the repository path (`repo.local` in `properties.yml`) without explicit user permission
   - Repository root is defined in `properties.yml` under `repo.local`
   - All file operations must stay within this boundary
   - If user requests a file outside repo, ask for confirmation first
-- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `skeleton.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
-  - ✅ `"$HOME/Development/levonbecker/template_ai_vault"`
-  - ❌ `"/Users/yourname/Development/template_ai_vault"`
+- **PROPERTIES.YML PATH CONVENTION**: Every absolute filesystem path in `properties.yml` (`repo.local`, `template.local`, `icloud.path`, `screenshots.location`, etc.) MUST use `$HOME` instead of a hardcoded username path
+  - ✅ `"$HOME/Development/<org>/<repo>"`
+  - ❌ `"/Users/<username>/Development/<org>/<repo>"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper
   - This keeps `properties.yml` portable across machines/usernames; only update the helper if a new path format is introduced
 - **DEFAULT PATH RULE**: Treat the active topic as the root for user-requested relative paths
@@ -136,12 +141,12 @@ Use `/upgrade` or `uv run --no-sync invoke upgrade.sync` when you intentionally 
 - **Core distinction**: `docs/` = user-facing files of any type; `chats/` = AI conversation logs only
 - **Active topic path** tracked in `active_topic.yml` (e.g., `topics/shopping/electronics`)
 - **Example**: `topics/shopping/electronics/docs/home_security/unifi_pricing.md`
-- **Example**: `topics/food_and_drink/docs/recipes/favorite_chili.md`
-- **Example**: `topics/home/docs/network/router_config.json`
+- **Example**: `topics/fireball/marketing/web_sites/docs/domains.csv`
+- **Example**: `topics/fireball/marketing/web_sites/docs/config.json`
 
 **WRONG ❌**:
 - Auto-creating research docs without being asked
-- Creating files in repo root: `$HOME/Development/levonbecker/template_ai_vault/research.md`
+- Creating files in repo root: `<repo-root>/research.md`
 
 **RIGHT ✅**:
 - Keep research in chat file until user requests a doc
@@ -151,16 +156,14 @@ Use `/upgrade` or `uv run --no-sync invoke upgrade.sync` when you intentionally 
 
 ```
 topics/
-├── health/           # Group topic — dental, fitness, medical, supplements, vision
-├── travel/           # Single topic — docs/ split by category (trips, documentation, packing)
-├── home/             # Single topic — docs/ split by category (security, network, appliances)
-├── financials/       # Group topic — budget, income_tax, investments
-├── shopping/         # Single topic — docs/ split by category (apparel, electronics, auto)
-├── help/             # Group topic — macos, linux, online, projects
-└── food_and_drink/   # Single topic — docs/ split by category (appliances, favorites, recipes)
+├── fireball/     # Fireball Enterprise operations, brands, marketing, stores
+├── infra/        # AWS, GitHub, home network, DevOps
+├── mac/          # Desktop applications (Fusion, Blender, Affinity)
+├── ipad/         # iPad applications
+├── strada/       # Strada property projects and improvements
+├── travel/       # Travel planning and research
+└── workshop/     # Physical fabrication and tools
 ```
-
-See `docs/architecture.md` and `modules/topic/README.md` for the group-topic vs. single-topic pattern.
 
 ## Documentation Standards
 

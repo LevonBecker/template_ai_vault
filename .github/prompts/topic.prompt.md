@@ -8,7 +8,7 @@ agent: agent
 !`uv run --no-sync python -m modules.topic.route "$ARGUMENTS"`
 
 
-If $ARGUMENTS starts with "new", create a new topic at the given path (relative to topics/), then run init in that directory. Example: /topic new food_and_drink/recipes [description].
+If $ARGUMENTS starts with "new", create a new topic at the given path (relative to topics/), then run init in that directory. Example: /topic new fireball/marketing/makerworld [description].
 
 If $ARGUMENTS starts with "list all", render the command output as a tree showing all topics and subtopics. Mark the active topic with ⭐. End with a one-line summary.
 

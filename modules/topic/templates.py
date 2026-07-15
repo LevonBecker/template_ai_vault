@@ -3,7 +3,8 @@
 from pathlib import Path
 
 # Repo-relative — never an absolute machine path (see .github/instructions/screenshots.instructions.md)
-_LATEST_SCREENSHOT = "screenshots/latest.png"
+_SCREENSHOTS_DIR = "screenshots"
+_LATEST_SCREENSHOT = f"{_SCREENSHOTS_DIR}/latest.png"
 
 # ---------------------------------------------------------------------------
 # Private section helpers - keep each small for linter compliance
@@ -13,6 +14,7 @@ _LATEST_SCREENSHOT = "screenshots/latest.png"
 def _hub_instructions_section() -> str:
     """Return a section directing agents to read the .github/instructions/ hub."""
     return """## Project-Wide Instructions — Always Read First
+
 Before working in any topic, read these instruction files. They apply to every chat and file across the repo:
 
 - **Markdown style rules**: `.github/instructions/style.instructions.md`
@@ -20,7 +22,7 @@ Before working in any topic, read these instruction files. They apply to every c
 - **Project overview and workflow**: `.github/instructions/project.instructions.md`
 - **Topics and research workflow**: `.github/instructions/topics.instructions.md`
 
-Additional instruction files in `.github/instructions/` cover architecture, commands, modules, tests, and screenshots. Read the relevant one when working in those areas."""
+Additional instruction files in `.github/instructions/` cover architecture, commands, modules, tests, screenshots, travel, and product metadata. Read the relevant one when working in those areas."""
 
 
 def _read_first_section(ancestors: list[tuple[str, str]]) -> str:
@@ -28,14 +30,15 @@ def _read_first_section(ancestors: list[tuple[str, str]]) -> str:
 
     Args:
         ancestors: List of (label, path) tuples from root down to immediate parent.
-                   e.g. [("Root", "topics/health/OPENCODE.md"),
-                          ("Parent", "topics/health/dental/OPENCODE.md")]
+                   e.g. [("Root", "topics/fireball/OPENCODE.md"),
+                          ("Parent", "topics/fireball/accounting/OPENCODE.md")]
 
     Returns:
         Formatted Read First markdown section.
     """
     lines = [
         "## Read First",
+        "",
         "Before working in this topic, read the following AGENTS.md files for context:",
         "",
     ]
@@ -56,6 +59,7 @@ def _parent_index_section(subtopics: list[tuple[str, str, str]]) -> str:
     """
     lines = [
         "## Subtopics",
+        "",
         "Each subtopic has its own AGENTS.md with detailed instructions.",
         "Read the relevant child AGENTS.md before working in that subtopic.",
         "",
@@ -71,12 +75,13 @@ def _parent_index_section(subtopics: list[tuple[str, str, str]]) -> str:
 def _screenshot_section() -> str:
     """Return the Screenshots Workflow section."""
     return f"""## Screenshots Workflow
+
 When user types `ss` or `/ss` to view a screenshot, follow these steps IN ORDER:
 
 ### Step 1 - Run the screenshot command
 Use `/ss` (alias for `/repo view_screenshot`). It copies the most recent screenshot to `latest.png`.
 
-### Step 2 - Read the copied file
+### Step 2 - Read the copied file (path is relative to the repo root)
 ```
 {_LATEST_SCREENSHOT}
 ```
@@ -87,8 +92,8 @@ Describe the image content to help with the user's research.
 
 **Common mistake to avoid:**
 ```
-❌ WRONG: Read latest.png directly without running /ss first
-✅ RIGHT: Run /ss → THEN read latest.png
+\u274c WRONG: Read latest.png directly without running /ss first
+\u2705 RIGHT: Run /ss \u2192 THEN read latest.png
 ```"""
 
 
@@ -100,6 +105,7 @@ def _slash_command_section(tool_name: str = "OpenCode", command_dir: str = ".ope
         command_dir: Path to the tool's command directory (e.g. ".opencode/command").
     """
     return f"""## Modifying Slash Commands - CRITICAL WORKFLOW
+
 **IMPORTANT:** {tool_name} caches command files. After making changes to `{command_dir}/*.md` files, you MUST restart {tool_name} for changes to take effect.
 
 **Workflow for modifying slash commands:**
@@ -119,8 +125,8 @@ def _slash_command_section(tool_name: str = "OpenCode", command_dir: str = ".ope
 
 **Common mistake:**
 ```
-❌ WRONG: Edit file → Test immediately → Doesn't work → Get confused
-✅ RIGHT: Edit file → Close {tool_name} → Reopen → Test → Works!
+\u274c WRONG: Edit file \u2192 Test immediately \u2192 Doesn't work \u2192 Get confused
+\u2705 RIGHT: Edit file \u2192 Close {tool_name} \u2192 Reopen \u2192 Test \u2192 Works!
 ```"""
 
 
@@ -131,6 +137,7 @@ def _workflow_section(tool_name: str = "OpenCode") -> str:
         tool_name: Display name of the AI tool.
     """
     return f"""## {tool_name} Workflow
+
 When working in this topic with {tool_name}:
 
 1. **Starting a chat**: Use `/chat start` to initialize a new research session
@@ -138,7 +145,7 @@ When working in this topic with {tool_name}:
    - Previous chat is committed with message "Research session: [title]"
 2. **Screenshots**: Type "ss" or "/ss" to examine the latest screenshot
    - **STEP 1 - MANDATORY**: Run `/ss` (copies newest file to latest.png)
-   - **STEP 2**: Read `{_LATEST_SCREENSHOT}` (only AFTER step 1 - otherwise you get a stale image)
+   - **STEP 2**: Read `{_LATEST_SCREENSHOT}` at the repo root (only AFTER step 1 - otherwise you get a stale image)
    - **NEVER** read latest.png without running /ss first
 3. **Resuming work**: Use `/chat resume` to continue a previous chat
    - **AUTO-CLOSE**: Automatically closes any active chat before resuming
@@ -162,6 +169,7 @@ def _commands_section(tool_name: str = "OpenCode") -> str:
         tool_name: Display name of the AI tool.
     """
     return f"""## Available Commands
+
 {tool_name} slash commands (routed to Python modules):
 - `/chat start` - Start a new chat session (auto-closes active chat)
 - `/chat end` - Save complete chat log to file and deactivate session (does not commit/push)
@@ -169,15 +177,19 @@ def _commands_section(tool_name: str = "OpenCode") -> str:
 - `/chat list` - List all chats in this topic
 - `/repo pull` - Pull updates from git remote and iCloud
 - `/repo push` - Push changes to git remote and iCloud
-- `/repo view_screenshot` - Copy latest screenshot to latest.png (alias: `/ss`)"""
+- `/repo view_screenshot` - Copy latest screenshot to latest.png (alias: `/ss`)
+- `/fireball add_expense` - Add expense to Fireball ledger (alias: `/add_expense`)
+- `/financials update_card_limit` - Update credit card limit (alias: `/update_card_limit`)"""
 
 
 def _chat_end_section() -> str:
     """Return the /chat end Workflow section."""
     return """## `/chat end` Workflow - CRITICAL AI AGENT INSTRUCTIONS
+
 When `/chat end` is called, the AI agent MUST follow this exact sequence:
 
 ### Step 1: Format the Complete Chat Log
+
 Create a markdown formatted log of the ENTIRE chat from start to finish:
 
 ```markdown
@@ -195,6 +207,7 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 ```
 
 ### Step 2: Append to Chat File
+
 - Read the current chat file (from chats/ directory, filename stored in active.yml)
 - Use Edit or Write tool to append the formatted chat log
 - Preserve ALL formatting: code blocks (```language), bold, lists, etc.
@@ -202,6 +215,7 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 - Maintain chronological order
 
 ### Step 3: Confirm and Stop
+
 - After updating the file, confirm it is done in a single short response
 - **DO NOT** tell the user to "run `/chat end` again" — the user already ran it; fixing the file is sufficient
 - The `/chat end` command will automatically re-validate on the next invocation; that is the user's action, not yours
@@ -209,6 +223,7 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 - **TIP**: After ending, start a new chat with `/chat start` to clear context and reset tokens
 
 ### Chat Log Format Requirements
+
 - Horizontal rules (`---`) between messages for visual separation
 - Bold timestamps and speaker labels: `**[timestamp] Speaker:**`
 - Preserve code blocks with syntax highlighting
@@ -216,15 +231,32 @@ Create a markdown formatted log of the ENTIRE chat from start to finish:
 - Complete context for future reference
 
 ### What /chat end Does
+
 1. ✅ Validates that the complete chat log was saved to the chat file
 2. ✅ Clears the active.yml file to deactivate the current session
 3. ❌ Does NOT commit changes to git (commit manually when ready)
 4. ❌ Does NOT push to remote (push manually when ready)"""
 
 
+def _fireball_brand_section() -> str:
+    """Return the Fireball Enterprise brand guidelines section."""
+    return """## Fireball Enterprise — Brand Guidelines
+
+### Brand Colors
+
+| Color | Hex | CMYK |
+|-------|-----|------|
+| Fireball Red | `#C61A28` | C:12 M:100 Y:94 K:4 |
+| Black | `#000000` | C:0 M:0 Y:0 K:100 |
+| White | `#FFFFFF` | C:0 M:0 Y:0 K:0 |
+
+**Primary palette**: Black, White, and Fireball Red (`#C61A28`) — use these for all brand design work, product graphics, and marketing materials."""
+
+
 def _file_org_section() -> str:
     """Return the File Organization section."""
-    return """## File Organization
+    return f"""## File Organization
+
 - **chats/**: Saved AI chat logs with complete chat history (YYYYMMDD_title.md format)
 - **docs/**: User-requested summary documents and reference materials
 - **AGENTS.md**: Topic instruction source of truth
@@ -243,14 +275,16 @@ def _file_org_section() -> str:
 - Exception: chat files always go in `chats/`, instruction files stay in their defined locations
 - Exception: user explicitly specifies a different path → use that path
 
-**Note**: Screenshots are stored centrally at the repo-root `screenshots/` folder, NOT in topic-specific folders.
+**Note**: Screenshots are stored centrally at repo root (`{_SCREENSHOTS_DIR}/`), NOT in topic-specific folders.
 
 ### Date Format — MANDATORY
+
 - **Filenames**: Use `YYYYMMDD_description.md` (e.g. `20260409_filming_gear.md`)
 - **CSV date fields**: Use ISO 8601 `YYYY-MM-DD` (e.g. `2025-05-15`) — see `.github/instructions/docs.instructions.md`
 - **NEVER** use MM/DD/YY or MM/DD/YYYY formats in any file
 
 ### Research Document Workflow - CRITICAL
+
 **Default: Research stays in the chat file**
 - All research and conversation belongs in the active chat: `chats/YYYYMMDD_title.md`
 - Chat logs contain the COMPLETE conversation history for AI context later
@@ -289,6 +323,7 @@ def _build_opencode_md(
     ancestors: list[tuple[str, str]] | None = None,
     tool_name: str = "OpenCode",
     command_dir: str = ".opencode/command",
+    is_fireball: bool = False,
 ) -> str:
     """
     Build full instruction file content from section helpers.
@@ -308,6 +343,7 @@ def _build_opencode_md(
     """
     parts = [
         f"# {tool_name} Instructions for {topic_name}",
+        "",
         f"This file provides {tool_name}-specific guidance when working in this topic directory.",
         "",
         "**Sync Rule**: Update `AGENTS.md` as the topic content source of truth.",
@@ -325,12 +361,14 @@ def _build_opencode_md(
 
     parts += [
         "## Topic Information",
+        "",
         f"**Name**: {topic_name}",
         f"**Category**: {topic_category}",
         f"**Type**: {topic_type}",
         f"**Purpose**: {topic_purpose}",
         "",
         "## Agent Guidelines",
+        "",
         "When assisting with this topic:",
         "",
         "1. **Understand the context**: Review the topic purpose and requirements",
@@ -340,6 +378,7 @@ def _build_opencode_md(
         "5. **Be organized**: Keep work structured and well-documented",
         "",
         "## Working Environment",
+        "",
         "- This is a research and troubleshooting workspace",
         "- Chat logs and findings are the primary artifacts",
         "- Screenshots provide visual context",
@@ -356,9 +395,12 @@ def _build_opencode_md(
         "",
         _file_org_section(),
         "",
+        *([_fireball_brand_section()] if is_fireball else []),
+        "",
         _screenshot_section(),
         "",
         "## Best Practices",
+        "",
         "- Keep chats focused on specific topics or problems",
         "- Use descriptive titles when starting chats",
         "- Capture screenshots for visual context",
@@ -367,6 +409,7 @@ def _build_opencode_md(
         "- Use `/chat end` at end of session to save locally, then `/push` when ready",
         "",
         "## Collaboration",
+        "",
         f"Work may be done using various AI models in {tool_name} (Claude, GPT, Gemini, etc.)."
         " Maintain consistency and build on previous work when possible.",
         "",
@@ -396,7 +439,7 @@ def opencode(
     included in a 'Read First' block at the top of the generated file.
 
     Args:
-        topic_path: Relative path to topic from topics/ root (e.g. health/dental).
+        topic_path: Relative path to topic from topics/ root (e.g. fireball/accounting/bookkeeping).
         description: Optional custom description for the topic.
         repo_root: Optional absolute path to the repo root. When given, enables
                    dynamic ancestor OPENCODE.md detection.
@@ -438,6 +481,7 @@ def opencode(
         ancestors or None,
         tool_name="OpenCode",
         command_dir=".opencode/command",
+        is_fireball=Path(topic_path).parts[0] == "fireball",
     )
 
 
@@ -492,6 +536,7 @@ def agents_md(
         ancestors or None,
         tool_name="your AI tool",
         command_dir=".opencode/command",
+        is_fireball=Path(topic_path).parts[0] == "fireball",
     )
 
 
@@ -515,7 +560,7 @@ def claude_md(
         CLAUDE.md pointer content string.
     """
     return (
-        "# Claude Code Instructions\n"
+        "# Claude Code Instructions\n\n"
         "See [AGENTS.md](AGENTS.md) in this directory for full instructions.\n\n"
         "`AGENTS.md` is the single source of truth. Always read and update `AGENTS.md` "
         "— do not duplicate content here.\n"
@@ -536,9 +581,9 @@ def parent_opencode(
     lives below and how to navigate the tree.
 
     Args:
-        topic_path: Relative path from topics/ root (e.g. health).
+        topic_path: Relative path from topics/ root (e.g. fireball/accounting).
         subtopics: List of (name, path, description) tuples for each child subtopic.
-                   path should be relative to repo root (e.g. topics/health/dental).
+                   path should be relative to repo root (e.g. topics/fireball/accounting/bookkeeping).
         purpose: One-sentence description of what this parent folder covers.
         repo_root: Optional absolute path to repo root for ancestor OPENCODE.md detection.
 
@@ -563,6 +608,7 @@ def parent_opencode(
 
     parts: list[str] = [
         f"# {folder_name}",
+        "",
         f"**Purpose**: {purpose}",
         "",
         "This is a parent topic folder. It contains subtopics, each with their own",
