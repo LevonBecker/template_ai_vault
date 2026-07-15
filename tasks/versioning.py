@@ -24,13 +24,20 @@ def libs(context, dry_run=False, yes=False):
 
 
 @task
+def python(context, dry_run=False, yes=False):
+    """Check the pinned Python version against the latest release and update config references"""
+    _run_module(context, "modules.versioning.python", dry_run, yes)
+
+
+@task
 def workflows(context, dry_run=False, yes=False):
     """Check .github/workflows/ action refs against latest major versions and update them"""
     _run_module(context, "modules.versioning.workflows", dry_run, yes)
 
 
 @task
-def all(context, dry_run=False, yes=False):  # noqa: A001  # pylint: disable=redefined-builtin
-    """Run every version check (libs, workflows)"""
+def update(context, dry_run=False, yes=False):
+    """Run every version check (libs, python, workflows)"""
     libs(context, dry_run=dry_run, yes=yes)
+    python(context, dry_run=dry_run, yes=yes)
     workflows(context, dry_run=dry_run, yes=yes)

@@ -3,7 +3,7 @@
 from invoke import task
 
 
-@task
+@task(default=True)
 def upgrade(context):
     """Upgrade Python and Dependencies"""
     print("\n" + "=" * 50)

@@ -92,7 +92,7 @@ def main(no_confirm: bool, python_only: bool, libs_only: bool) -> None:
     - Rebuilds .venv if Python changed
     - Runs uv sync --upgrade to install updated dependencies
 
-    IMPORTANT: Run /version first to update config files before upgrading.
+    IMPORTANT: Run /update first to update config files before upgrading.
 
     Examples:
         /upgrade                  # Upgrade everything
