@@ -20,7 +20,7 @@ For detailed instructions, read the relevant domain file:
 - **Python module architecture**: `.github/instructions/modules.instructions.md`
 - **Slash command creation**: `.github/instructions/commands.instructions.md`
 - **Testing requirements**: `.github/instructions/tests.instructions.md`
-- **System architecture & provider hierarchy**: `.github/instructions/arch.instructions.md`
+- **AI decision architecture (thin-wrapper logic, provider-agnostic design)**: `.github/instructions/logic.instructions.md`
 - **Invoke task runner**: `.github/instructions/invoke.instructions.md`
 - **Docs file standards (CSV, etc.)**: `.github/instructions/docs.instructions.md`
 - **Markdown style standards**: `.github/instructions/style.instructions.md`
@@ -56,14 +56,14 @@ When updating topic instructions, update `AGENTS.md` as the topic content source
 - `/push`, `/pull`, `/ss` — Aliases
 
 ### Version Management
-- `/version` — Check Python + libs, update config files (does NOT install)
-- `/version libs` — Check/update only library versions in pyproject.toml
-- `/version python` — Check/update only Python version in config files
+- `/update` — Check Python + libs + workflow action refs, update config files (does NOT install)
+- `/update libs` — Check/update only library versions in pyproject.toml
+- `/update python` — Check/update only Python version in config files
 - `/upgrade` — Execute upgrades (install Python, rebuild .venv, sync dependencies)
 - `/upgrade python` — Upgrade only Python and rebuild .venv
 - `/upgrade libs` — Upgrade only libraries (uv sync --upgrade)
 
-**Workflow**: Run `/version` to review and update configs → check `git diff` → run `/upgrade` to install
+**Workflow**: Run `/update` to review and update configs → check `git diff` → run `/upgrade` to install
 
 ## Important Conventions
 
