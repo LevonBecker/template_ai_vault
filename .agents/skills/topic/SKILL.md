@@ -1,6 +1,6 @@
 ---
 name: topic
-description: Use for ai_vault topic requests: list topics, switch topic, initialize topic, update topic instructions, active topic, or topic navigation.
+description: Use for template_ai_vault topic requests: list topics, switch topic, initialize topic, update topic instructions, active topic, or topic navigation.
 ---
 
 # Topic Workflow

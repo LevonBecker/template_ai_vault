@@ -1,6 +1,6 @@
 ---
 name: update
-description: Use for ai_vault version and upgrade requests: check Python, library, or workflow-action versions, update configs, run upgrades, sync dependencies, /update, or /upgrade equivalents.
+description: Use for template_ai_vault version and upgrade requests: check Python, library, or workflow-action versions, update configs, run upgrades, sync dependencies, /update, or /upgrade equivalents.
 ---
 
 # Update Workflow

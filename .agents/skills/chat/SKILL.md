@@ -1,6 +1,6 @@
 ---
 name: chat
-description: Use for ai_vault chat lifecycle requests: start chat, end chat, list chats, resume chat, close active chat, save chat logs, or manage topic chat files.
+description: Use for template_ai_vault chat lifecycle requests: start chat, end chat, list chats, resume chat, close active chat, save chat logs, or manage topic chat files.
 ---
 
 # Chat Workflow
