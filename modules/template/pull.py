@@ -1,5 +1,5 @@
 """
-Resolve the local path to this repo's parent template repo for /sync_template pull.
+Resolve the local path to this repo's parent template repo for /template pull.
 
 Prints the resolved path on its own line, prefixed `TEMPLATE_PATH=`, so the calling prompt can
 parse it out of any other status output.

@@ -162,10 +162,10 @@ modules/
 ├── setup/
 │   └── properties.py   # Creates/stamps properties.yml (inv setup.properties)
 ├── template/
-│   ├── pull.py          # /sync_template pull — resolve template_ai_vault local path
-│   ├── push.py          # /sync_template push — diff/apply/create-pr against template_ai_vault
+│   ├── pull.py          # /template pull — resolve template_ai_vault local path
+│   ├── push.py          # /template push — diff/apply/create-pr against template_ai_vault
 │   ├── resolve.py        # Shared local-path-or-clone resolution
-│   ├── route.py          # /sync_template routing
+│   ├── route.py          # /template routing
 │   └── scope.py          # Push include/exclude scope rules
 ├── topic/
 │   ├── active.py       # Active topic state (active_topic.yml)

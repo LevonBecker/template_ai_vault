@@ -1,7 +1,7 @@
 # Template Module
 
 Syncs shared, generic tooling between this repo and its **parent template repo** via
-`/sync_template`. The parent is configured in `properties.yml` (stamped automatically by
+`/template`. The parent is configured in `properties.yml` (stamped automatically by
 `inv setup.properties` when GitHub's generated-from link is available):
 
 ```yaml
@@ -17,9 +17,9 @@ root skeleton  →  domain template  →  project repo
 ```
 
 Repos form a chain, and each repo syncs **only with its direct parent**. A domain template absorbs
-the root skeleton's updates by running `/sync_template` inside itself (its own `properties.yml`
+the root skeleton's updates by running `/template` inside itself (its own `properties.yml`
 points at the root skeleton) — never from further down the chain. To move a change across the whole
-chain, sync it one hop at a time: push it up to the parent, then run `/sync_template push` inside
+chain, sync it one hop at a time: push it up to the parent, then run `/template push` inside
 the parent to continue upward (or pull downward hop by hop).
 
 ## Usage
@@ -33,15 +33,15 @@ uv run --no-sync python -m modules.template.route "push diff"  # push, phase 1
 
 Resolves `template.local` from `properties.yml`. If that path exists on disk, it's used directly —
 no `git pull` is run, since the assumption is you already pushed your changes there before running
-`/sync_template` here. If the local path isn't found (e.g. a different machine or CI), it
+`/template` here. If the local path isn't found (e.g. a different machine or CI), it
 shallow-clones `template.remote` into `tmp/template_sync/` instead.
 
 Either way, the resolved path is printed on its own line as `TEMPLATE_PATH=<path>` so the
-`/sync_template` prompt can parse it out of any other output.
+`/template` prompt can parse it out of any other output.
 
 The actual file-by-file comparison, classification (shared tooling vs. project-specific), and
-conflict resolution happens in the `/sync_template` prompt itself, not here — see
-`.github/prompts/sync_template.prompt.md`.
+conflict resolution happens in the `/template` prompt itself, not here — see
+`.github/prompts/template.prompt.md`.
 
 ## Push
 

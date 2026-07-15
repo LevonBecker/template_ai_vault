@@ -55,7 +55,7 @@ See `docs/architecture.md` for the full module-by-module tree.
 ## The template_ai_vault Relationship
 
 This repo pulls shared, generic tooling updates from — and can push new generic improvements back
-to — a separate template repo, `template_ai_vault`, via `/sync_template` (`modules/template/`).
+to — a separate template repo, `template_ai_vault`, via `/template` (`modules/template/`).
 Configured in `properties.yml` under `template.local` / `template.remote`. Only generic,
 non-business content is exchanged (see `modules/template/scope.py` for the exact include/exclude
 rules) — this repo's own business-specific content (`topics/`, the `fireball`/`product-metadata`

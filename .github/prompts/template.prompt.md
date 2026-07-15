@@ -1,8 +1,8 @@
 ---
-description: Pull shared tooling updates from the parent template repo into this project (default), or push new generic tooling from this project into the parent template repo as a PR (sync_template push).
-subtask: false
-agent: general
-slash_command: /sync_template
+name: template
+description: Pull shared tooling updates from the parent template repo into this project (default), or push new generic tooling from this project into the parent template repo as a PR (template push).
+argument-hint: "[pull|push]"
+agent: agent
 ---
 
 If `$ARGUMENTS` is empty or "pull", do a **Pull**. If `$ARGUMENTS` starts with "push", do a **Push**.
@@ -20,10 +20,10 @@ Compare that template repo against this project and sync it in:
 
 1. **Always exclude** (never touch, even if present in the template repo): `properties.yml`,
    `README.md`, `LICENSE`, `uv.lock`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
-   `.venv/`, `__pycache__/`, `.ruff_cache/`, any other cache/build artifact, and anything under
-   `logs/` or `tmp/`. Also always exclude this project's own content directories (`topics/`,
-   `agents/`, `docs/`, `screenshots/`, `active_topic.yml`) — the template repo has no equivalent
-   of these, but never touch them regardless.
+   `.venv/`, `__pycache__/`, `.ruff_cache/`, any other cache/build artifact, anything under
+   `logs/` or `tmp/`, and this project's own content directories (`topics/`, `agents/`, `docs/`,
+   `screenshots/`, `active_topic.yml`) — the template repo has no equivalent of these, but never
+   touch them regardless.
 2. **Shared tooling — sync these by default** if present in the template repo: `modules/`,
    `tasks/`, `.github/instructions/`, `.github/prompts/`, `.github/workflows/`,
    `.claude/commands/`, `.vscode/`, `invoke.yml`, `setup.sh`, `CLAUDE.md`, `.editorconfig`,
@@ -33,16 +33,15 @@ Compare that template repo against this project and sync it in:
 3. For each candidate file:
    - Missing in this project → propose adding it.
    - Identical to what's already here → skip silently.
-   - Different from what's already here → show a short diff and ask the user whether to overwrite,
-     keep the local version, or merge by hand. Do not overwrite silently.
-   - Note: this project also maintains `.opencode/command/`, generated from `.github/prompts/` via
-     `uv run --no-sync invoke opencode.sync` — the template repo has no `.opencode/` directory, so
-     never delete or skip-sync it based on the template repo's absence; just regenerate it per
-     step 5.
+   - Different from what's already here → show a short diff and ask the user whether to
+     overwrite, keep the local version, or merge by hand. Do not overwrite silently.
+   - Note: this project also maintains `.opencode/command/`, generated from `.github/prompts/`
+     via `uv run --no-sync invoke opencode.sync` — never delete or skip-sync it based on the
+     template repo's absence; regenerate it per step 5 instead.
 4. Apply only the changes the user approved (plus unambiguous additions/identical-skips), then
    summarize what was added, updated, and skipped.
-5. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke claude.sync` and
-   `uv run --no-sync invoke opencode.sync` (add `--force` to overwrite hand-crafted
+5. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke claude.sync`
+   and `uv run --no-sync invoke opencode.sync` (add `--force` to overwrite hand-crafted
    `.claude/commands/` or `.opencode/command/` files) afterward — do not run them automatically.
 
 Never modify `pyproject.toml`, `properties.yml`, `README.md`, `LICENSE`, or `uv.lock` even if the
