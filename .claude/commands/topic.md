@@ -1,15 +1,14 @@
 ---
-description: Switch topics, list the active topic, or show all topics
+description: Switch topics, list topics, or update topic configs
+agent: general
+subtask: false
+slash_command: /topic
+allowed-tools: Bash(uv run --no-sync *)
 ---
 
 !`uv run --no-sync python -m modules.topic.route "$ARGUMENTS"`
 
-
-If $ARGUMENTS starts with "new", create a new topic at the given path (relative to topics/), then run init in that directory. Example: /topic new food_and_drink/recipes [description].
-
-If $ARGUMENTS starts with "list all", render the command output as a tree showing all topics and subtopics. Mark the active topic with ⭐. End with a one-line summary.
-
-If $ARGUMENTS starts with "list" and does not include "all", show the active topic only and mention that "list all" reveals the full topic tree.
+If $ARGUMENTS starts with "list", render the command output as a tree showing all topics and subtopics. Mark the active topic with ⭐. End with a one-line summary (e.g. "42 topics — active: **bicycling**").
 
 After running the command, if the output shows a topic switch (contains "Switched to:"):
 - The **Full path** line in the output is now the active topic root for this conversation

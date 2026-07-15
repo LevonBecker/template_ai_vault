@@ -1,7 +1,9 @@
 # Chat Manager
-The chat module handles the complete lifecycle of research chat sessions within the AI Vault workspace.
+
+The chat module handles the complete lifecycle of research chat sessions within the AI research workspace.
 
 ## Features
+
 - **Start Chats**: Initialize new research sessions with timestamped files
 - **End Chats**: Save full chat logs and commit to git
 - **List Chats**: Browse existing chats with summaries
@@ -12,6 +14,7 @@ The chat module handles the complete lifecycle of research chat sessions within 
 - **Full Chat Logs**: AI agents save complete conversation history with timestamps
 
 ## Commands
+
 ### `/chat start`
 Initialize a new research chat session in a topic directory.
 
@@ -199,6 +202,7 @@ Resume an existing chat from the chats folder.
 - Review and expand on previous work
 
 ## Directory Structure
+
 Chats are organized within topic directories:
 ```
 topics/
@@ -228,6 +232,7 @@ screenshots/  # Centralized at repo root (shared by ALL topics)
 ```
 
 ## Active Chat Tracking
+
 The chat manager tracks the currently active chat using an `active.yml` file in each topic directory.
 
 **active.yml Format:**
@@ -235,7 +240,7 @@ The chat manager tracks the currently active chat using an `active.yml` file in 
 filename: 20251211_tracking_feature.md
 title: Implement Active Chat Tracking
 started: 2025-12-11 16:30:45
-topic: general/word_smith
+topic: help/word_smith
 status: active
 ```
 
@@ -254,6 +259,7 @@ status: active
 - Local state only (not tracked in git)
 
 ## Screenshot Workflow
+
 When `/start` or `/set_screenshots` runs:
 1. Configures macOS: `defaults write com.apple.screencapture location ${repo_local}/screenshots`
 2. Restarts System UI: `killall SystemUIServer`
@@ -266,6 +272,7 @@ During chat:
 - Screenshots are referenced in chat context
 
 ## File Naming Convention
+
 - **Format**: `YYYYMMDD_slug.md`
 - **Date**: ISO 8601 format (e.g., 20251211)
 - **Slug**: Lowercase, underscores, no special characters
@@ -277,6 +284,7 @@ During chat:
 - "QuickBooks Setup" → `20251211_quickbooks_setup.md`
 
 ## Git Integration
+
 Chat commands use git for local version control:
 
 **Commit Format:**
@@ -299,9 +307,11 @@ Research session: fusion modeling techniques
 - Complete chat logs preserved with timestamps
 
 ## Dependencies
+
 - `topic` - For topic navigation and initialization
 
 ## Configuration
+
 Default settings in `config.yml`:
 - `topics_dir`: "topics/"
 - `chats_subdir`: "chats"
@@ -309,6 +319,7 @@ Default settings in `config.yml`:
 - `date_format`: "YYYYMMDD"
 
 ## Permissions Required
+
 - `file_read` - Read chat files
 - `file_write` - Create/update chat files
 - `directory_create` - Create chats/screenshots folders
@@ -318,6 +329,7 @@ Default settings in `config.yml`:
 - `bash_execute` - Configure screenshot location
 
 ## Best Practices
+
 1. **Start Every Session**: Use `/chat start` at the beginning of research
 2. **Descriptive Titles**: Choose clear, searchable chat titles
 3. **Seamless Switching**: Use `/chat start <new_title>` to automatically end current chat and start new one
@@ -327,11 +339,13 @@ Default settings in `config.yml`:
 7. **Final Save**: Use `/chat end` only when completely done with research session
 
 ## Related Commands
+
 - `/topic` - Switch between topics or create new ones
 - `/pull` - Pull updates from git remote and iCloud
 - `/push` - Push changes to git remote and iCloud
 
 ## Notes
+
 - Most commands are OpenCode-specific instruction commands
 - `/end` uses Python module `save.py` for git operations
 - Commands work within the OpenCode CLI environment
@@ -339,6 +353,7 @@ Default settings in `config.yml`:
 - Multi-AI collaboration friendly (Claude, Gemini, Copilot, etc.)
 
 ## Files
+
 - `start.py` - Initialize new chat with auto-ending (used by `/chat start`)
 - `list.py` - List chats with summaries (used by `/chat list`)
 - `resume.py` - Resume existing chat (used by `/chat resume`)

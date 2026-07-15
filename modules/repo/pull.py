@@ -3,7 +3,7 @@
 import subprocess
 
 from ..common import cli as click
-from ..common.properties import get_icloud_enabled, get_icloud_path, get_repo_local
+from ..common.properties import get_icloud_path, get_repo_local
 from ..common.utils import error, success, warning
 
 
@@ -163,9 +163,9 @@ def main() -> None:
     Note: Does NOT auto-commit. User reviews changes manually.
     """
     repo_path = get_repo_local()
-    icloud_enabled = get_icloud_enabled()
+    icloud_path = get_icloud_path()
 
-    click.echo("📥 Starting pull from remote" + (" and iCloud..." if icloud_enabled else "..."))
+    click.echo("📥 Starting pull from remote and iCloud...")
     click.echo()
 
     stashed = _stash_if_needed(repo_path)
@@ -187,12 +187,8 @@ def main() -> None:
 
     click.echo()
 
-    if icloud_enabled:
-        _sync_from_icloud(repo_path, get_icloud_path())
-        _show_icloud_changes(repo_path)
-    else:
-        click.echo("⏭️  iCloud sync disabled (icloud.enabled: false in properties.yml) — skipping")
-        click.echo()
+    _sync_from_icloud(repo_path, icloud_path)
+    _show_icloud_changes(repo_path)
 
     if stashed:
         click.echo()
@@ -205,7 +201,7 @@ def main() -> None:
     click.echo()
     click.echo("🎉 Pull completed!")
     click.echo("   - Git: up to date")
-    click.echo(f"   - iCloud: {'synced to local' if icloud_enabled else 'skipped (disabled)'}")
+    click.echo("   - iCloud: synced to local")
 
 
 if __name__ == "__main__":

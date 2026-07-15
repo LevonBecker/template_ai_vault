@@ -7,13 +7,17 @@ applyTo: "tasks/**"
 
 Invoke is the task runner for CICD workflows (fix, test, upgrade). All tasks are defined in `tasks/` and called via `uv run --no-sync invoke <task>`. Never use invoke for business logic — business logic lives in Python modules.
 
+Unlike `.github/prompts/*.prompt.md` (which capture AI/human decision-making — see
+`.github/instructions/logic.instructions.md`), invoke tasks are deterministic CLI automation only:
+no judgment calls, no AI-specific behavior.
+
 ## Combo Tasks (use these most often)
 
 | Task | Command | Description |
 |------|---------|-------------|
 | AI Sync | `uv run --no-sync invoke ai.sync` | Sync all AI tool commands from `.github/prompts/` |
 | Fix | `uv run --no-sync invoke fix` | Run all auto-fixes (ruff fix + format) |
-| Test | `uv run --no-sync invoke test` | Run all tests (actionlint + pylint + ruff + yamllint) |
+| Test | `uv run --no-sync invoke test` | Run all tests (actionlint + pylint + pytest + ruff + yamllint) |
 
 ## Test Tasks
 
@@ -21,6 +25,7 @@ Invoke is the task runner for CICD workflows (fix, test, upgrade). All tasks are
 |------|---------|-------------|
 | actionlint | `uv run --no-sync invoke tests.actionlint` | GitHub Actions workflow validation |
 | pylint | `uv run --no-sync invoke tests.pylint` | Python code quality |
+| pytest | `uv run --no-sync invoke tests.pytest` | Python unit test suite |
 | rufflint | `uv run --no-sync invoke tests.rufflint` | Python linting and formatting |
 | yamllint | `uv run --no-sync invoke tests.yamllint` | YAML file validation |
 
@@ -35,10 +40,22 @@ Invoke is the task runner for CICD workflows (fix, test, upgrade). All tasks are
 
 | Task | Command | Description |
 |------|---------|-------------|
-| upgrade | `uv run --no-sync invoke upgrade.upgrade` | Upgrade Python + all dependencies |
-| python | `uv run --no-sync invoke upgrade.python` | Upgrade Python only |
 | libs | `uv run --no-sync invoke upgrade.libs` | Upgrade libraries only |
+| python | `uv run --no-sync invoke upgrade.python` | Upgrade Python only |
 | sync | `uv run --no-sync invoke upgrade.sync` | Sync dependencies (no version check) |
+| upgrade | `uv run --no-sync invoke upgrade.upgrade` | Upgrade Python + all dependencies (default) |
+
+## Versioning Tasks
+
+Read-only version-lock *checks* — compare `pyproject.toml` deps and `.github/workflows/` action
+refs against latest releases and update the version locks in place (does not install anything;
+see Upgrade Tasks above for that).
+
+| Task | Command | Description |
+|------|---------|-------------|
+| all | `uv run --no-sync invoke versioning.all` | Run every version check (libs, workflows) |
+| libs | `uv run --no-sync invoke versioning.libs` | Check `pyproject.toml` deps against latest releases |
+| workflows | `uv run --no-sync invoke versioning.workflows` | Check `.github/workflows/` action refs against latest versions |
 
 ## Invoke vs Direct Python
 
@@ -103,6 +120,8 @@ tasks/
 ├── ollama.py        # ollama.install/list/update/uninstall/start/stop/status/restart/clean
 ├── opencode.py      # opencode.sync — syncs .opencode/command/
 ├── ruff.py          # ruff.fix + ruff.format
-├── tests.py         # actionlint, pylint, rufflint, yamllint
-└── upgrade.py       # upgrade, python, libs, sync
+├── setup.py         # setup.properties — creates/stamps properties.yml
+├── tests.py         # actionlint, pylint, pytest, rufflint, yamllint
+├── upgrade.py        # libs, python, sync, upgrade
+└── versioning.py    # all, libs, workflows (version-lock checks)
 ```

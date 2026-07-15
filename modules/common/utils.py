@@ -1,4 +1,4 @@
-"""Common utilities for AI Vault automation."""
+"""Common utilities for AI research automation."""
 
 import re
 import sys
