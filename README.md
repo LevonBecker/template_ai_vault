@@ -5,7 +5,7 @@ Every AI conversation we have — research, project planning, personal documenta
 
 Because it's just files in git, we own it outright. It works with almost any AI tool or provider, syncs across every computer or device with a simple push and pull, and nothing about our setup is tied to one company's roadmap. Switch from Claude to a local model to ChatGPT and back — our history, context, and structure come with us every time.
 
-The result: one portable, permanent home for our AI-assisted work, instead of it scattered across a dozen chat histories we don't control.
+The result: a single, portable home for our AI-assisted work — one we fully own, that works with whichever AI provider, model, or local tool we reach for today and whatever new one comes along tomorrow.
 
 ## Setup
 #### Clone Repo
