@@ -120,10 +120,14 @@ def get_active_topic_path() -> Path | None:
         active_topic_file = current / "active_topic.yml"
         if active_topic_file.exists():
             with active_topic_file.open() as f:
-                data = yaml.safe_load(f)
-                topic_full_path = data.get("topic_full_path")
-                if topic_full_path:
-                    return Path(topic_full_path)
+                data = yaml.safe_load(f) or {}
+            base_path = data.get("base_path")
+            if base_path:
+                return current / base_path
+            # Legacy state files stored an absolute machine path
+            topic_full_path = data.get("topic_full_path")
+            if topic_full_path:
+                return Path(topic_full_path)
             return None
         current = current.parent
     return None
