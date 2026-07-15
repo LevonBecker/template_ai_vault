@@ -1,5 +1,8 @@
 """
-Push new generic tooling from template_ai_vault into template_ai_vault as a PR.
+Push new generic tooling from this repo into its parent template repo as a PR.
+
+The parent is configured in properties.yml (`template.local` / `template.remote`); repos chain
+(e.g. root skeleton -> domain template -> project repo), each syncing only with its direct parent.
 
 Three explicit phases, split at the confirmation boundary so the calling prompt can review
 results between each step and only proceed after the user approves:
@@ -31,7 +34,7 @@ def rewrite_repo_references(content: str, repo_name: str, template_name: str) ->
     """
     Replace references to the working repo's name with the template repo's name.
 
-    Safe when one name contains the other (e.g. template_ai_vault contains template_ai_vault):
+    Safe when one name contains the other (e.g. template_my_vault contains my_vault):
     existing template-name occurrences are masked with a placeholder first so they
     survive the replacement untouched.
     """
@@ -165,7 +168,7 @@ def run_apply(files: list[str], deletes: list[str] | None = None) -> None:
 
 
 def run_create_pr(branch: str | None, title: str | None, body: str | None) -> None:
-    """Open a PR for `branch` against template_ai_vault, confirming first in interactive runs."""
+    """Open a PR for `branch` against the parent template repo, confirming first in interactive runs."""
     if not branch:
         error("create-pr mode requires --branch", exit_code=1)
 

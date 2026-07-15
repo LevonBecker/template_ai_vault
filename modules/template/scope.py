@@ -1,4 +1,4 @@
-"""Shared include/exclude scope for /sync_template push (template_ai_vault -> template_ai_vault)."""
+"""Shared include/exclude scope for /sync_template push (this repo -> its parent template repo)."""
 
 from __future__ import annotations
 
