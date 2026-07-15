@@ -1,6 +1,6 @@
 ---
 name: repo
-description: Use for template_ai_vault repository maintenance requests: repo pull, repo push, cleanup screenshots, set screenshots folder, view latest screenshot, /push, /pull, or /ss equivalents.
+description: Use for ai_vault repository maintenance requests: repo pull, repo push, cleanup screenshots, set screenshots folder, view latest screenshot, /push, /pull, or /ss equivalents.
 ---
 
 # Repo Workflow

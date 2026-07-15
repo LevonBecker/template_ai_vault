@@ -12,8 +12,8 @@ import re
 from pathlib import Path
 
 from ..common import cli
+from ..common.prompt_commands import load_commands
 from ..common.route_utils import find_repo_root
-from ..hermes.sync import load_commands
 
 _REPO_ROOT = find_repo_root()
 _CLINE_WORKFLOWS_DIR = _REPO_ROOT / ".clinerules" / "workflows"
@@ -45,7 +45,7 @@ def _workflow_content(body: str) -> str:
 def main() -> None:
     """Sync .clinerules/workflows/ from .github/prompts/ source of truth."""
     _CLINE_WORKFLOWS_DIR.mkdir(parents=True, exist_ok=True)
-    cmds = [c for c in load_commands() if c.name not in _SKIP_COMMANDS]
+    cmds = load_commands(skip=_SKIP_COMMANDS)
     for cmd in cmds:
         out: Path = _CLINE_WORKFLOWS_DIR / f"{cmd.slug}.md"
         out.write_text(_workflow_content(_transform_body(cmd.body)), encoding="utf-8")

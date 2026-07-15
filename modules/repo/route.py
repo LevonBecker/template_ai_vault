@@ -23,10 +23,6 @@ _SUBCOMMAND_MODULES = {
     "cleanup": "modules.repo.cleanup",
     "set_screenshots": "modules.repo.set_screenshots",
     "view_screenshot": "modules.repo.view_screenshot",
-    "pr_diff": "modules.repo.pr_diff",
-    "pr_notes": "modules.repo.pr_notes",
-    "pr_create": "modules.repo.pr_create",
-    "pr_push": "modules.repo.pr_push",
     "rebase": "modules.repo.rebase",
     "squash": "modules.repo.squash",
 }
