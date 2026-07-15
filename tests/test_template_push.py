@@ -7,8 +7,15 @@ from modules.template.push import _classify, rewrite_repo_references
 
 
 def _configured_names() -> tuple[str, str]:
-    """Repo and template names exactly as run_apply derives them from properties.yml."""
-    return get_repo_local().name, get_template_local().name
+    """Repo and template names as run_apply derives them from properties.yml.
+
+    Falls back to fixed names on checkouts without a properties.yml (e.g. the
+    template repo's CI) so the rewrite tests stay runnable everywhere.
+    """
+    try:
+        return get_repo_local().name, get_template_local().name
+    except FileNotFoundError:
+        return "my_vault", "template_my_vault"
 
 
 def test_replaces_configured_repo_name_with_template_name():
