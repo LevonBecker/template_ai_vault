@@ -19,7 +19,7 @@ def find_repo_root() -> Path:
 
 
 def get_active_topic_path(repo_root: Path) -> Path | None:
-    """Read active_topic.yml and return topic_full_path if present."""
+    """Read active_topic.yml and derive the absolute topic path from repo_root."""
     active_topic_file = repo_root / "active_topic.yml"
     if not active_topic_file.exists():
         return None
@@ -32,6 +32,10 @@ def get_active_topic_path(repo_root: Path) -> Path | None:
     except yaml.YAMLError:
         return None
 
+    base_path = data.get("base_path")
+    if base_path:
+        return repo_root / base_path
+    # Legacy state files stored an absolute machine path
     topic_full_path = data.get("topic_full_path")
     if not topic_full_path:
         return None

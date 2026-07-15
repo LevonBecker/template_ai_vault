@@ -18,12 +18,14 @@ to merge instead of replace.
 
 from __future__ import annotations
 
-import re
 import sys
 from pathlib import Path
 
 import yaml
 
+from modules.common.prompt_commands import PROMPTS_DIR, PromptCommand
+from modules.common.prompt_commands import load_commands as _load_commands
+from modules.common.properties import get_screenshots_latest_file, get_screenshots_location
 from modules.common.route_utils import find_repo_root
 
 # ---------------------------------------------------------------------------
@@ -31,7 +33,6 @@ from modules.common.route_utils import find_repo_root
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = find_repo_root()
-PROMPTS_DIR = REPO_ROOT / ".github" / "prompts"
 HERMES_CONFIG = Path.home() / ".hermes" / "config.yaml"
 HERMES_SKILL_DIR = Path.home() / ".hermes" / "skills" / "r-research"
 HERMES_SKILL_FILE = HERMES_SKILL_DIR / "SKILL.md"
@@ -52,98 +53,44 @@ EXEC_OVERRIDES: dict[str, str] = {
 
 
 # ---------------------------------------------------------------------------
-# Data model
+# Hermes-specific derivations (classification, shell command) attached onto the
+# shared PromptCommand parsed by modules/common/prompt_commands.py
 # ---------------------------------------------------------------------------
 
 
-class PromptCommand:  # pylint: disable=too-many-instance-attributes
-    """Parsed representation of one .github/prompts/*.prompt.md file."""
-
-    def __init__(self, path: Path) -> None:
-        self.path = path
-        # name uses underscores (Python identifier), slug preserves hyphens (for r- prefix)
-        self.slug: str = path.stem.replace(".prompt", "")
-        self.name: str = self.slug.replace("-", "_")
-        self.description: str = ""
-        self.argument_hint: str = ""
-        self.exec_line: str = ""
-        self.body: str = ""
-        self.classification: str = ""
-        self._parse()
-
-    def _parse(self) -> None:
-        text = self.path.read_text(encoding="utf-8")
-        parts = text.split("---", 2)
-        if len(parts) >= 3:
-            fm_text = parts[1]
-            self.body = parts[2].strip()
-            try:
-                fm: dict = yaml.safe_load(fm_text) or {}
-            except yaml.YAMLError:
-                fm = {}
-            self.description = str(fm.get("description", ""))
-            self.argument_hint = str(fm.get("argument-hint", ""))
-        else:
-            self.body = text.strip()
-
-        # Find exec line: line starting with !`
-        exec_match = re.search(r"^!`([^`]+)`", self.body, re.MULTILINE)
-        if exec_match:
-            self.exec_line = exec_match.group(1).strip()
-
-        # Classify
-        if self.name in LONG_RUNNING and self.exec_line:
-            self.classification = "exec_long"
-        elif not self.exec_line:
-            self.classification = "ai_guided"
-        elif "$ARGUMENTS" in self.exec_line:
-            self.classification = "arg"
-        else:
-            self.classification = "exec"
-
-    @property
-    def r_name(self) -> str:
-        """The Hermes /r- command name (e.g. r-pull, r-add-expense)."""
-        return f"r-{self.slug}"
-
-    def shell_command(self) -> str:
-        """Return the shell command for quick_commands (exec classification only)."""
-        repo = str(REPO_ROOT)
-        if self.name in EXEC_OVERRIDES:
-            return EXEC_OVERRIDES[self.name].format(repo_root=repo)
-        cmd = self.exec_line
-        if cmd.startswith("uv run"):
-            cmd = f"cd {repo} && {cmd}"
-        return cmd
+def _classify(cmd: PromptCommand) -> str:
+    """Classify a command for Hermes routing: exec_long, ai_guided, arg, or exec."""
+    if cmd.name in LONG_RUNNING and cmd.exec_line:
+        return "exec_long"
+    if not cmd.exec_line:
+        return "ai_guided"
+    if "$ARGUMENTS" in cmd.exec_line:
+        return "arg"
+    return "exec"
 
 
-# ---------------------------------------------------------------------------
-# Parser
-# ---------------------------------------------------------------------------
+def shell_command(cmd: PromptCommand) -> str:
+    """Return the shell command for quick_commands (exec classification only)."""
+    repo = str(REPO_ROOT)
+    if cmd.name in EXEC_OVERRIDES:
+        return EXEC_OVERRIDES[cmd.name].format(repo_root=repo)
+    line = cmd.exec_line
+    if line.startswith("uv run"):
+        line = f"cd {repo} && {line}"
+    return line
 
 
 def load_commands() -> list[PromptCommand]:
-    """Load and parse all .github/prompts/*.prompt.md files, deduplicating by name."""
-    files = sorted(PROMPTS_DIR.glob("*.prompt.md"))
-    seen: set[str] = set()
-    unique: list[PromptCommand] = []
-    for path in files:
-        cmd = PromptCommand(path)
-        if cmd.name in SKIP_COMMANDS:
-            continue
-        if cmd.name in seen:
-            # Warn only if descriptions differ — could indicate accidental divergence
-            existing = next(c for c in unique if c.name == cmd.name)
-            if existing.description != cmd.description:
-                print(
-                    f"  ⚠️  Duplicate '{cmd.name}' with differing descriptions "
-                    f"({cmd.slug!r} vs {existing.slug!r}) — keeping {existing.slug!r}",
-                    file=sys.stderr,
-                )
-            continue
-        seen.add(cmd.name)
-        unique.append(cmd)
-    return unique
+    """Load all .github/prompts/*.prompt.md commands, skipping Hermes-unusable ones.
+
+    Attaches Hermes-specific `.r_name` and `.classification` onto each shared PromptCommand
+    instance — these are Hermes routing concerns, not part of the shared parser's own API.
+    """
+    cmds = _load_commands(skip=SKIP_COMMANDS)
+    for cmd in cmds:
+        cmd.r_name = f"r-{cmd.slug}"
+        cmd.classification = _classify(cmd)
+    return cmds
 
 
 # ---------------------------------------------------------------------------
@@ -161,7 +108,7 @@ def generate_quick_commands(cmds: list[PromptCommand]) -> dict:
     result: dict = {}
     for cmd in cmds:
         if cmd.classification == "exec":
-            result[cmd.r_name] = {"type": "exec", "command": cmd.shell_command()}
+            result[cmd.r_name] = {"type": "exec", "command": shell_command(cmd)}
     return result
 
 
@@ -172,28 +119,30 @@ def generate_quick_commands(cmds: list[PromptCommand]) -> dict:
 _SKILL_HEADER_TEMPLATE = """\
 ---
 name: r-research
-description: "Research repo (/r-* commands): routing table for topic, chat,\
- repo, and all other template_ai_vault slash commands.\
+description: "Personal research repo (/r-* commands): routing table for topic, chat,\
+ fireball, financials, repo, and all other template_ai_vault slash commands.\
  AUTO-GENERATED by modules/hermes/sync.py — do not hand-edit."
 version: 1.0.0
+author: Levon Becker
 license: MIT
 platforms: [macos]
 metadata:
   hermes:
-    tags: [research, routing, slash-commands]
+    tags: [personal, research, template_ai_vault, routing, slash-commands]
 ---
 
-# Research Repo — `/r-*` Command System
+# Personal Research Repo — `/r-*` Command System
 
 > **AUTO-GENERATED** by `modules/hermes/sync.py`.
 > Re-run `uv run --no-sync invoke hermes.sync` after adding or modifying
 > any `.github/prompts/*.prompt.md` file. Never hand-edit this file.
 
-This skill is the routing table for the research repo at:
+This skill is the routing table for Levon's personal research repo:
 `{repo_root}`
 
-The repo covers your full range of AI-assisted research topics —
-home, health, shopping, travel, finances — organized by topic.
+The repo covers ALL of Levon's personal AI-assisted research:
+Fireball Enterprise, home repair, property assets, app learning,
+troubleshooting, personal finance — the whole world, not just business.
 
 ## Critical Conventions
 
@@ -225,7 +174,7 @@ def _build_exec_long_section(cmds: list[PromptCommand]) -> str:
     long_cmds = [c for c in cmds if c.classification == "exec_long"]
     if not long_cmds:
         return ""
-    rows = "\n".join(f"| `/{c.r_name}` | `{c.shell_command()}` |" for c in long_cmds)
+    rows = "\n".join(f"| `/{c.r_name}` | `{shell_command(c)}` |" for c in long_cmds)
     return (
         "## Long-Running Exec Commands (use terminal tool)\n\n"
         "These are exec-style but exceed the 30 s `quick_commands` timeout.\n"
@@ -294,6 +243,7 @@ def _build_ai_guided_section(cmds: list[PromptCommand]) -> str:
 
 def _build_ss_note() -> str:
     """Special note for the /r-ss two-step vision workflow."""
+    latest_screenshot = get_screenshots_location() / get_screenshots_latest_file()
     return (
         "## `/r-ss` — Screenshot Workflow (Two Steps)\n\n"
         "`/r-ss` is a `quick_command` that copies the latest screenshot to\n"
@@ -301,7 +251,7 @@ def _build_ss_note() -> str:
         "After it runs, Hermes MUST also display the image:\n\n"
         "```python\n"
         "vision_analyze(\n"
-        '    image_url="$HOME/Development/levonbecker/template_ai_vault/screenshots/latest.png",\n'
+        f'    image_url="{latest_screenshot}",\n'
         '    question="What does this screenshot show?"\n'
         ")\n"
         "```\n\n"

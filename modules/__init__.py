@@ -1,1 +1,1 @@
-"""AI Vault automation modules."""
+"""AI Research automation modules."""

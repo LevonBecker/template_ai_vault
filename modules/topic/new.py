@@ -13,7 +13,7 @@ from ..common.utils import error, info
 
 
 @click.command()
-@click.option("--path", required=True, help="Topic path relative to topics/ (e.g., 'health/dental')")
+@click.option("--path", required=True, help="Topic path relative to topics/ (e.g., 'fireball/marketing/makerworld')")
 @click.option("--description", "-d", default=None, help="Optional description for the topic")
 def main(path: str, description: str | None = None) -> None:
     """
