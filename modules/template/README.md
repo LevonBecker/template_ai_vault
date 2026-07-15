@@ -1,18 +1,26 @@
 # Template Module
 
-Syncs shared, generic tooling between this repo and `template_ai_vault` via `/sync_template`.
+Syncs shared, generic tooling between this repo and its **parent template repo** via
+`/sync_template`. The parent is configured in `properties.yml` (stamped automatically by
+`inv setup.properties` when GitHub's generated-from link is available):
+
+```yaml
+template:
+  local: "$HOME/path/to/parent-template-repo"
+  remote: "github.com/<user>/<parent-template-repo>"
+```
 
 ## The chain
 
 ```
-template_python  →  template_ai_vault  →  template_ai_vault
+root skeleton  →  domain template  →  project repo
 ```
 
-`template_python` is the root Python project skeleton. `template_ai_vault` is a derivative of it
-that adds template_ai_vault-specific generic conventions (modules, `.agents/skills/`, hub instructions,
-prompts, etc.) and is responsible for absorbing `template_python`'s own updates on its own — that
-happens inside `template_ai_vault`, not here. This repo (`template_ai_vault`) only ever talks to
-`template_ai_vault`.
+Repos form a chain, and each repo syncs **only with its direct parent**. A domain template absorbs
+the root skeleton's updates by running `/sync_template` inside itself (its own `properties.yml`
+points at the root skeleton) — never from further down the chain. To move a change across the whole
+chain, sync it one hop at a time: push it up to the parent, then run `/sync_template push` inside
+the parent to continue upward (or pull downward hop by hop).
 
 ## Usage
 
@@ -37,21 +45,26 @@ conflict resolution happens in the `/sync_template` prompt itself, not here — 
 
 ## Push
 
-Proposes new generic template_ai_vault improvements (in `modules/`, `.github/instructions/`,
+Proposes new generic improvements from this repo (in `modules/`, `.github/instructions/`,
 `.github/prompts/`, `.claude/commands/`, `.clinerules/workflows/`, `.opencode/command/`,
 `.agents/skills/` — excluding business-specific fireball/product-metadata content, see
-`modules/template/scope.py`) into `template_ai_vault` as a pull request.
+`modules/template/scope.py`) into the parent template repo as a pull request.
 
 Three phases, split at the confirmation boundary so the agent can check in with the user between
 each step:
 
-1. `push diff` — enumerates and diffs the scoped candidates against `template_ai_vault`, printing
-   `ADDED:`/`MODIFIED:` lists.
-2. `push apply --file <path> ...` — for the files the user approved: fetches/updates
-   `template_ai_vault`'s default branch, creates a new `sync-from-ai-vault-<timestamp>` branch,
-   copies the files in, commits, and pushes the branch. Does **not** open a PR.
+1. `push diff` — enumerates and diffs the scoped candidates against the parent template repo,
+   printing `ADDED:`/`MODIFIED:`/`DELETED:` lists.
+2. `push apply --file <path> ... [--delete <path> ...]` — for the changes the user approved:
+   fetches/updates the parent's default branch, creates a new `sync-from-<repo>-<timestamp>`
+   branch, copies the files in (and applies approved deletions), commits, and pushes the branch.
+   Does **not** open a PR.
 3. `push create-pr --branch <name> [--title ...] [--body ...]` — opens the PR via `gh pr create`.
    Confirms with the user first in interactive runs.
+
+Repo-name references are rewritten on copy (this repo's name → the parent's name, both derived
+from `properties.yml` `repo.local`/`template.local` basenames), so name-only differences never
+need hand-editing.
 
 ## Architecture
 

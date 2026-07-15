@@ -47,7 +47,7 @@ be reconciled by hand.
 
 ## Push
 
-Push proposes NEW generic improvements made in template_ai_vault into `template_ai_vault` as a pull
+Push proposes NEW generic improvements made in this repo into its parent template repo as a pull
 request. Only genuinely generic, non-business content may be proposed — never fireball/
 product-metadata content.
 

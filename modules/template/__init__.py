@@ -1,1 +1,1 @@
-"""Template repo sync modules (pull from / push to template_ai_vault)."""
+"""Template repo sync modules (pull from / push to this repo's parent template repo)."""
