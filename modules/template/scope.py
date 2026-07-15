@@ -15,10 +15,15 @@ INCLUDE_DIRS = [
     ".agents/skills",
 ]
 
+# Individual root-level files eligible for push (kept in sync in both directions, unlike
+# properties.yml/pyproject.toml/etc. which stay project-specific).
+INCLUDE_FILES = [
+    "README.md",
+]
+
 # Repo-root-only entries (never push these top-level files/dirs).
 ALWAYS_EXCLUDE_ROOT_NAMES = {
     "properties.yml",
-    "README.md",
     "LICENSE",
     "pyproject.toml",
     "uv.lock",
@@ -92,7 +97,7 @@ def is_excluded(rel_path: Path) -> bool:
 
 
 def iter_candidates(repo_root: Path) -> list[Path]:
-    """Enumerate all files under INCLUDE_DIRS that survive is_excluded(), relative to repo_root."""
+    """Enumerate all files under INCLUDE_DIRS plus INCLUDE_FILES that survive is_excluded()."""
     results: list[Path] = []
     for include_dir in INCLUDE_DIRS:
         base = repo_root / include_dir
@@ -104,4 +109,11 @@ def iter_candidates(repo_root: Path) -> list[Path]:
             rel = path.relative_to(repo_root)
             if not is_excluded(rel):
                 results.append(rel)
+
+    for include_file in INCLUDE_FILES:
+        path = repo_root / include_file
+        rel = Path(include_file)
+        if path.is_file() and not is_excluded(rel):
+            results.append(rel)
+
     return results

@@ -19,29 +19,33 @@ use this path.
 Compare that template repo against this project and sync it in:
 
 1. **Always exclude** (never touch, even if present in the template repo): `properties.yml`,
-   `README.md`, `LICENSE`, `uv.lock`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
+   `LICENSE`, `uv.lock`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
    `.venv/`, `__pycache__/`, `.ruff_cache/`, any other cache/build artifact, and anything under
    `logs/` or `tmp/`.
-2. **Shared tooling — sync these by default** if present in the template repo: `modules/`,
+2. **`README.md`: always take the template repo's version.** Overwrite it directly — no diff, no
+   confirmation needed. Unlike the other excluded files above, `README.md` is treated as shared,
+   generic documentation kept identical in both directions (see Push below), not project-specific
+   content.
+3. **Shared tooling — sync these by default** if present in the template repo: `modules/`,
    `tasks/`, `.github/instructions/`, `.github/prompts/`, `.github/workflows/`,
    `.claude/commands/`, `.vscode/`, `invoke.yml`, `setup.sh`, `CLAUDE.md`, `.editorconfig`,
    `.yamllint`. Also look at anything else at the template repo's top level that isn't covered by
    the exclude list — use judgment on whether it's generic tooling or project-specific, and ask
    the user if genuinely unsure.
-3. For each candidate file:
+4. For each remaining candidate file:
    - Missing in this project → propose adding it.
    - Identical to what's already here → skip silently.
    - Different from what's already here → show a short diff and ask the user whether to overwrite,
      keep the local version, or merge by hand. Do not overwrite silently.
-4. Apply only the changes the user approved (plus unambiguous additions/identical-skips), then
-   summarize what was added, updated, and skipped.
-5. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke claude.sync`
+5. Apply only the changes the user approved (plus unambiguous additions/identical-skips, and the
+   `README.md` overwrite from step 2), then summarize what was added, updated, and skipped.
+6. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke claude.sync`
    (add `--force` to overwrite hand-crafted `.claude/commands/`) afterward — do not run it
    automatically.
 
-Never modify `pyproject.toml`, `properties.yml`, `README.md`, `LICENSE`, or `uv.lock` even if the
-template repo's versions differ from this project's — those are always project-specific and must
-be reconciled by hand.
+Never modify `pyproject.toml`, `properties.yml`, `LICENSE`, or `uv.lock` even if the template
+repo's versions differ from this project's — those are always project-specific and must be
+reconciled by hand. (`README.md` is the one exception — see step 2.)
 
 ## Push
 
@@ -52,8 +56,10 @@ product-metadata content.
 **Scope** (enforced by `modules/template/scope.py`, mirrored here for visibility):
 - Eligible directories: `modules/`, `.github/instructions/`, `.github/prompts/`,
   `.claude/commands/`, `.clinerules/workflows/`, `.opencode/command/`, `.agents/skills/`.
+- Eligible individual file: `README.md` — kept in sync in both directions (see Pull above), so
+  changes to it here are proposed for push just like any other generic file.
 - Always excluded everywhere: `topics/`, `screenshots/`, `properties.yml`, `active_topic.yml`,
-  `uv.lock`, `README.md`, `LICENSE`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
+  `uv.lock`, `LICENSE`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
   `.venv/`, `__pycache__/`, `.ruff_cache/`, `logs/`, `tmp/`.
 - Always excluded business content: `modules/fireball/`, `modules/financials/`,
   `.agents/skills/fireball/`, `.agents/skills/product-metadata/`,

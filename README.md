@@ -10,8 +10,8 @@ The Big Win: a single, portable home for our AI-assisted work — one we fully o
 ## Setup
 #### Clone Repo
 ```bash
-git clone https://github.com/LevonBecker/template_ai_vault.git ai_vault
-cd ai_vault
+git clone https://github.com/LevonBecker/template_ai_vault.git template_ai_vault
+cd template_ai_vault
 ```
 #### Run Setup
 ##### Bash
