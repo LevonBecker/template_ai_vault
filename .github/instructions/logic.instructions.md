@@ -82,7 +82,7 @@ All providers ultimately read from here. Never duplicate rules into provider-spe
 | File | Role | Contents |
 |------|------|----------|
 | `.github/instructions/*.md` | **Source of truth** — update here only | All rules, standards, workflow |
-| `.github/copilot-instructions.md` | Thin pointer for Copilot, always loaded | One-liner pointing to `project.instructions.md` |
+| `.github/copilot-instructions.md` | Thin pointer for Copilot, always loaded | One-liner pointing to `index.instructions.md` |
 | `AGENTS.md` (root) | Thin pointer for OpenCode / other tools | Slash command quick-ref + links to instruction files |
 | `CLAUDE.md` (root) | Thin pointer for Claude TUI | One-liner pointing to `AGENTS.md` |
 | `topics/*/AGENTS.md` | Topic-scoped pointer | Topic context + link to root `AGENTS.md` |
@@ -110,4 +110,4 @@ Delete its entrypoint file(s) only. `.github/instructions/` and `AGENTS.md` stay
 - `.github/instructions/invoke.instructions.md` — invoke task runner (plain CLI automation, no AI)
 - `.github/instructions/modules.instructions.md` — Python module architecture and layout conventions
 - `.github/instructions/tests.instructions.md` — testing requirements and workflow
-- `.github/instructions/project.instructions.md` — repository-wide operating rules
+- `.github/instructions/index.instructions.md` — repository-wide operating rules

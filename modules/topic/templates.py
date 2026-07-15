@@ -19,7 +19,7 @@ Before working in any topic, read these instruction files. They apply to every c
 
 - **Markdown style rules**: `.github/instructions/style.instructions.md`
 - **Docs file standards (CSV, dates, formatting)**: `.github/instructions/docs.instructions.md`
-- **Project overview and workflow**: `.github/instructions/project.instructions.md`
+- **Project overview and workflow**: `.github/instructions/index.instructions.md`
 - **Topics and research workflow**: `.github/instructions/topics.instructions.md`
 
 Additional instruction files in `.github/instructions/` cover architecture, commands, modules, tests, screenshots, travel, and product metadata. Read the relevant one when working in those areas."""

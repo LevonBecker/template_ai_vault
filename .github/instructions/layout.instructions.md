@@ -43,7 +43,7 @@ template_ai_vault/
 ├── topics/        # research/business content — see topics.instructions.md
 ├── screenshots/   # single shared screenshots folder — see screenshots.instructions.md
 ├── .github/
-│   ├── copilot-instructions.md  # always-loaded thin pointer to project.instructions.md
+│   ├── copilot-instructions.md  # always-loaded thin pointer to index.instructions.md
 │   ├── instructions/            # source of truth for all AI rules (this directory)
 │   └── prompts/                 # source of truth for all slash commands
 ├── .claude/commands/, .clinerules/workflows/, .opencode/command/  # generated command dirs
@@ -66,4 +66,4 @@ skills, `properties.yml` itself) is never part of that sync in either direction.
 - `.github/instructions/layout.instructions.md` — directory layout conventions (this file)
 - `.github/instructions/logic.instructions.md` — decision-making architecture and provider hierarchy
 - `.github/instructions/modules.instructions.md` — Python module internal layout conventions
-- `.github/instructions/project.instructions.md` — repository-wide operating rules
+- `.github/instructions/index.instructions.md` — repository-wide operating rules
