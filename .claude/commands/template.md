@@ -51,16 +51,14 @@ product-metadata content.
 
 **Scope** (enforced by `modules/template/scope.py`, mirrored here for visibility):
 - Eligible directories: `modules/`, `.github/instructions/`, `.github/prompts/`,
-  `.claude/commands/`, `.clinerules/workflows/`, `.opencode/command/`, `.agents/skills/`.
-- Always excluded everywhere: `topics/`, `screenshots/`, `properties.yml`, `active_topic.yml`,
-  `uv.lock`, `README.md`, `LICENSE`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
-  `.venv/`, `__pycache__/`, `.ruff_cache/`, `logs/`, `tmp/`.
-- Always excluded business content: `modules/fireball/`, `modules/financials/`,
-  `.agents/skills/fireball/`, `.agents/skills/product-metadata/`,
-  `.github/instructions/travel.instructions.md`,
-  `.github/instructions/product_metadata.instructions.md`, and every prompt/command/workflow
-  file for `add_expense`, `add_size_chart`, `calc_cost`, `list_expenses`, `financials`,
-  `update_card_limit`, `fireball`, `new_product_metadata`.
+  `.claude/commands/`, `.claude/skills/`, `.clinerules/workflows/`, `.opencode/command/`.
+- Candidates come from `git ls-files`, so anything this repo's own `.gitignore` covers is already
+  excluded — nothing hardcoded for that.
+- Also excluded: anything in this project's `template.ignore.yml` `exclude:` list — the same file
+  `/template pull` uses to protect project-specific content, applied here in the other direction so
+  it never leaks upstream either. A fork with its own business modules or personal-vault content
+  (e.g. `modules/fireball/`, `.claude/skills/fireball/`) declares it there once instead of it being
+  hardcoded in Python.
 
 Repo-name references are rewritten automatically on copy (this repo's name → the template repo's
 name, both derived from `properties.yml` `repo.local`/`template.local` basenames), so name-only

@@ -91,7 +91,7 @@ brew install gh
 gh auth login
 ```
 
-Required for the PR workflow commands (`/pr`, `/punch-it-chewy`) — they shell out to `gh pr create`.
+Required for the PR workflow commands (`/pr`, `/ship-it`) — they shell out to `gh pr create`.
 
 #### GitHub Copilot CLI
 ```bash

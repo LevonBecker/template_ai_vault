@@ -2,7 +2,7 @@
 description: Push the current feature branch, then draft PR notes and open a Pull Request via gh.
 subtask: false
 agent: general
-slash_command: /punch-it-chewy
+slash_command: /ship-it
 ---
 
 Run the push workflow:

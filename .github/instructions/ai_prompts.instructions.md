@@ -5,6 +5,8 @@ applyTo: ".opencode/command/**,.claude/commands/**,.clinerules/workflows/**,.git
 
 Standards for the AI custom prompts / slash commands synced across all four tool directories
 (`.github/prompts/`, `.claude/commands/`, `.opencode/command/`, `.clinerules/workflows/`).
+`.claude/skills/*/SKILL.md` mirrors these too (see `skills.instructions.md`), and
+`.github/skills/*/SKILL.md` optionally does.
 
 ## Architecture
 
@@ -72,7 +74,8 @@ uv run --no-sync python -m modules.your_module.route "$ARGUMENTS"
 
 1. Create Python module: `modules/your_module/your_task.py` (ALL logic here)
 2. Create router: `modules/your_module/route.py` (argument dispatch)
-3. Create command files in all four tool dirs with the thin wrapper body
+3. Create command files in all four tool dirs with the thin wrapper body, plus a
+   `.claude/skills/<name>/SKILL.md` pointer (see `skills.instructions.md`)
 4. Run `uv run invoke fix && uv run invoke test` (must be 10/10 for .py changes)
 
 ## Cache Restart Requirement
@@ -191,6 +194,7 @@ AI tools cache command files at startup. After editing a command file you MUST r
 /repo view_screenshot  → modules.repo.route → modules.repo.view_screenshot
 /rebase                → invoke repo.rebase → modules.repo.rebase
 /squash                → invoke repo.squash → modules.repo.squash
+/pr-cleanup            → modules.repo.route → modules.repo.pr_cleanup
 /push (alias)          → /repo push
 /pull (alias)          → /repo pull
 /ss (alias)            → /repo view_screenshot
@@ -203,26 +207,6 @@ AI tools cache command files at startup. After editing a command file you MUST r
 /topic <path>            → modules.topic.route → modules.topic.switch
 /topic init               → modules.topic.route → modules.topic.init
 /topic update             → modules.topic.route → modules.topic.update
-```
-
-### Fireball
-```
-/fireball                → modules.fireball.route → modules.fireball (no args)
-/add_expense             → (AI-guided) → modules.fireball.add_expense
-/list_expenses           → modules.fireball.route → modules.fireball.list_expenses
-/calc_cost               → modules.fireball.route → modules.fireball.f3d_calc_product_cost
-/add_size_chart          → (AI-guided) → topics/fireball/marketing/product_metadata size chart map
-/new_product_metadata    → (AI-guided) → topics/fireball/marketing/product_metadata CSVs
-```
-`add_equipment_disposal.py` and `show_total.py` back the same `fireball` module but currently have
-no dedicated slash command — call them directly:
-`uv run --no-sync python -m modules.fireball.add_equipment_disposal` /
-`uv run --no-sync python -m modules.fireball.show_total`.
-
-### Financials
-```
-/financials              → modules.financials.route → modules.financials (no args)
-/update_card_limit       → (AI-guided) → modules.financials.update_card_limit
 ```
 
 ### Version Checks & Upgrades

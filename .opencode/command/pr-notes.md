@@ -19,5 +19,5 @@ Then:
 - If you were invoked directly by the user (they typed `/pr-notes`), save the notes by running:
   `uv run --no-sync python -m modules.repo.route "pr_notes --content=\"<the notes>\""`
   Report the saved file path to the user — they may copy/paste it into an existing PR description.
-- If you are running as a step inside another command (e.g. `/pr` or `/punch-it-chewy`), do not
+- If you are running as a step inside another command (e.g. `/pr` or `/ship-it`), do not
   save — just hold the composed notes so that command can use them directly.
