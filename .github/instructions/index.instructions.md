@@ -18,9 +18,10 @@ For detailed instructions, read the relevant domain file:
 
 - **Topics & research workflow**: `.github/instructions/topics.instructions.md`
 - **Python module architecture**: `.github/instructions/modules.instructions.md`
-- **AI custom prompts / slash command creation**: `.github/instructions/ai_prompts.instructions.md`
+- **AI custom prompts / slash command creation**: `.github/instructions/prompts.instructions.md`
 - **Agent Skills (SKILL.md) conventions**: `.github/instructions/skills.instructions.md`
 - **Testing requirements**: `.github/instructions/tests.instructions.md`
+- **Code review priorities**: `.github/instructions/review.instructions.md`
 - **AI decision architecture (thin-wrapper logic, prompts as the AI's source of truth, provider-agnostic design)**: `.github/instructions/logic.instructions.md`
 - **Repository & directory layout**: `.github/instructions/layout.instructions.md`
 - **Invoke task runner**: `.github/instructions/invoke.instructions.md`

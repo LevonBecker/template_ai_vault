@@ -14,7 +14,7 @@ Every module folder under `modules/` follows the same shape so any module is nav
 reading its source first:
 
 - **`route.py`** — required in every module reachable from a slash command; dispatch only (see
-  `ai_prompts.instructions.md` for the router template). Sync-only modules with no slash command
+  `prompts.instructions.md` for the router template). Sync-only modules with no slash command
   (e.g. `ollama/`) may omit it.
 - **`README.md`** — required in every module folder; documents the module's purpose and what each
   file does.
@@ -23,8 +23,8 @@ reading its source first:
   (`fireball/add_expense.py` → `/fireball add_expense`).
 - **Naming** — module directory names are lowercase `snake_case` nouns matching the domain/tool
   they wrap (`fireball`, `financials`, `opencode`) — never mixed case or a `_module` suffix.
-- **Sync-only modules** (`claude/`, `cline/`, `hermes/`, `opencode/`) are the lightweight
-  exception: just `sync.py`, plus `route.py` only where a slash command exists.
+- **Sync-only modules** (`hermes/`, `opencode/`) are the lightweight exception: just `sync.py`,
+  plus `route.py` only where a slash command exists.
 - **`common/`** is the only module importable from every other module — it holds no domain logic
   of its own, only shared plumbing.
 
@@ -118,10 +118,7 @@ modules/
 │   ├── route.py        # /chat routing
 │   └── start.py
 ├── claude/
-│   ├── route.py        # /claude routing (proxies to claude CLI)
-│   └── sync.py         # Syncs .claude/commands/ from .github/prompts/
-├── cline/
-│   └── sync.py         # Syncs .clinerules/workflows/ from .github/prompts/
+│   └── route.py        # /claude routing (proxies to claude CLI)
 ├── common/
 │   ├── cli.py            # Click-like CLI wrapper
 │   ├── invoke_runner.py
@@ -192,17 +189,19 @@ one, unlike most other modules.
 ## AI Tool Sync Modules
 
 `.github/prompts/` is the single source of truth for all slash commands — see
-`.github/instructions/logic.instructions.md` for why. Four sync modules generate the tool-specific
+`.github/instructions/logic.instructions.md` for why. Two sync modules generate tool-specific
 formats from it:
 
 | Module | Output | Invoke command |
 |---|---|---|
-| `modules/claude/sync.py` | `.claude/commands/*.md` | `inv claude.sync` |
-| `modules/cline/sync.py` | `.clinerules/workflows/*.md` | `inv cline.sync` |
 | `modules/hermes/sync.py` | `~/.hermes/config.yaml` + `SKILL.md` | `inv hermes.sync` |
 | `modules/opencode/sync.py` | `.opencode/command/*.md` | `inv opencode.sync` |
 
-Run `inv ai.sync` to regenerate all four at once. Never hand-edit the output dirs.
+Run `inv ai.sync` to regenerate both at once. Never hand-edit these two output dirs.
+
+`.claude/commands/*.md` and `.clinerules/workflows/*.md` have no sync script — they're
+hand-maintained 1:1 mirrors of `.github/prompts/`, verified by `inv tests.check_agents`. See
+`.github/instructions/prompts.instructions.md`.
 
 ## Module Template
 

@@ -31,11 +31,11 @@ The following agents are available from **any directory** in the repository:
 
 ### AI Tool Sync
 Run after adding or modifying any `.github/prompts/*.prompt.md` file. `.github/prompts/` is the source of truth.
-- `inv ai.sync` - Sync all AI tools at once (claude + cline + hermes + opencode)
-- `inv claude.sync` - Sync `.claude/commands/`
-- `inv cline.sync` - Sync `.clinerules/workflows/`
+- `inv ai.sync` - Sync all AI tools at once (hermes + opencode)
 - `inv hermes.sync` - Sync `~/.hermes/` config + SKILL.md
 - `inv opencode.sync` - Sync `.opencode/command/`
+- `.claude/commands/` and `.clinerules/workflows/` have no sync task — hand-maintained mirrors,
+  checked by `inv tests.check_agents`
 
 ### Ollama (Local LLM)
 - `inv ollama.install` - Install Ollama + local coding LLM on Apple Silicon
@@ -125,8 +125,7 @@ All modules are located in `/modules/` directory organized by responsibility:
 ```
 modules/
 ├── chat/          # Chat lifecycle operations
-├── claude/        # Claude Code integration (route, sync)
-├── cline/         # Cline integration (sync)
+├── claude/        # Claude Code CLI passthrough (route)
 ├── hermes/        # Hermes AI agent integration (sync)
 ├── ollama/        # Local LLM setup on Apple Silicon
 ├── opencode/      # OpenCode integration (sync)
@@ -251,7 +250,7 @@ screenshots = get_screenshots_location()
 
 **Never hardcode paths.** Always use centralized property fetching.
 
-**See `.github/instructions/commands.instructions.md` and `.github/instructions/modules.instructions.md` for complete module creation workflow.**
+**See `.github/instructions/prompts.instructions.md` and `.github/instructions/modules.instructions.md` for complete module creation workflow.**
 
 ## How Slash Commands Work
 Slash commands are executed via router modules embedded in the command file.
@@ -349,7 +348,7 @@ slash_command: /your_command
 - ❌ Write bash scripts directly in slash commands
 - ❌ Use `subtask: true` (causes Task tool recursion)
 
-**See `.github/instructions/commands.instructions.md` for complete documentation.**
+**See `.github/instructions/prompts.instructions.md` for complete documentation.**
 
 ### Modifying Slash Commands - CRITICAL WORKFLOW
 **IMPORTANT:** AI tools cache command files. After making changes to command files, you MUST restart your AI tool for changes to take effect.

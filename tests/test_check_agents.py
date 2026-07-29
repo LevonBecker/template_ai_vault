@@ -1,6 +1,6 @@
 """Verify .github/prompts/ is mirrored into every synced command/skill dir.
 
-See .github/instructions/ai_prompts.instructions.md and skills.instructions.md for why these
+See .github/instructions/prompts.instructions.md and skills.instructions.md for why these
 five directories must stay 1:1 with .github/prompts/*.prompt.md.
 """
 

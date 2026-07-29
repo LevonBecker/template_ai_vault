@@ -1,12 +1,10 @@
 from invoke import Collection
 
-from . import claude, cline, combos, debug, hermes, ollama, opencode, ruff, setup, tests, upgrade, versioning
+from . import combos, debug, hermes, ollama, opencode, ruff, setup, tests, upgrade, versioning
 
 namespace = Collection()
 namespace.configure({"auto_dash_names": False})
 
-namespace.add_collection(claude, name="claude")
-namespace.add_collection(cline, name="cline")
 namespace.add_collection(debug, name="debug")
 namespace.add_collection(hermes, name="hermes")
 namespace.add_collection(ollama, name="ollama")

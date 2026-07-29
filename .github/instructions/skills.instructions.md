@@ -8,7 +8,7 @@ This repo has two separate `SKILL.md`-based directories, serving different purpo
 
 | Location | Tool | Purpose | Sync requirement |
 |----------|------|---------|-------------------|
-| `.claude/skills/<name>/SKILL.md` | Claude Code | Auto-discovered mirror of every `.github/prompts/*.prompt.md` command | Required 1:1 (see `ai_prompts.instructions.md`) |
+| `.claude/skills/<name>/SKILL.md` | Claude Code | Auto-discovered mirror of every `.github/prompts/*.prompt.md` command | Required 1:1 (see `prompts.instructions.md`) |
 | `.github/skills/<name>/SKILL.md` | GitHub Copilot (VS Code) | Optional, on-demand skill for a specific workflow | None — add only where useful, no mirror required |
 
 ## Claude Code Skills (.claude/skills/*/SKILL.md)
@@ -27,7 +27,7 @@ This uses the Agent Skills format (published as an open spec, in principle imple
 tool), but treat it here as **Claude Code-specific** until other tools this repo targets
 demonstrably adopt it — hence living under `.claude/` rather than a vendor-neutral `.agents/`.
 
-Required for every command — see `ai_prompts.instructions.md`'s "Creating a New Command" and the
+Required for every command — see `prompts.instructions.md`'s "Creating a New Command" and the
 four synced command dirs it describes (`.github/prompts/`, `.claude/commands/`,
 `.opencode/command/`, `.clinerules/workflows/`) — `.claude/skills/` is a fifth.
 
@@ -51,5 +51,5 @@ any trigger phrase the skill should respond to must be spelled out in `descripti
 implied by the skill's name.
 
 ## Related Instructions
-- `ai_prompts.instructions.md` — slash command / prompt file conventions and the synced command dirs
+- `prompts.instructions.md` — slash command / prompt file conventions and the synced command dirs
 - `logic.instructions.md` — overall AI/logic architecture
