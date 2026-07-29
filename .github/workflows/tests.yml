@@ -1,8 +1,11 @@
 ---
-name: Tests Style
-run-name: "Tests Style (${{ github.head_ref || github.ref_name }})"
+name: Tests
+run-name: "Tests (${{ github.head_ref || github.ref_name }})"
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   actionlint:
@@ -20,6 +23,21 @@ jobs:
           invoke debug.env
           invoke tests.actionlint
 
+  check_agents:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Check Agents
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.check_agents
+
   pylint:
     runs-on: ubuntu-latest
     steps:
@@ -34,6 +52,21 @@ jobs:
           source .venv/bin/activate
           invoke debug.env
           invoke tests.pylint
+
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup CICD
+        uses: ./.github/actions/cicd_setup
+
+      - name: Pytest
+        run: |
+          source .venv/bin/activate
+          invoke debug.env
+          invoke tests.pytest
 
   ruff_lint:
     runs-on: ubuntu-latest
