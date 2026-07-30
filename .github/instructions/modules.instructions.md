@@ -39,6 +39,7 @@ reading its source first:
 def main(title: str | None = None):
     pass
 
+
 # ❌ WRONG — never use positional arguments
 def main(title):
     pass
@@ -212,6 +213,7 @@ Module description.
 Usage:
     uv run --no-sync python -m modules.<group>.<name> [--option value]
 """
+
 from modules.common import cli
 from modules.common.properties import get_repo_local
 
