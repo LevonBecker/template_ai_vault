@@ -149,6 +149,7 @@ This is a repository-wide architectural standard for consistency and maintainabi
 ```python
 from modules.common import cli
 
+
 @cli.command()
 @cli.option("--title", default=None, help="Title for the chat")
 @cli.option("--pattern", default=None, help="Search pattern")
@@ -276,7 +277,9 @@ Router runs: modules.chat.resume --pattern="wire_tunnels"
 ```python
 # modules/your_module/your_task.py
 """Your task description."""
+
 from modules.common import cli
+
 
 @cli.command()
 @cli.option("--argument", required=False, help="Description")

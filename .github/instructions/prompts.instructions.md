@@ -112,7 +112,9 @@ Python function receives: pattern="wire_tunnels"
 ```python
 # modules/your_module/your_task.py
 """Your task description."""
+
 from modules.common import cli
+
 
 @cli.command()
 @cli.option("--argument", required=False, help="Description")
