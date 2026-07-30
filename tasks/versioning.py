@@ -24,6 +24,18 @@ def libs(context, dry_run=False, yes=False):
 
 
 @task
+def project_bump_build(context):
+    """Advance VERSION for a dev build (new minor's first build, or next build number)"""
+    context.run("python -m modules.versioning.project")
+
+
+@task
+def project_bump_release(context):
+    """Finalize VERSION for release by dropping the build suffix"""
+    context.run("python -m modules.versioning.project --release")
+
+
+@task
 def python(context, dry_run=False, yes=False):
     """Check the pinned Python version against the latest release and update config references"""
     _run_module(context, "modules.versioning.python", dry_run, yes)

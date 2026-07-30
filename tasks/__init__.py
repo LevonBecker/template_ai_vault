@@ -1,6 +1,6 @@
 from invoke import Collection
 
-from . import combos, debug, hermes, ollama, opencode, ruff, setup, tests, upgrade, versioning
+from . import combos, debug, hermes, ollama, opencode, ruff, setup, tests, upgrade, uv, versioning
 
 namespace = Collection()
 namespace.configure({"auto_dash_names": False})
@@ -13,6 +13,7 @@ namespace.add_collection(ruff, name="ruff")
 namespace.add_collection(setup, name="setup")
 namespace.add_collection(tests, name="tests")
 namespace.add_collection(upgrade, name="upgrade")
+namespace.add_collection(uv, name="uv")
 namespace.add_collection(versioning, name="ver")
 
 # Combo Tasks

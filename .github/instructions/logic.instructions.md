@@ -19,7 +19,7 @@ modules/*/            All business logic. Reusable, testable. The only place any
         └── tasks/*.py (invoke)  Thin CLI wrapper too, reached via `invoke <task>`. Used for
                                   CI/CD-style automation (fix, test, sync, setup, upgrade)
                                   rather than interactive slash commands. No logic here either
-                                  — see `invoke.instructions.md`.
+                                  — see `tasks.instructions.md`.
         ↑
 An AI (or a human) calls either CLI — `python -m modules.*.route` or `invoke <task>` — exactly
 the way a human operator would from a terminal. Neither CLI knows or cares whether an AI or a
@@ -107,7 +107,7 @@ Delete its entrypoint file(s) only. `.github/instructions/` and `AGENTS.md` stay
 - `.github/instructions/logic.instructions.md` — AI decision architecture, modules/invoke/AI stack, provider hierarchy (this file)
 - `.github/instructions/layout.instructions.md` — repository and directory layout
 - `.github/instructions/prompts.instructions.md` — AI custom prompts / slash command standards and templates
-- `.github/instructions/invoke.instructions.md` — invoke task runner (plain CLI automation, no AI)
+- `.github/instructions/tasks.instructions.md` — invoke task runner (plain CLI automation, no AI)
 - `.github/instructions/modules.instructions.md` — Python module architecture and layout conventions
 - `.github/instructions/tests.instructions.md` — testing requirements and workflow
 - `.github/instructions/index.instructions.md` — repository-wide operating rules
