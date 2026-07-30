@@ -1,7 +1,7 @@
 ---
 applyTo: "tasks/**"
 ---
-# Invoke Task Runner Instructions
+# Tasks Instructions
 
 ## Overview
 
@@ -46,6 +46,13 @@ no judgment calls, no AI-specific behavior.
 | sync | `uv run --no-sync invoke upgrade.sync` | Sync dependencies (no version check) |
 | upgrade | `uv run --no-sync invoke upgrade.upgrade` | Upgrade Python + all dependencies (default) |
 
+## uv Tasks
+
+| Task | Command | Description |
+|------|---------|-------------|
+| upgrade_bin | `uv run --no-sync invoke uv.upgrade_bin` | Upgrade the uv binary itself (`brew upgrade uv`) |
+| upgrade_libs | `uv run --no-sync invoke uv.upgrade_libs` | Install the versions currently locked in `pyproject.toml` (`uv sync`) |
+
 ## Versioning Tasks
 
 Read-only version-lock *checks* — compare `pyproject.toml` deps and `.github/workflows/` action
@@ -58,6 +65,8 @@ see Upgrade Tasks above for that).
 | libs | `uv run --no-sync invoke ver.libs` | Check `pyproject.toml` deps against latest releases |
 | python | `uv run --no-sync invoke ver.python` | Check the pinned Python version against the latest release |
 | workflows | `uv run --no-sync invoke ver.workflows` | Check `.github/workflows/` action refs against latest versions |
+| project_bump_build | `uv run --no-sync invoke ver.project_bump_build` | Advance root `VERSION` for a dev build |
+| project_bump_release | `uv run --no-sync invoke ver.project_bump_release` | Finalize `VERSION` for release (drop build suffix) |
 
 ## Invoke vs Direct Python
 
@@ -124,5 +133,6 @@ tasks/
 ├── setup.py         # setup.properties — creates/stamps properties.yml
 ├── tests.py         # actionlint, check_agents, pylint, pytest, rufflint, yamllint
 ├── upgrade.py        # libs, python, sync, upgrade
+├── uv.py            # uv.upgrade_bin, uv.upgrade_libs
 └── versioning.py    # all, libs, workflows (version-lock checks)
 ```

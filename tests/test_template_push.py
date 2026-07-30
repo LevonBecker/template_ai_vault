@@ -4,7 +4,8 @@ import subprocess
 from pathlib import Path
 
 from modules.common.properties import get_repo_local, get_template_local
-from modules.template.push import _classify, rewrite_repo_references
+from modules.template.naming import rewrite_repo_references
+from modules.template.push import _classify
 
 
 def _configured_names() -> tuple[str, str]:

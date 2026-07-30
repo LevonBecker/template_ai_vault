@@ -13,7 +13,7 @@ Standards for the AI custom prompts / slash commands synced across all four tool
 Commands are the AI-facing entrypoint layer described in `.github/instructions/logic.instructions.md`
 (Core Principle + The Stack) — thin wrappers only, no business logic. See that file for
 why prompts are the AI's decision-capture layer, and how this differs from
-`invoke.instructions.md`'s plain CLI automation.
+`tasks.instructions.md`'s plain CLI automation.
 
 ## Required Frontmatter
 

@@ -54,7 +54,8 @@ Requires `gh` (GitHub CLI) authenticated — see [`setup.md`](setup.md).
 |---------|---------|---------|
 | `/setup` | Run initial project setup | Runs `./setup.sh` (macOS) — creates `.venv`, installs deps, and configures `properties.yml` via `inv setup.properties` |
 | `/fix` | Auto-fix lint issues | `ruff check --fix` + `ruff format` |
-| `/test` | Run all tests and linters | ruff, pylint, yamllint, actionlint — must be 10/10 for `.py`/`.yml` changes |
+| `/test` | Run all tests and linters | ruff, pylint, pytest, yamllint, actionlint, check_agents — must be 10/10 for `.py`/`.yml` changes |
+| `/docs` | Audit for doc/AI-config drift | Diffs the current branch, sweeps READMEs, `.github/instructions/`, `AGENTS.md`/`CLAUDE.md`, and the synced command dirs for staleness and fixes it directly |
 | `/sync-setup` | Pull shared tooling updates | Compares this repo against the `template_python` skeleton repo (`modules/`, `tasks/`, `.github/`, `.claude/`, config files) and syncs in changes, asking about anything ambiguous |
 
 ## Version Management

@@ -77,6 +77,7 @@ modules/template/pull.py         modules/template/push.py
   ↓                                    ↓
 modules/template/resolve.py  ←────┘  (shared local-path-or-clone resolution)
                                        modules/template/scope.py (fixed include/exclude rules)
+                                       modules/template/naming.py (repo-name rewriting)
   ↓
 properties.yml (template.local / template.remote)  →  TEMPLATE_PATH=<resolved path>
 ```
