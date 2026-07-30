@@ -46,8 +46,8 @@ conflict resolution happens in the `/template` prompt itself, not here — see
 ## Push
 
 Proposes new generic improvements from this repo (in `modules/`, `.github/instructions/`,
-`.github/prompts/`, `.claude/commands/`, `.clinerules/workflows/`, `.opencode/command/`,
-`.agents/skills/` — excluding business-specific fireball/product-metadata content, see
+`.github/prompts/`, `.claude/commands/`, `.claude/skills/`, `.clinerules/workflows/`,
+`.opencode/command/` — excluding anything declared in this repo's `template.ignore.yml`, see
 `modules/template/scope.py`) into the parent template repo as a pull request.
 
 Three phases, split at the confirmation boundary so the agent can check in with the user between

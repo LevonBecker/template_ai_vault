@@ -77,18 +77,18 @@ create a thin entrypoint file that says "See `AGENTS.md` for all instructions" �
 into it.
 
 ### 2. Commands: Prompt File Sync
-**`.github/prompts/*.prompt.md` is the single source of truth for every slash command.** Command
-*content* is generated from there into each tool's native format — hand-editing a generated file
-gets overwritten the next time someone runs `--force`.
+**`.github/prompts/*.prompt.md` is the single source of truth for every slash command.** Two
+mirrors are auto-generated from it; two are hand-maintained 1:1 copies.
 
 | Module | Generates | Invoke command |
 |---|---|---|
-| `modules/claude/sync.py` | `.claude/commands/*.md` | `inv claude.sync` |
-| `modules/cline/sync.py` | `.clinerules/workflows/*.md` | `inv cline.sync` |
 | `modules/hermes/sync.py` | `~/.hermes/config.yaml` + `SKILL.md` | `inv hermes.sync` |
 | `modules/opencode/sync.py` | `.opencode/command/*.md` | `inv opencode.sync` |
 
-Run `uv run --no-sync invoke ai.sync` to regenerate all four at once. See
+`.claude/commands/*.md` and `.clinerules/workflows/*.md` are hand-maintained mirrors — no sync
+script generates them. `uv run --no-sync invoke tests.check_agents` verifies every prompt has a
+matching file in both, plus `.claude/skills/` and `.opencode/command/`. See
+`.github/instructions/prompts.instructions.md` for the mirror conventions, and
 [`custom_prompts.md`](custom_prompts.md) for the full workflow (creating a command, editing one,
 what "source of truth" means in practice).
 
@@ -153,12 +153,9 @@ modules/
 ├── skeleton/                    # Locates the shared template_python skeleton repo for /sync-setup
 │   ├── sync.py / route.py
 │   └── README.md
-├── claude/                      # Claude Code CLI passthrough + command sync
+├── claude/                      # Claude Code CLI passthrough
 │   ├── route.py                 # /claude → proxies to the `claude` CLI
-│   ├── sync.py                  # Generates .claude/commands/ from .github/prompts/
 │   └── README.md
-├── cline/
-│   └── sync.py                  # Generates .clinerules/workflows/ from .github/prompts/
 ├── hermes/
 │   └── sync.py                  # Generates ~/.hermes/ config + SKILL.md from .github/prompts/
 ├── opencode/

@@ -27,6 +27,7 @@ _SUBCOMMAND_MODULES = {
     "pr_notes": "modules.repo.pr_notes",
     "pr_create": "modules.repo.pr_create",
     "pr_push": "modules.repo.pr_push",
+    "pr_cleanup": "modules.repo.pr_cleanup",
     "rebase": "modules.repo.rebase",
     "squash": "modules.repo.squash",
 }

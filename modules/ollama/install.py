@@ -244,7 +244,7 @@ def main(model: str | None = None, debug: bool = False) -> None:
     cli.echo("   In Cline's Ollama provider settings, set Request Timeout to 120000 ms")
     cli.echo("   (local inference is slower than a hosted API and needs the headroom).")
     cli.echo("   Custom slash commands are available via .clinerules/workflows/")
-    cli.echo("   (kept in sync with `inv cline.sync`). Try /push to test.\n")
+    cli.echo("   (hand-maintained mirror of .github/prompts/). Try /push to test.\n")
     dbg(">>> main: done", debug)
 
 

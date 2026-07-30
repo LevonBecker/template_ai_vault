@@ -45,7 +45,7 @@ itself.
 running a command — which options to pick, what to ask the user, when to stop, how to interpret
 ambiguous input — is captured as instructions in `.github/prompts/*.prompt.md`. These prompt files
 are the single source of truth every AI tool reads for command *behavior* (see
-`ai_prompts.instructions.md` for authoring them). If a decision isn't written down in a `.prompt.md`
+`prompts.instructions.md` for authoring them). If a decision isn't written down in a `.prompt.md`
 file or a standing rule in `.github/instructions/`, an AI enforcing it is not reproducible.
 
 **The reproducibility test.** Before letting an AI make a judgment call inside a command, ask:
@@ -106,7 +106,7 @@ Delete its entrypoint file(s) only. `.github/instructions/` and `AGENTS.md` stay
 
 - `.github/instructions/logic.instructions.md` — AI decision architecture, modules/invoke/AI stack, provider hierarchy (this file)
 - `.github/instructions/layout.instructions.md` — repository and directory layout
-- `.github/instructions/ai_prompts.instructions.md` — AI custom prompts / slash command standards and templates
+- `.github/instructions/prompts.instructions.md` — AI custom prompts / slash command standards and templates
 - `.github/instructions/invoke.instructions.md` — invoke task runner (plain CLI automation, no AI)
 - `.github/instructions/modules.instructions.md` — Python module architecture and layout conventions
 - `.github/instructions/tests.instructions.md` — testing requirements and workflow

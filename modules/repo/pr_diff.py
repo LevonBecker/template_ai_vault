@@ -9,28 +9,42 @@ from ..common import cli as click
 from ..common.properties import get_repo_local
 from ..common.utils import error
 
-_BASE_CANDIDATES = ("development", "develop", "main", "master")
+PROTECTED_BRANCHES = ("development", "develop", "main", "master")
 _DIFF_CHAR_LIMIT = 20_000
 
 
 def current_branch(repo_path: Path) -> str:
     """Return the current checked-out branch name."""
     result = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, capture_output=True, text=True, check=True
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return result.stdout.strip()
 
 
 def _remote_branches(repo_path: Path) -> list[str]:
     """Return all remote-tracking branch refs (e.g. 'origin/main')."""
-    result = subprocess.run(["git", "branch", "-r"], cwd=repo_path, capture_output=True, text=True, check=True)
+    result = subprocess.run(
+        ["git", "branch", "-r"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     return [line.strip() for line in result.stdout.splitlines()]
 
 
 def _commits_ahead(repo_path: Path, base_ref: str) -> int:
     """Return the number of commits HEAD is ahead of base_ref."""
     result = subprocess.run(
-        ["git", "rev-list", "--count", f"{base_ref}..HEAD"], cwd=repo_path, capture_output=True, text=True, check=True
+        ["git", "rev-list", "--count", f"{base_ref}..HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return int(result.stdout.strip())
 
@@ -38,7 +52,7 @@ def _commits_ahead(repo_path: Path, base_ref: str) -> int:
 def detect_base_branch(repo_path: Path, branch: str) -> str:
     """Detect which base branch (development/main/etc.) the current branch forked from."""
     remotes = _remote_branches(repo_path)
-    candidates = [f"origin/{name}" for name in _BASE_CANDIDATES if f"origin/{name}" in remotes and name != branch]
+    candidates = [f"origin/{name}" for name in PROTECTED_BRANCHES if f"origin/{name}" in remotes and name != branch]
     if not candidates:
         error("No base branch found (looked for development, develop, main, master on origin).")
 
@@ -65,7 +79,11 @@ def _commit_log(repo_path: Path, base_ref: str) -> str:
 def _diff_stat(repo_path: Path, base_ref: str) -> str:
     """Return the diffstat for base_ref...HEAD."""
     result = subprocess.run(
-        ["git", "diff", "--stat", f"{base_ref}...HEAD"], cwd=repo_path, capture_output=True, text=True, check=True
+        ["git", "diff", "--stat", f"{base_ref}...HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return result.stdout.strip() or "(no changes)"
 
@@ -73,7 +91,11 @@ def _diff_stat(repo_path: Path, base_ref: str) -> str:
 def _diff(repo_path: Path, base_ref: str) -> str:
     """Return the full diff for base_ref...HEAD, truncated if very large."""
     result = subprocess.run(
-        ["git", "diff", f"{base_ref}...HEAD"], cwd=repo_path, capture_output=True, text=True, check=True
+        ["git", "diff", f"{base_ref}...HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     diff_text = result.stdout
     if len(diff_text) > _DIFF_CHAR_LIMIT:
