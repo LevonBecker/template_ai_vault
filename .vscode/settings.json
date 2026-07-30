@@ -4,5 +4,13 @@
         "uv run --no-sync python -m modules.repo.route \"view_screenshot\"": true,
         "!`uv run --no-sync python -m modules.repo.route \"view_screenshot\"`": true
     },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+        }
+    },
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
 }

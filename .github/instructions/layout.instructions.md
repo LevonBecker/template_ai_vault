@@ -39,7 +39,7 @@ are generated from `.github/prompts/*.prompt.md`, the source of truth (see
 ```
 template_ai_vault/
 ├── modules/       # ALL business logic (Python) — see modules.instructions.md
-├── tasks/         # invoke task definitions — see invoke.instructions.md
+├── tasks/         # invoke task definitions — see tasks.instructions.md
 ├── topics/        # research/business content — see topics.instructions.md
 ├── screenshots/   # single shared screenshots folder — see screenshots.instructions.md
 ├── .github/
