@@ -1,5 +1,6 @@
 """Tests for modules.template.push repo-name rewriting and change classification."""
 
+import subprocess
 from pathlib import Path
 
 from modules.common.properties import get_repo_local, get_template_local
@@ -62,6 +63,16 @@ def _write(root: Path, rel: str, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def _git_init(root: Path) -> None:
+    """Turn a fixture directory into a git repo with everything staged.
+
+    _classify() -> iter_candidates() shells out to `git ls-files`, so the fixture
+    dirs need a real index (staging is enough; no commit required).
+    """
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+    subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+
+
 def test_classify_added_modified_deleted(tmp_path):
     repo = tmp_path / "my_vault"
     template = tmp_path / "template_my_vault"
@@ -72,6 +83,8 @@ def test_classify_added_modified_deleted(tmp_path):
     _write(template, "modules/common/shared.py", "same everywhere")
     _write(template, "modules/common/utils.py", "old content")
     _write(template, ".claude/commands/version.md", "deprecated command")
+    _git_init(repo)
+    _git_init(template)
 
     added, modified, deleted = _classify(repo, template, "my_vault", "template_my_vault")
 
@@ -86,6 +99,8 @@ def test_classify_name_only_difference_not_modified(tmp_path):
 
     _write(repo, "modules/common/utils.py", "path is my_vault/screenshots")
     _write(template, "modules/common/utils.py", "path is template_my_vault/screenshots")
+    _git_init(repo)
+    _git_init(template)
 
     added, modified, deleted = _classify(repo, template, "my_vault", "template_my_vault")
 
@@ -101,6 +116,9 @@ def test_classify_excluded_template_files_not_deletion_candidates(tmp_path):
     _write(repo, "modules/common/utils.py", "content")
     _write(template, "modules/common/utils.py", "content")
     _write(template, "modules/fireball/route.py", "business module stays untouched")
+    _write(template, "template.ignore.yml", "exclude:\n  - modules/fireball/\n")
+    _git_init(repo)
+    _git_init(template)
 
     _, _, deleted = _classify(repo, template, "my_vault", "template_my_vault")
 

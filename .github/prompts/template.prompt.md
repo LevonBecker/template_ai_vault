@@ -40,9 +40,11 @@ Compare that template repo against this project and sync it in:
      template repo's absence; regenerate it per step 5 instead.
 4. Apply only the changes the user approved (plus unambiguous additions/identical-skips), then
    summarize what was added, updated, and skipped.
-5. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke claude.sync`
-   and `uv run --no-sync invoke opencode.sync` (add `--force` to overwrite hand-crafted
-   `.claude/commands/` or `.opencode/command/` files) afterward — do not run them automatically.
+5. If `.github/prompts/` changed, remind the user to run `uv run --no-sync invoke opencode.sync`
+   (add `--force` to overwrite hand-crafted `.opencode/command/` files) afterward — do not run it
+   automatically. Also remind them to hand-update `.claude/commands/` and `.clinerules/workflows/`
+   to match (no sync script for those — see `.github/instructions/prompts.instructions.md`) and
+   run `uv run --no-sync invoke tests.check_agents` to confirm all four mirrors stay in sync.
 
 Never modify `pyproject.toml`, `properties.yml`, `README.md`, `LICENSE`, or `uv.lock` even if the
 template repo's versions differ from this project's — those are always project-specific and must
@@ -56,16 +58,14 @@ product-metadata content.
 
 **Scope** (enforced by `modules/template/scope.py`, mirrored here for visibility):
 - Eligible directories: `modules/`, `.github/instructions/`, `.github/prompts/`,
-  `.claude/commands/`, `.clinerules/workflows/`, `.opencode/command/`, `.agents/skills/`.
-- Always excluded everywhere: `topics/`, `screenshots/`, `properties.yml`, `active_topic.yml`,
-  `uv.lock`, `README.md`, `LICENSE`, `pyproject.toml`, `.claude/settings.local.json`, `.git/`,
-  `.venv/`, `__pycache__/`, `.ruff_cache/`, `logs/`, `tmp/`.
-- Always excluded business content: `modules/fireball/`, `modules/financials/`,
-  `.agents/skills/fireball/`, `.agents/skills/product-metadata/`,
-  `.github/instructions/travel.instructions.md`,
-  `.github/instructions/product_metadata.instructions.md`, and every prompt/command/workflow
-  file for `add_expense`, `add_size_chart`, `calc_cost`, `list_expenses`, `financials`,
-  `update_card_limit`, `fireball`, `new_product_metadata`.
+  `.claude/commands/`, `.claude/skills/`, `.clinerules/workflows/`, `.opencode/command/`.
+- Candidates come from `git ls-files`, so anything this repo's own `.gitignore` covers is already
+  excluded — nothing hardcoded for that.
+- Also excluded: anything in this project's `template.ignore.yml` `exclude:` list — the same file
+  `/template pull` uses to protect project-specific content, applied here in the other direction so
+  it never leaks upstream either. A fork with its own business modules or personal-vault content
+  (e.g. `modules/fireball/`, `.claude/skills/fireball/`) declares it there once instead of it being
+  hardcoded in Python.
 
 Repo-name references are rewritten automatically on copy (this repo's name → the template repo's
 name, both derived from `properties.yml` `repo.local`/`template.local` basenames), so name-only

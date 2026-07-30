@@ -11,6 +11,15 @@ def actionlint(context):
 
 
 @task
+def check_agents(context):
+    """Verify .github/prompts/ is mirrored into every synced command/skill dir"""
+    print("\n------------")
+    print("Check Agents")
+    print("------------\n")
+    context.run("pytest tests/test_check_agents.py")
+
+
+@task
 def pylint(context):
     """Run PyLint on Entire Repo"""
     print("\n------------")

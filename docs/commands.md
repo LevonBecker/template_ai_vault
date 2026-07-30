@@ -44,7 +44,8 @@ working on a feature branch that needs a GitHub Pull Request.
 | `/pr` | Draft + open a PR | Same diff/notes drafting as `/pr-notes`, but opens the PR directly via `gh pr create` — does not push |
 | `/rebase` | Rebase onto remote default branch | Optionally runs `/squash` first; handles stashing and interactive conflict resolution |
 | `/squash` | Squash all commits to root | Anchored squash into one commit with an auto-generated message; prompts to confirm and optionally force-push |
-| `/punch-it-chewy` | Push + draft PR + open PR | Combines a feature-branch push (fix → test → commit → push) with `/pr` in one command |
+| `/ship-it` | Push + draft PR + open PR | Combines a feature-branch push (fix → test → commit → push) with `/pr` in one command |
+| `/pr-cleanup` | Clean up after a merged PR | Switches to the default branch, pulls, and deletes the merged local feature branch |
 
 Requires `gh` (GitHub CLI) authenticated — see [`setup.md`](setup.md).
 

@@ -1,14 +1,12 @@
 from invoke import task
 
-from . import claude, cline, hermes, opencode, ruff, tests
+from . import hermes, opencode, ruff, tests
 
 
 @task
 def ai_sync(context, force=False):
     """Sync all AI tool commands from .github/prompts/ source of truth"""
     hermes.sync(context)
-    claude.sync(context, force=force)
-    cline.sync(context)
     opencode.sync(context, force=force)
 
 
@@ -23,6 +21,7 @@ def fix(context):
 def test(context):
     """Run All Tests"""
     tests.actionlint(context)
+    tests.check_agents(context)
     tests.pylint(context)
     tests.rufflint(context)
     tests.yamllint(context)

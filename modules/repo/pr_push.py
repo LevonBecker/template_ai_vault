@@ -2,7 +2,7 @@
 
 This is intentionally separate from `modules.repo.push` (used by `/repo push` and `/push`), which
 also syncs to iCloud and assumes pushing the primary tracked branch. This module instead targets a
-feature branch that may not have upstream tracking yet, as used by `/punch-it-chewy`.
+feature branch that may not have upstream tracking yet, as used by `/ship-it`.
 """
 
 import subprocess
@@ -30,7 +30,13 @@ def _run_tests(repo_path: Path) -> None:
 def _stash_if_needed(repo_path: Path) -> bool:
     """Stash local changes before pulling, if any exist."""
     click.echo("🔍 Checking working directory status...")
-    status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_path, capture_output=True, text=True, check=True)
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     if not status.stdout.strip():
         return False
 
@@ -51,7 +57,11 @@ def _stash_if_needed(repo_path: Path) -> bool:
 def _current_branch(repo_path: Path) -> str:
     """Return the current checked-out branch name."""
     result = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, capture_output=True, text=True, check=True
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return result.stdout.strip()
 
@@ -77,7 +87,11 @@ def _pull_rebase(repo_path: Path, branch: str, stashed: bool) -> None:
 
     click.echo("📥 Pulling latest changes from remote...")
     result = subprocess.run(
-        ["git", "pull", "--rebase", "origin", branch], cwd=repo_path, capture_output=True, text=True, check=False
+        ["git", "pull", "--rebase", "origin", branch],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if result.returncode != 0:
         if stashed:
@@ -98,7 +112,13 @@ def _restore_stash(repo_path: Path) -> None:
 def _commit_and_push(repo_path: Path, branch: str, timestamp: str) -> None:
     """Commit any local changes with a timestamped message and push to remote."""
     click.echo()
-    status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_path, capture_output=True, text=True, check=True)
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     has_changes = bool(status.stdout.strip())
 
     if has_changes:
@@ -121,7 +141,11 @@ def _commit_and_push(repo_path: Path, branch: str, timestamp: str) -> None:
 
 
 @click.command()
-@click.option("--confirm/--no-confirm", default=True, help="Prompt for confirmation before pushing")
+@click.option(
+    "--confirm/--no-confirm",
+    default=True,
+    help="Prompt for confirmation before pushing",
+)
 def main(confirm: bool = True) -> None:
     """Push the current feature branch to origin (fix → test → commit → push --set-upstream)."""
     repo_path = get_repo_local()
