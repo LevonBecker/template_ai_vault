@@ -6,7 +6,7 @@ from modules.setup import properties as setup_props
 
 
 def _template_lines() -> list[str]:
-    return setup_props._TEMPLATE.splitlines(keepends=True)  # pylint: disable=protected-access
+    return setup_props._build_initial_content().splitlines(keepends=True)  # pylint: disable=protected-access
 
 
 def _stamp(lines, repo_local, monkeypatch, *, detected, confirm=False):
@@ -31,7 +31,7 @@ class TestReadScalar:
 
     def test_key_outside_section_not_matched(self):
         lines = _template_lines()
-        assert setup_props._read_scalar(lines, "icloud", "remote") is None  # pylint: disable=protected-access
+        assert setup_props._read_scalar(lines, "repos", "remote") is None  # pylint: disable=protected-access
 
 
 class TestStampTemplateParent:

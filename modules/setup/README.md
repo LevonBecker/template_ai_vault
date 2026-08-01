@@ -1,5 +1,5 @@
 # Setup Module
-One-time and idempotent repo bootstrapping helpers, called by `setup.sh`.
+One-time repo bootstrapping helpers, called by `setup.sh`.
 
 ## Commands
 ```sh
@@ -7,29 +7,32 @@ uv run --no-sync invoke setup.properties
 ```
 
 ## What It Does
-`properties.yml` is committed in this repo — it also holds business-specific config (Fireball COGS
-rates, financials paths) alongside the machine-specific paths below, so `modules/setup/properties.py`
-only ever rewrites specific keys in place rather than treating the whole file as disposable:
+`properties.yml` is gitignored. **A no-op if it already exists** — `modules/setup/properties.py`
+only ever creates the file, it never rewrites an existing one. To regenerate it (e.g. after moving
+the repo, renaming it, or pointing it at a new fork), delete or rename `properties.yml` first, then
+run again.
 
-1. If `properties.yml` doesn't exist, creates it from a built-in template (`_TEMPLATE` in the module).
-2. Detects this repo's actual path on disk and its git `origin` remote (if any).
-3. Rewrites only `repo.local`, `repo.remote`, and `screenshots.location` in place, targeting those
-   specific keys by name — every comment, business-specific section, and the rest of the file's
-   formatting survives untouched.
+On first run, assembles it from every tier fragment under `modules/setup/templates/properties/*.yml`
+— one file per repo in the lineage, each named after itself:
+- `template_python.yml` — `repo`, `template` (the root; generic to every template-stamped repo
+  regardless of product line)
+- `template_ai_vault.yml` — `icloud`, `screenshots` (generic to the ai_vault product line, tracked,
+  synced via `/template`)
 
-Safe to re-run any time: `uv run --no-sync invoke setup.properties`. Re-run it after moving the repo
-on disk, renaming it, or pointing it at a new fork — it just re-stamps the same three fields with
-freshly detected values.
+A descendant repo (e.g. `ai_vault`) adds its own same-named fragment on top for its own real
+business config, without ever touching this repo's fragments.
 
-`icloud.path` and `template.*` can't be auto-detected and are left alone once the file exists — edit
-those by hand if you use those features.
+`repos` (the GitHub org/repo map + template lineage) is built additively rather than concatenated:
+each fragment's own `repos:` block contributes just its own org/repo + the lineage edge to its
+parent, deep-merged into whatever was inherited from earlier tiers. A repo only ever ends up
+knowing its own ancestor chain, never a sibling branch it isn't descended from.
 
-## Why Not a Placeholder Token?
-An earlier version used a literal token (e.g. `PATH_TO_REPO`) that got search-and-replaced. That only
-works once — after the token is replaced with a real path, a second run has nothing left to find.
-Targeting the YAML key by name works every time, regardless of what value is currently there, which is
-what makes re-running after a move/rename safe.
+Detects this repo's actual path on disk and its git `origin` remote (if any), and stamps
+`repo.local`, `repo.remote`, and `screenshots.location` with those values. Auto-detects
+`template.*` (the parent template repo for `/template`) via GitHub's generated-from link, falling
+back to an interactive prompt.
 
 ## Files
-- `properties.py` — creates/stamps `properties.yml` (used by `inv setup.properties`)
+- `properties.py` — creates `properties.yml` (used by `inv setup.properties`)
+- `templates/properties/*.yml` — per-tier fragments merged into a fresh `properties.yml`
 - `README.md` — this file

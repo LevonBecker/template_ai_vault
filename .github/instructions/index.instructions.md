@@ -31,6 +31,7 @@ For detailed instructions, read the relevant domain file:
 - **Docs file standards (CSV, etc.)**: `.github/instructions/docs.instructions.md`
 - **Markdown style standards**: `.github/instructions/style.instructions.md`
 - **Screenshots folder rules**: `.github/instructions/screenshots.instructions.md`
+- **`properties.yml`'s `repos`/lineage key and the "related repos" trigger**: `.github/instructions/repos.instructions.md`
 - **Travel topic preferences**: `.github/instructions/travel.instructions.md`
 - **Product metadata (Fireball store listings)**: `.github/instructions/product_metadata.instructions.md`
 

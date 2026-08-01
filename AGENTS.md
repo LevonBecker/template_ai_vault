@@ -399,6 +399,7 @@ slash_command: /your_command
   - ❌ `"$HOME/Development/levonbecker/template_ai_vault"`
   - `modules/common/properties.py` expands `$HOME` and `~` via `_expand_path()` before returning any `Path` — always route new path-returning properties through that helper
   - This keeps `properties.yml` portable across machines/usernames; only update the helper if a new path format is introduced
+- **"RELATED REPOS" TRIGGER**: When the user says "related repos", "the repos", "other repos", "all of the repos", or similar in the context of this repo's family — not generic talk about "the repository" — read `.github/instructions/repos.instructions.md` in full before acting, then read the `repos` key in `properties.yml`
 - **DEFAULT PATH RULE**: Treat the active topic as the root for user-requested relative paths
   - `docs/...` means `{active_topic_path}/docs/...`
   - `scripts/...` means `{active_topic_path}/scripts/...`
