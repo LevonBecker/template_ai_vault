@@ -5,8 +5,6 @@ applyTo: "**"
 
 Rules for user-facing files created in `docs/` folders across all topics.
 
----
-
 ## CSV Files
 
 ### Date Format — MANDATORY

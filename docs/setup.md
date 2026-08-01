@@ -29,12 +29,13 @@ platforms.
 [`architecture.md`](architecture.md#configuration-files)). It's gitignored — machine-specific, never
 committed — and generated for you:
 
-- **First run**: `inv setup.properties` creates `properties.yml` from a built-in template, then
-  detects and stamps `repo.local` (this repo's actual path on disk) and `repo.remote` (from
-  `git remote get-url origin`, if you've forked it).
-- **Re-run any time**: `uv run --no-sync invoke setup.properties` — safe and idempotent. Run it again
-  after moving the repo on disk, renaming it, or pointing it at a new fork; it just re-stamps the same
-  three fields.
+- **First run**: `inv setup.properties` assembles `properties.yml` from every tier fragment under
+  `modules/setup/templates/properties/*.yml`, then detects and stamps `repo.local` (this repo's
+  actual path on disk) and `repo.remote` (from `git remote get-url origin`, if you've forked it).
+- **A no-op every run after that**: `uv run --no-sync invoke setup.properties` does nothing if
+  `properties.yml` already exists — it never rewrites it. To regenerate it (e.g. after moving the
+  repo on disk, renaming it, or pointing it at a new fork), delete or rename `properties.yml` first,
+  then run again.
 - If any module can't find `properties.yml` at all, it raises a clear error telling you to run this
   command — you'll never silently get someone else's paths.
 

@@ -1,0 +1,22 @@
+repos:
+  LevonBecker:
+    - template_ai_vault
+  lineage:
+    LevonBecker/template_ai_vault: LevonBecker/template_python
+
+icloud:
+  enabled: false
+  path: "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/<your-vault-name>/"
+
+screenshots:
+  cleanup_patterns:
+    - "*.png"
+    - "*.jpg"
+    - "*.jpeg"
+    - "*.PNG"
+    - "*.JPG"
+    - "*.JPEG"
+  latest_file: "latest.png"
+  location: "$HOME/path/to/this/repo/screenshots"
+  preserve_files:
+    - "latest.png"
