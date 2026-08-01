@@ -148,8 +148,9 @@ modules/
 │   ├── upgrade.py / uv_sync.py  # Actual install/sync (used by /upgrade)
 │   ├── route.py                 # /versioning routing
 │   └── README.md
-├── setup/                       # One-time/idempotent repo bootstrapping, called by setup.sh
-│   └── properties.py            # Creates + stamps properties.yml (inv setup.properties)
+├── setup/                       # One-time repo bootstrapping, called by setup.sh
+│   ├── properties.py            # Creates properties.yml (inv setup.properties); no-op if it exists
+│   └── templates/properties/*.yml  # Tiered template fragments merged into a fresh properties.yml
 ├── skeleton/                    # Locates the shared template_python skeleton repo for /sync-setup
 │   ├── sync.py / route.py
 │   └── README.md
@@ -224,17 +225,23 @@ def main(...): ...
 ## Configuration Files
 ### properties.yml
 Central configuration at the repo root. Keys: `repo` (local path + remote), `icloud` (optional
-Obsidian sync path), `skeleton` (shared-tooling source for `/sync-setup`), `screenshots` (location,
-cleanup rules, preserved files). Every absolute path uses `$HOME` instead of a hardcoded username, so
-the file stays portable across machines.
+Obsidian sync path), `template` (shared-tooling source for `/template`), `repos` (GitHub org/repo
+map of repos relevant to this repo, plus a `lineage` sub-key recording parent → child
+template-stamping relationships), `screenshots` (location, cleanup rules, preserved files). Every
+absolute path uses `$HOME` instead of a hardcoded username, so the file stays portable across
+machines.
 
-**`properties.yml` is gitignored — it's machine-specific, never committed.** `modules/setup/properties.py`
-(invoked as `inv setup.properties`, run automatically by `setup.sh` and safe to re-run any time —
-e.g. after moving or renaming the repo) creates it from a built-in template on first run, then
-re-stamps `repo.local`, `repo.remote`, and `screenshots.location` with values detected for the
-current machine on every run — see [`setup.md`](setup.md#2-propertiesyml-automatic). Every module
-that reads `properties.yml` and finds it missing raises an error pointing at that command, rather than
-silently falling back to defaults.
+**`properties.yml` is gitignored — it's machine-specific, never committed.**
+`modules/setup/properties.py` (invoked as `inv setup.properties`, run automatically by `setup.sh`)
+is a **no-op if the file already exists** — it only ever creates it, never rewrites it. To
+regenerate it (e.g. after moving or renaming the repo), delete or rename `properties.yml` first,
+then run again. On first creation it's assembled from every tier fragment under
+`modules/setup/templates/properties/*.yml` (`template_python.yml` — the root; `template_ai_vault.yml`
+— `icloud`/`screenshots`, generic to the ai_vault product line), each contributing its own `repos`
+entry additively (see `modules/setup/README.md`), and stamps `repo.local`, `repo.remote`, and
+`screenshots.location` with values detected at creation time — see
+[`setup.md`](setup.md#2-propertiesyml-automatic). Every module that reads `properties.yml` and finds
+it missing raises an error pointing at that command, rather than silently falling back to defaults.
 
 Load it via `modules.common.properties` — see `modules/repo/README.md` for the full property list.
 

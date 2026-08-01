@@ -158,7 +158,8 @@ modules/
 │   ├── squash.py
 │   └── view_screenshot.py
 ├── setup/
-│   └── properties.py   # Creates/stamps properties.yml (inv setup.properties)
+│   ├── properties.py   # Creates properties.yml (inv setup.properties); no-op if it exists
+│   └── templates/properties/*.yml  # Tiered template fragments merged into a fresh properties.yml
 ├── template/
 │   ├── pull.py          # /template pull — resolve template_ai_vault local path
 │   ├── push.py          # /template push — diff/apply/create-pr against template_ai_vault
