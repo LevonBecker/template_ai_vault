@@ -1,7 +1,9 @@
 ---
 repos:
   LevonBecker:
-    - template_python
+    - template_ai_python
+  lineage:
+    LevonBecker/template_ai_python: LevonBecker/template_python
 
 repo:
   local: "$HOME/path/to/this/repo"

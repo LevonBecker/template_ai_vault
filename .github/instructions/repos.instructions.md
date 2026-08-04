@@ -11,10 +11,11 @@ relationships — e.g. `LevonBecker/ai_vault: LevonBecker/template_ai_vault` mea
 stamped from `template_ai_vault`.
 
 It's built additively, tier by tier, from `modules/setup/templates/properties/*.yml` — one fragment
-file per repo in the lineage, each named after itself (`template_python.yml`, `template_ai_vault.yml`,
-`ai_vault.yml`). Each fragment contributes only its own org/repo + the lineage edge to its parent; a
-repo only ever ends up knowing its own ancestor chain, never a sibling branch it isn't descended
-from. See `modules/setup/README.md` and `docs/architecture.md#propertiesyml` for the build mechanism.
+file per repo in the lineage, each named after itself (`template_python.yml`,
+`template_ai_python.yml`, `template_ai_vault.yml`, `ai_vault.yml`). Each fragment contributes only
+its own org/repo + the lineage edge to its parent; a repo only ever ends up knowing its own
+ancestor chain, never a sibling branch it isn't descended from. See `modules/setup/README.md` and
+`docs/architecture.md#propertiesyml` for the build mechanism.
 
 ## "Related Repos" Trigger
 When the user says **"related repos"**, **"the repos"**, **"other repos"**, **"all of the repos"**,
