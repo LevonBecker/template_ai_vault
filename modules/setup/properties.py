@@ -8,9 +8,10 @@ first, then run again.
 
 properties.yml is gitignored. It's assembled from every tier fragment under
 `modules/setup/templates/properties/*.yml` — one file per repo in the lineage, each named after
-itself: `template_python.yml` (the root — repo, template, and its own repos entry), down through
+itself: `template_python.yml` (the root — repo, template, and its own repos entry), through
+`template_ai_python.yml` (the AI-agent layer, generic to every AI-tooled repo) and
 `template_ai_vault.yml` (icloud, screenshots: generic to the ai_vault product line, tracked and
-synced via /template) to `ai_vault.yml` (fireball, financials: this repo's own real business
+synced via /template), down to `ai_vault.yml` (fireball, financials: this repo's own real business
 config, tracked but never synced anywhere since it's a leaf). `repo.local`, `repo.remote`, and
 `screenshots.location` (if present) are then stamped in with values detected at creation time.
 

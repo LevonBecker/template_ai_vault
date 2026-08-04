@@ -16,6 +16,7 @@ On first run, assembles it from every tier fragment under `modules/setup/templat
 — one file per repo in the lineage, each named after itself:
 - `template_python.yml` — `repo`, `template` (the root; generic to every template-stamped repo
   regardless of product line)
+- `template_ai_python.yml` — the AI-agent layer, generic to every AI-tooled repo
 - `template_ai_vault.yml` — `icloud`, `screenshots` (generic to the ai_vault product line, tracked,
   synced via `/template`)
 

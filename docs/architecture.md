@@ -151,7 +151,7 @@ modules/
 ├── setup/                       # One-time repo bootstrapping, called by setup.sh
 │   ├── properties.py            # Creates properties.yml (inv setup.properties); no-op if it exists
 │   └── templates/properties/*.yml  # Tiered template fragments merged into a fresh properties.yml
-├── skeleton/                    # Locates the shared template_python skeleton repo for /sync-setup
+├── skeleton/                    # Locates the shared template_ai_python skeleton repo for /sync-setup
 │   ├── sync.py / route.py
 │   └── README.md
 ├── claude/                      # Claude Code CLI passthrough
@@ -236,8 +236,9 @@ machines.
 is a **no-op if the file already exists** — it only ever creates it, never rewrites it. To
 regenerate it (e.g. after moving or renaming the repo), delete or rename `properties.yml` first,
 then run again. On first creation it's assembled from every tier fragment under
-`modules/setup/templates/properties/*.yml` (`template_python.yml` — the root; `template_ai_vault.yml`
-— `icloud`/`screenshots`, generic to the ai_vault product line), each contributing its own `repos`
+`modules/setup/templates/properties/*.yml` (`template_python.yml` — the root; `template_ai_python.yml`
+— the AI-agent layer, generic to every AI-tooled repo; `template_ai_vault.yml` — `icloud`/
+`screenshots`, generic to the ai_vault product line), each contributing its own `repos`
 entry additively (see `modules/setup/README.md`), and stamps `repo.local`, `repo.remote`, and
 `screenshots.location` with values detected at creation time — see
 [`setup.md`](setup.md#2-propertiesyml-automatic). Every module that reads `properties.yml` and finds
