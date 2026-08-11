@@ -1,6 +1,6 @@
 from invoke import Collection
 
-from .ai import hermes, ollama, opencode, repo, template
+from .ai import docs, hermes, ollama, opencode, repo, template
 from .ai_vault import chat, topic
 from .common import debug, ruff, setup, upgrade, uv, versioning
 from .common import main as common_main
@@ -17,10 +17,11 @@ namespace.add_collection(uv, name="uv")
 namespace.add_collection(versioning, name="ver")
 
 # `ai/` groups tooling this repo uses to operate on itself, or to integrate with a specific AI
-# tool — git/PR workflow (`repo`), parent-template sync (`template`), and per-tool command sync
-# (`hermes`, `opencode`) / local-LLM management (`ollama`). `repo`/`template` modules already
-# existed but had no `invoke` task exposing them until now — see tasks/ai/repo.py and
-# tasks/ai/template.py's own docstrings.
+# tool — git/PR workflow (`repo`), parent-template sync (`template`), per-tool command sync
+# (`hermes`, `opencode`) / local-LLM management (`ollama`), and changelog sync (`docs`).
+# `repo`/`template` modules already existed but had no `invoke` task exposing them until now — see
+# tasks/ai/repo.py and tasks/ai/template.py's own docstrings.
+namespace.add_collection(docs, name="docs")
 namespace.add_collection(hermes, name="hermes")
 namespace.add_collection(ollama, name="ollama")
 namespace.add_collection(opencode, name="opencode")

@@ -58,8 +58,8 @@ Skip tests for: `*.md`, config files, `*.toml`, `*.json`
 
 ## `tests/` Layout
 
-One marker-named subfolder per concern (`tests/agents/`, `tests/common/`, `tests/hermes/`,
-`tests/setup/`, `tests/style/`, `tests/template/`, `tests/topic/`), each file starting with
+One marker-named subfolder per concern (`tests/agents/`, `tests/common/`, `tests/drift/`,
+`tests/hermes/`, `tests/setup/`, `tests/style/`, `tests/template/`, `tests/topic/`), each file starting with
 `pytestmark = pytest.mark.<name>` matching its folder — registered in `pyproject.toml`'s
 `[tool.pytest.ini_options]` `markers` list. `conftest.py` stays at `tests/` root (shared fixtures
 apply regardless of subfolder depth). Run a subset with `uv run --no-sync invoke tests.pytest

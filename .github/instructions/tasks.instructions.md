@@ -171,6 +171,15 @@ Lives in `tasks/ai/ollama.py`.
 | uninstall | `uv run --no-sync invoke ollama.uninstall` | Uninstall Ollama and remove all models |
 | update | `uv run --no-sync invoke ollama.update` | Update Ollama binary + all installed models |
 
+## Docs Tasks
+
+Lives in `tasks/ai/docs.py`. Runs as part of `invoke fix` and `/docs` — see
+`.github/instructions/docs.instructions.md`.
+
+| Task | Command | Description |
+|------|---------|-------------|
+| update_changelogs | `uv run --no-sync invoke docs.update_changelogs` | Prepend any missing `docs/change_logs/<category>/<name>.md` entries from `properties.yml` |
+
 ## Task Ordering
 
 Tasks within a file must be ordered **alphabetically by function name**. Do not order by addition date, logical grouping, or importance.
@@ -184,6 +193,7 @@ tasks/
 │                     # nested namespaces), plus tests/
 ├── ai/              # Tooling this repo uses to operate on itself, or to integrate with a
 │   │                 # specific AI tool
+│   ├── docs.py      # docs.update_changelogs
 │   ├── hermes.py    # hermes.sync — syncs ~/.hermes/ config + SKILL.md
 │   ├── ollama.py    # ollama.install/list/update/uninstall/start/stop/status/restart/clean
 │   ├── opencode.py  # opencode.sync — syncs .opencode/command/

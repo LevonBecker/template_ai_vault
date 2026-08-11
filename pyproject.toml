@@ -68,6 +68,7 @@ norecursedirs = ["tmp", ".venv", ".ruff_cache", "__pycache__"]
 markers = [
     "agents: .github/prompts/ mirror consistency — tests/agents/",
     "common: modules/common/ helpers — tests/common/",
+    "drift: gate tests that catch a forgotten regen step before merge — tests/drift/",
     "hermes: modules/hermes/ (Hermes AI agent sync) — tests/hermes/",
     "setup: modules/setup/ (properties.yml bootstrap) — tests/setup/",
     "style: Markdown/doc style checks — tests/style/",

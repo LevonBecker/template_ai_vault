@@ -120,6 +120,10 @@ modules/
 │   └── start.py
 ├── claude/
 │   └── route.py        # /claude routing (proxies to claude CLI)
+├── docs/
+│   ├── update.py       # change_logs() + python -m modules.docs.update CLI entry point
+│   └── lib/
+│       └── change_logs.py  # docs/change_logs/ vs properties.yml sync logic
 ├── common/
 │   ├── cli.py            # Click-like CLI wrapper
 │   ├── invoke_runner.py

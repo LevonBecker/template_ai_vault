@@ -1,8 +1,8 @@
 ---
-description: Pull updates from git remote and iCloud Obsidian folder
+description: Pull updates from git remote. Stashes local changes, pulls with rebase, then restores stash.
 subtask: false
 agent: general
 slash_command: /pull
 ---
 
-!`uv run --no-sync python -m modules.repo.route "pull"`
+!`uv run --no-sync invoke repo.pull`
