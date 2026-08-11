@@ -7,10 +7,15 @@ uv run --no-sync invoke setup.properties
 ```
 
 ## What It Does
-`properties.yml` is gitignored. **A no-op if it already exists** — `modules/setup/properties.py`
-only ever creates the file, it never rewrites an existing one. To regenerate it (e.g. after moving
-the repo, renaming it, or pointing it at a new fork), delete or rename `properties.yml` first, then
-run again.
+`properties.yml` is gitignored **only in template repos** (this one and its siblings — anything
+named `template_*`), since it would otherwise leak this machine's local paths into the template's
+own history. In a real repo forked from a template (like ai_vault, this repo's own leaf
+descendant), setup strips the ignore line from `.gitignore` the first time it runs there, so
+`properties.yml` is committed like any other repo config — see `_sync_gitignore_tracking()`.
+Creating the file itself is **a no-op if it already exists** — `modules/setup/properties.py` only
+ever creates the file, it never rewrites an existing one (the gitignore check still runs every
+time, though). To regenerate the file (e.g. after moving the repo, renaming it, or pointing it at a
+new fork), delete or rename `properties.yml` first, then run again.
 
 On first run, assembles it from every tier fragment under `modules/setup/templates/properties/*.yml`
 — one file per repo in the lineage, each named after itself:

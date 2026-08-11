@@ -1,6 +1,8 @@
 from invoke import task
 
-from . import hermes, opencode, ruff, tests
+from ..ai import docs, hermes, opencode
+from ..tests import actionlint, check_agents, pylint, pytest, rufflint, yamllint
+from . import ruff
 
 
 @task
@@ -15,13 +17,15 @@ def fix(context):
     """Run All Automated Fixes"""
     ruff.fix(context)
     ruff.format(context)
+    docs.update_changelogs(context)
 
 
 @task
 def test(context):
     """Run All Tests"""
-    tests.actionlint(context)
-    tests.check_agents(context)
-    tests.pylint(context)
-    tests.rufflint(context)
-    tests.yamllint(context)
+    actionlint(context)
+    check_agents(context)
+    pylint(context)
+    pytest(context)
+    rufflint(context)
+    yamllint(context)

@@ -4,10 +4,13 @@ import io
 import sys
 from contextlib import redirect_stdout
 
+import pytest
 import yaml
 
 from modules.topic import list as topic_list
 from modules.topic import route as topic_route
+
+pytestmark = pytest.mark.topic
 
 
 def test_topic_route_list_all_passes_flag(monkeypatch):

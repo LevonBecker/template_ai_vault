@@ -120,6 +120,10 @@ modules/
 │   └── start.py
 ├── claude/
 │   └── route.py        # /claude routing (proxies to claude CLI)
+├── docs/
+│   ├── update.py       # change_logs() + python -m modules.docs.update CLI entry point
+│   └── lib/
+│       └── change_logs.py  # docs/change_logs/ vs properties.yml sync logic
 ├── common/
 │   ├── cli.py            # Click-like CLI wrapper
 │   ├── invoke_runner.py
@@ -184,7 +188,7 @@ modules/
     └── workflows.py     # .github/workflows/ action refs vs. latest tag
 ```
 
-`/update` and `/upgrade` route through `tasks/versioning.py` (the invoke `ver` collection, see
+`/update` and `/upgrade` route through `tasks/common/versioning.py` (the invoke `ver` collection, see
 `tasks.instructions.md`), not a `route.py` — there's no per-slash-command router module for this
 one, unlike most other modules.
 

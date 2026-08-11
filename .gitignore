@@ -81,6 +81,10 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Un-ignore modules/*/lib/ — a real source subpackage convention (e.g. modules/docs/lib/), not a
+# build artifact. The generic lib/ pattern above matches at any depth, so this repo's own
+# lib/ folders need an explicit exception.
+!modules/**/lib/
 # parts/  # Commented out - we use 'parts/' for hardware component directories
 sdist/
 var/

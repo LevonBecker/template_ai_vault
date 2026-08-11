@@ -6,6 +6,8 @@ import pytest
 
 from modules.common import utils
 
+pytestmark = pytest.mark.common
+
 
 def test_create_slug():
     """Test slug creation from text."""

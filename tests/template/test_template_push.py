@@ -3,9 +3,13 @@
 import subprocess
 from pathlib import Path
 
+import pytest
+
 from modules.common.properties import get_repo_local, get_template_local
 from modules.template.naming import rewrite_repo_references
 from modules.template.push import _classify
+
+pytestmark = pytest.mark.template
 
 
 def _configured_names() -> tuple[str, str]:

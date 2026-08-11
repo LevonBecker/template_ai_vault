@@ -5,7 +5,4 @@ agent: general
 slash_command: /squash
 ---
 
-!`uv run --no-sync python -m modules.repo.route "squash"`
-
-If it fails or reports a conflict, show the full output to the user and ask how they'd like to
-proceed — do not force-push or retry automatically.
+!`uv run --no-sync invoke repo.squash`
