@@ -56,6 +56,15 @@ Skip tests for: `*.md`, config files, `*.toml`, `*.json`
 3. **ruff** — Python linting and formatting
 4. **yamllint** — YAML file validation
 
+## `tests/` Layout
+
+One marker-named subfolder per concern (`tests/agents/`, `tests/common/`, `tests/hermes/`,
+`tests/setup/`, `tests/style/`, `tests/template/`, `tests/topic/`), each file starting with
+`pytestmark = pytest.mark.<name>` matching its folder — registered in `pyproject.toml`'s
+`[tool.pytest.ini_options]` `markers` list. `conftest.py` stays at `tests/` root (shared fixtures
+apply regardless of subfolder depth). Run a subset with `uv run --no-sync invoke tests.pytest
+scope=<marker>` (e.g. `scope=hermes`, or `scope="not style"`) instead of the whole suite.
+
 ## Fix Issues — Never Disable Warnings
 
 ```python

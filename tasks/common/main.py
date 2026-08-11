@@ -1,6 +1,8 @@
 from invoke import task
 
-from . import hermes, opencode, ruff, tests
+from .. import hermes, opencode
+from ..tests import actionlint, check_agents, pylint, rufflint, yamllint
+from . import ruff
 
 
 @task
@@ -20,8 +22,8 @@ def fix(context):
 @task
 def test(context):
     """Run All Tests"""
-    tests.actionlint(context)
-    tests.check_agents(context)
-    tests.pylint(context)
-    tests.rufflint(context)
-    tests.yamllint(context)
+    actionlint(context)
+    check_agents(context)
+    pylint(context)
+    rufflint(context)
+    yamllint(context)

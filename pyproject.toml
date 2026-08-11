@@ -62,6 +62,19 @@ line-ending = "auto"
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tmp", ".venv", ".ruff_cache", "__pycache__"]
+markers = [
+    "agents: .github/prompts/ mirror consistency — tests/agents/",
+    "common: modules/common/ helpers — tests/common/",
+    "hermes: modules/hermes/ (Hermes AI agent sync) — tests/hermes/",
+    "setup: modules/setup/ (properties.yml bootstrap) — tests/setup/",
+    "style: Markdown/doc style checks — tests/style/",
+    "template: modules/template/ (parent-template push) — tests/template/",
+    "topic: modules/topic/ (topic workspace management) — tests/topic/",
+]
+
 [tool.pylint.main]
 py-version = "3.14"
 fail-under = 10

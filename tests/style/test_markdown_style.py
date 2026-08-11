@@ -8,7 +8,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+import pytest
+
+pytestmark = pytest.mark.style
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 INSTRUCTIONS_DIR = REPO_ROOT / ".github" / "instructions"
 
 

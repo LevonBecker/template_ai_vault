@@ -39,7 +39,7 @@ This runs both ruff check --fix and ruff format automatically.
 
 ## What the Test Command Does
 
-The `uv run --no-sync invoke test` task (defined in `tasks/combos.py`) runs:
+The `uv run --no-sync invoke test` task (defined in `tasks/common/main.py`) runs:
 - **actionlint**: GitHub Actions workflow validation
 - **pylint**: Python code quality checking
 - **rufflint**: Python linting (style and best practices)

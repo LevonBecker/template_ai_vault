@@ -4,6 +4,8 @@ import pytest
 
 from modules.setup import properties as setup_props
 
+pytestmark = pytest.mark.setup
+
 
 def _template_lines() -> list[str]:
     return setup_props._build_initial_content().splitlines(keepends=True)  # pylint: disable=protected-access

@@ -184,7 +184,7 @@ modules/
     └── workflows.py     # .github/workflows/ action refs vs. latest tag
 ```
 
-`/update` and `/upgrade` route through `tasks/versioning.py` (the invoke `ver` collection, see
+`/update` and `/upgrade` route through `tasks/common/versioning.py` (the invoke `ver` collection, see
 `tasks.instructions.md`), not a `route.py` — there's no per-slash-command router module for this
 one, unlike most other modules.
 
