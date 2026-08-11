@@ -143,7 +143,8 @@ All `uv run` calls MUST use `--no-sync`. See `.github/instructions/tests.instruc
 
 ## AI Sync Tasks
 
-`.github/prompts/` is the source of truth for all slash commands. Run after adding or modifying any `.github/prompts/*.prompt.md` file.
+Lives in `tasks/ai/{hermes,opencode}.py`. `.github/prompts/` is the source of truth for all slash
+commands. Run after adding or modifying any `.github/prompts/*.prompt.md` file.
 
 | Task | Command | Description |
 |------|---------|-------------|
@@ -155,6 +156,8 @@ All `uv run` calls MUST use `--no-sync`. See `.github/instructions/tests.instruc
 mirrors, checked by `tests.check_agents` (below).
 
 ## Ollama Tasks
+
+Lives in `tasks/ai/ollama.py`.
 
 | Task | Command | Description |
 |------|---------|-------------|
@@ -178,11 +181,12 @@ Tasks within a file must be ordered **alphabetically by function name**. Do not 
 tasks/
 ├── __init__.py      # Wires the invoke Collection: ai/, ai_vault/, common/ (each registered at
 │                     # their original top-level names — grouped for file organization only, not
-│                     # nested namespaces), plus hermes.py, ollama.py, opencode.py, tests/
-├── hermes.py        # hermes.sync — syncs ~/.hermes/ config + SKILL.md
-├── ollama.py        # ollama.install/list/update/uninstall/start/stop/status/restart/clean
-├── opencode.py      # opencode.sync — syncs .opencode/command/
-├── ai/              # Tooling this repo uses to operate on itself
+│                     # nested namespaces), plus tests/
+├── ai/              # Tooling this repo uses to operate on itself, or to integrate with a
+│   │                 # specific AI tool
+│   ├── hermes.py    # hermes.sync — syncs ~/.hermes/ config + SKILL.md
+│   ├── ollama.py    # ollama.install/list/update/uninstall/start/stop/status/restart/clean
+│   ├── opencode.py  # opencode.sync — syncs .opencode/command/
 │   ├── repo.py      # repo.pull, repo.push, repo.pr_*, repo.squash, repo.rebase, repo.*screenshot*
 │   └── template.py  # template.pull, template.push_diff, template.push_apply, template.push_create_pr
 ├── ai_vault/        # This repo's own reason for existing

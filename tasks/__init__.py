@@ -1,7 +1,6 @@
 from invoke import Collection
 
-from . import hermes, ollama, opencode
-from .ai import repo, template
+from .ai import hermes, ollama, opencode, repo, template
 from .ai_vault import chat, topic
 from .common import debug, ruff, setup, upgrade, uv, versioning
 from .common import main as common_main
@@ -10,9 +9,6 @@ from .tests import namespace as tests_namespace
 namespace = Collection(auto_dash_names=False)
 
 namespace.add_collection(debug, name="debug")
-namespace.add_collection(hermes, name="hermes")
-namespace.add_collection(ollama, name="ollama")
-namespace.add_collection(opencode, name="opencode")
 namespace.add_collection(ruff, name="ruff")
 namespace.add_collection(setup, name="setup")
 namespace.add_collection(tests_namespace, name="tests")
@@ -20,9 +16,14 @@ namespace.add_collection(upgrade, name="upgrade")
 namespace.add_collection(uv, name="uv")
 namespace.add_collection(versioning, name="ver")
 
-# `ai/` groups tooling this repo uses to operate on itself — git/PR workflow (`repo`) and
-# parent-template sync (`template`). Both modules already existed but had no `invoke` task
-# exposing them until now — see tasks/ai/repo.py and tasks/ai/template.py's own docstrings.
+# `ai/` groups tooling this repo uses to operate on itself, or to integrate with a specific AI
+# tool — git/PR workflow (`repo`), parent-template sync (`template`), and per-tool command sync
+# (`hermes`, `opencode`) / local-LLM management (`ollama`). `repo`/`template` modules already
+# existed but had no `invoke` task exposing them until now — see tasks/ai/repo.py and
+# tasks/ai/template.py's own docstrings.
+namespace.add_collection(hermes, name="hermes")
+namespace.add_collection(ollama, name="ollama")
+namespace.add_collection(opencode, name="opencode")
 namespace.add_collection(repo, name="repo")
 namespace.add_collection(template, name="template")
 

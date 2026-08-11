@@ -1,6 +1,6 @@
 from invoke import task
 
-from .. import hermes, opencode
+from ..ai import hermes, opencode
 from ..tests import actionlint, check_agents, pylint, rufflint, yamllint
 from . import ruff
 
