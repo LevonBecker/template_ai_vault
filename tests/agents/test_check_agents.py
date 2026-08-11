@@ -8,7 +8,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+import pytest
+
+pytestmark = pytest.mark.agents
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # The `claude` command would just proxy back to the running tool from inside itself, so it's
 # skipped everywhere except .opencode/command — the tool that actually needs to shell out to it.

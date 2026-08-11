@@ -21,14 +21,66 @@ no judgment calls, no AI-specific behavior.
 
 ## Test Tasks
 
+Lives in `tasks/tests/` — one file per check, still registered as one flat `tests.*` namespace.
+Pass `scope=<marker>` to `tests.pytest` to run a subset (e.g. `scope=hermes`, `scope=topic`,
+`scope="not style"`) — matches the pytest marker each `tests/<folder>/` corresponds to (see
+`tests.instructions.md`).
+
 | Task | Command | Description |
 |------|---------|-------------|
 | actionlint | `uv run --no-sync invoke tests.actionlint` | GitHub Actions workflow validation |
-| check_agents | `uv run --no-sync invoke tests.check_agents` | Verify `.github/prompts/` mirrors stay in sync |
+| check_agents | `uv run --no-sync invoke tests.check_agents` | Verify `.github/prompts/` mirrors stay in sync (`pytest -m "agents"`, i.e. `tests/agents/`) |
 | pylint | `uv run --no-sync invoke tests.pylint` | Python code quality |
 | pytest | `uv run --no-sync invoke tests.pytest` | Python unit test suite |
 | rufflint | `uv run --no-sync invoke tests.rufflint` | Python linting and formatting |
 | yamllint | `uv run --no-sync invoke tests.yamllint` | YAML file validation |
+
+## Repo Tasks
+
+Lives in `tasks/ai/repo.py` — wraps `modules/repo/*.py` (git/PR workflow, screenshot tooling).
+
+| Task | Command | Description |
+|------|---------|-------------|
+| cleanup | `uv run --no-sync invoke repo.cleanup` | Delete merged local branches |
+| pull | `uv run --no-sync invoke repo.pull` | Pull updates from git remote (stash → pull --rebase → restore) |
+| push | `uv run --no-sync invoke repo.push` | Push to git remote and iCloud Obsidian folder (fix → test → commit → push) |
+| pr_push | `uv run --no-sync invoke repo.pr_push` | Push the current feature branch |
+| rebase | `uv run --no-sync invoke repo.rebase` | Rebase onto remote default branch (optionally squash first) |
+| squash | `uv run --no-sync invoke repo.squash` | Anchored squash of all commits to root, optional force push |
+| pr_diff | `uv run --no-sync invoke repo.pr_diff` | Show current branch's commit log/diff vs. its base branch |
+| pr_notes_save | `uv run --no-sync invoke repo.pr_notes_save` | Save PR notes to `tmp/pull_requests/` |
+| pr_create | `uv run --no-sync invoke repo.pr_create` | Open a GitHub PR for the current branch |
+| pr_cleanup | `uv run --no-sync invoke repo.pr_cleanup` | Switch to default branch, pull, delete the merged feature branch |
+| set_screenshots | `uv run --no-sync invoke repo.set_screenshots` | Set up the screenshots/ workflow for this repo |
+| view_screenshot | `uv run --no-sync invoke repo.view_screenshot` | View the most recent screenshot |
+
+## Template Tasks
+
+Lives in `tasks/ai/template.py` — wraps `modules/template/*.py` (parent-template sync).
+
+| Task | Command | Description |
+|------|---------|-------------|
+| pull | `uv run --no-sync invoke template.pull` | Resolve the local path to the parent template repo |
+| push_diff | `uv run --no-sync invoke template.push_diff` | Diff this repo's scoped tooling against the parent template repo |
+| push_apply | `uv run --no-sync invoke template.push_apply` | Copy approved files/deletions to a new branch upstream |
+| push_create_pr | `uv run --no-sync invoke template.push_create_pr` | Open a PR for that branch against the parent template repo |
+
+## Ai Vault Tasks
+
+Lives in `tasks/ai_vault/{chat,topic}.py` — this repo's own reason for existing: dated
+planning-chat logging and topic workspace management. Backs `/chat` and `/topic`.
+
+| Task | Command | Description |
+|------|---------|-------------|
+| chat.start | `uv run --no-sync invoke chat.start` | Start a new dated planning chat in the active topic |
+| chat.end | `uv run --no-sync invoke chat.end` | Validate the active chat has real content, clear its tracker |
+| chat.list | `uv run --no-sync invoke chat.list` | Show every chat file in the active topic |
+| chat.resume | `uv run --no-sync invoke chat.resume` | Reopen the chat matching a filename/title pattern |
+| topic.init | `uv run --no-sync invoke topic.init` | Initialize topic structure in the current directory |
+| topic.list | `uv run --no-sync invoke topic.list` | Show the active topic, or every topic with `--show-all` |
+| topic.new | `uv run --no-sync invoke topic.new` | Create a new topic at `topics/<path>` |
+| topic.switch | `uv run --no-sync invoke topic.switch` | Switch the active topic, auto-saving any active chat first |
+| topic.update | `uv run --no-sync invoke topic.update` | Regenerate AGENTS.md/CLAUDE.md for every topic |
 
 ## Ruff Tasks
 
@@ -91,7 +143,8 @@ All `uv run` calls MUST use `--no-sync`. See `.github/instructions/tests.instruc
 
 ## AI Sync Tasks
 
-`.github/prompts/` is the source of truth for all slash commands. Run after adding or modifying any `.github/prompts/*.prompt.md` file.
+Lives in `tasks/ai/{hermes,opencode}.py`. `.github/prompts/` is the source of truth for all slash
+commands. Run after adding or modifying any `.github/prompts/*.prompt.md` file.
 
 | Task | Command | Description |
 |------|---------|-------------|
@@ -103,6 +156,8 @@ All `uv run` calls MUST use `--no-sync`. See `.github/instructions/tests.instruc
 mirrors, checked by `tests.check_agents` (below).
 
 ## Ollama Tasks
+
+Lives in `tasks/ai/ollama.py`.
 
 | Task | Command | Description |
 |------|---------|-------------|
@@ -116,6 +171,15 @@ mirrors, checked by `tests.check_agents` (below).
 | uninstall | `uv run --no-sync invoke ollama.uninstall` | Uninstall Ollama and remove all models |
 | update | `uv run --no-sync invoke ollama.update` | Update Ollama binary + all installed models |
 
+## Docs Tasks
+
+Lives in `tasks/ai/docs.py`. Runs as part of `invoke fix` and `/docs` — see
+`.github/instructions/docs.instructions.md`.
+
+| Task | Command | Description |
+|------|---------|-------------|
+| update_changelogs | `uv run --no-sync invoke docs.update_changelogs` | Prepend any missing `docs/change_logs/<category>/<name>.md` entries from `properties.yml` |
+
 ## Task Ordering
 
 Tasks within a file must be ordered **alphabetically by function name**. Do not order by addition date, logical grouping, or importance.
@@ -124,15 +188,36 @@ Tasks within a file must be ordered **alphabetically by function name**. Do not 
 
 ```
 tasks/
-├── combos.py        # fix, test, ai.sync combo tasks
-├── debug.py         # debug utilities
-├── hermes.py        # hermes.sync — syncs ~/.hermes/ config + SKILL.md
-├── ollama.py        # ollama.install/list/update/uninstall/start/stop/status/restart/clean
-├── opencode.py      # opencode.sync — syncs .opencode/command/
-├── ruff.py          # ruff.fix + ruff.format
-├── setup.py         # setup.properties — creates/stamps properties.yml
-├── tests.py         # actionlint, check_agents, pylint, pytest, rufflint, yamllint
-├── upgrade.py        # libs, python, sync, upgrade
-├── uv.py            # uv.upgrade_bin, uv.upgrade_libs
-└── versioning.py    # all, libs, workflows (version-lock checks)
+├── __init__.py      # Wires the invoke Collection: ai/, ai_vault/, common/ (each registered at
+│                     # their original top-level names — grouped for file organization only, not
+│                     # nested namespaces), plus tests/
+├── ai/              # Tooling this repo uses to operate on itself, or to integrate with a
+│   │                 # specific AI tool
+│   ├── docs.py      # docs.update_changelogs
+│   ├── hermes.py    # hermes.sync — syncs ~/.hermes/ config + SKILL.md
+│   ├── ollama.py    # ollama.install/list/update/uninstall/start/stop/status/restart/clean
+│   ├── opencode.py  # opencode.sync — syncs .opencode/command/
+│   ├── repo.py      # repo.pull, repo.push, repo.pr_*, repo.squash, repo.rebase, repo.*screenshot*
+│   └── template.py  # template.pull, template.push_diff, template.push_apply, template.push_create_pr
+├── ai_vault/        # This repo's own reason for existing
+│   ├── chat.py      # chat.start, chat.end, chat.list, chat.resume
+│   └── topic.py     # topic.init, topic.list, topic.new, topic.switch, topic.update
+├── common/          # template_python-inherited boilerplate
+│   ├── main.py      # fix, test, ai.sync combo tasks (was combos.py)
+│   ├── debug.py     # debug utilities
+│   ├── ruff.py      # ruff.fix + ruff.format
+│   ├── setup.py     # setup.properties — creates/stamps properties.yml
+│   ├── upgrade.py   # libs, python, sync, upgrade
+│   ├── uv.py        # uv.upgrade_bin, uv.upgrade_libs
+│   └── versioning.py # all, libs, workflows (version-lock checks)
+└── tests/           # One file per check (actionlint.py, check_agents.py, pylint.py, pytest.py,
+                      # rufflint.py, yamllint.py) — still one flat tests.* namespace
 ```
+
+`repo.py`/`template.py` wrap `modules/repo/`/`modules/template/`, which existed before but had no
+`invoke` task exposing them directly (only reachable via the prompt/skill router) — newly wired
+2026-08-11, alongside `chat.py`/`topic.py` for the same reason. All four use
+`context.run("python -m modules....")`, matching every other task here — this repo's
+`tasks/__init__.py` never adds the repo root to `sys.path`, so a direct `from modules.x import y`
+import would fail inside the invoke process itself (subprocess resolves fine since Python's own
+`-m` uses the CWD).

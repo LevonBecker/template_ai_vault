@@ -9,6 +9,14 @@ uv run --no-sync python -m modules.repo.route "pr_diff"
 If that fails (e.g. no base branch found), fall back to `git status` and `git diff` against HEAD to
 see uncommitted changes instead.
 
+Sync the changelog files from `properties.yml` (see `.github/instructions/docs.instructions.md`):
+
+Run this terminal command:
+
+```
+uv run --no-sync invoke docs.update_changelogs
+```
+
 Using that diff, audit every doc and AI-config file that could be stale because of it. At minimum
 check:
 
@@ -25,6 +33,11 @@ check:
 6. **`properties.example.yml`** and any other example/config file describing setup — if `setup.sh`,
    `setup.ps1`, or `modules/setup/properties.py` changed what gets generated.
 7. Any other `*.md` file that references a file, command, module, or behavior touched by the diff.
+8. If the diff touches a component tracked under one of `properties.yml`'s change log categories
+   (see `.github/instructions/docs.instructions.md` — empty by default until a category is added),
+   confirm that entry's `version`/`latest_changes` was actually bumped — the
+   `docs.update_changelogs` step above only syncs the changelog file to whatever's currently in
+   `properties.yml`; it can't tell you the version itself is stale. Flag it if it wasn't.
 
 For each stale doc you find, fix it directly — this is a repo-local consistency sweep, not a
 cross-repo sync, so no confirmation is needed before editing; git history is the safety net.
