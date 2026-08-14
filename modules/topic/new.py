@@ -9,7 +9,8 @@ from pathlib import Path
 
 from ..common import cli as click
 from ..common.properties import get_repo_local
-from ..common.utils import error, info
+from ..common.utils import error, info, success
+from .active import write_active_topic
 
 
 @click.command()
@@ -40,8 +41,14 @@ def main(path: str, description: str | None = None) -> None:
     env["AI_VAULT_ORIGINAL_CWD"] = str(topic_dir)
     subprocess.run(cmd, cwd=repo_local, env=env, check=False)
 
+    # A freshly created topic becomes the active topic — otherwise the next
+    # /chat start silently lands in whatever topic was active before this one.
+    write_active_topic(repo_local, path)
+
     click.echo(f"✅ New topic ready: topics/{path}")
-    click.echo(f"💡 Use /topic {path} to switch to it.")
+    success(f"Switched to: {path}")
+    click.echo(f"📂 Base path: topics/{path}")
+    click.echo(f"📍 Full path: {topic_dir}")
 
 
 if __name__ == "__main__":
