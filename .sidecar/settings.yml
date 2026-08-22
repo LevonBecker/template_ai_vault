@@ -1,0 +1,9 @@
+# Repository defaults for routine, non-destructive commands.
+# A matching false rule always requires approval, even when another rule allows it.
+permissions:
+  allow:
+    terminal:
+      uv run --no-sync python -m modules.*: true
+      git status*: true
+      git diff*: true
+      rm: false
