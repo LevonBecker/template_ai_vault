@@ -1,6 +1,6 @@
 ---
 name: repos
-description: Use for showing this vault's related-repos map (org/repo list + template lineage) from properties.yml, or applying a change to all related repos. Also a TRIGGER — read .github/instructions/repos.instructions.md whenever the user says "related repos"/"the repos"/"other repos"/"all of the repos" about this vault's family, even without running /repos. Equivalent to /repos.
+description: Use for showing this vault's related-repos map (org/repo list + template lineage) from properties.yml, pulling every repo in the family up to date, or applying a change across related repos. Also a TRIGGER — read .github/instructions/repos.instructions.md whenever the user says "related repos"/"the repos"/"other repos"/"all of the repos"/"pull all repos"/"pull the repos" about this vault's family, even without running /repos. Equivalent to /repos.
 ---
 
 # Repos Workflow
