@@ -19,14 +19,20 @@ ancestor chain, never a sibling branch it isn't descended from. See `modules/set
 
 ## "Related Repos" Trigger
 When the user says **"related repos"**, **"the repos"**, **"other repos"**, **"all of the repos"**,
-**"all the repos"**, or similar in the context of this vault's repo family — not generic talk about
+**"all the repos"**, **"pull all repos"**, **"pull the repos"**, or similar in the context of this vault's repo family — not generic talk about
 "the repository" — **read this file in full before acting**, then read the `repos` key in
 `properties.yml` to know which other repos are part of this vault's family and how they're related.
 This applies whether or not the user ran `/repos` — the phrase itself is the trigger.
 
-Two distinct requests look similar but aren't:
+Three distinct requests look similar but aren't:
 - **"What are the related repos?"** — just resolve and show the `repos`/`lineage` map (`/repos`
   does this).
+- **"Pull all repos" / "pull the repos" / "pull the family"** — for every repo in scope with a
+  local clone (resolve paths from `repos_local`), bring it up to date: `git stash -u` if the
+  tree is dirty, switch to its default branch, `git pull --ff-only`, then `git stash pop` if
+  you stashed. Read-only sync, **not** the Cross-Repo Change Workflow below — no feature
+  branches, no PRs. Report each repo's result (updated / already current / skipped-dirty /
+  conflict).
 - **"Apply this to the related/other repos"** vs. **"apply this to all of the repos"** — both run
   the Cross-Repo Change Workflow below, but scope differs:
   - "related repos" / "other repos" — the *other* repos in the family; this repo is assumed already

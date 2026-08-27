@@ -1,5 +1,5 @@
 ---
-description: Show this vault's related-repos map (org/repo list + template lineage) from properties.yml, or apply a change to all of them.
+description: Show this vault's related-repos map (org/repo list + template lineage) from properties.yml, pull the whole family up to date, or apply a change across them.
 subtask: false
 agent: general
 slash_command: /repos
@@ -18,5 +18,5 @@ run `/setup` first.
   `repos.instructions.md` against each repo in scope.
 
 This command doubles as a recognition trigger: whenever the user says "related repos", "the repos",
-or "other repos" about this vault's family (not generic talk about "the repository"), read
+"other repos", "pull all repos", or "pull the repos" about this vault's family (not generic talk about "the repository"), read
 `repos.instructions.md` and act on it — even if they didn't explicitly run `/repos`.
