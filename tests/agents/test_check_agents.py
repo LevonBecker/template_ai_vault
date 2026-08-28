@@ -14,11 +14,6 @@ pytestmark = pytest.mark.agents
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# The `claude` command would just proxy back to the running tool from inside itself, so it's
-# skipped everywhere except .opencode/command — the tool that actually needs to shell out to it.
-_SKIP_SELF_REFERENTIAL = {"claude"}
-
-
 def _prompt_slugs() -> set[str]:
     return {p.name.removesuffix(".prompt.md") for p in (REPO_ROOT / ".github" / "prompts").glob("*.prompt.md")}
 
@@ -46,15 +41,15 @@ def _assert_mirrored(label: str, expected: set[str], actual: set[str]) -> None:
 
 
 def test_claude_commands_mirror_prompts() -> None:
-    _assert_mirrored("`.claude/commands/`", _prompt_slugs() - _SKIP_SELF_REFERENTIAL, _command_slugs())
+    _assert_mirrored("`.claude/commands/`", _prompt_slugs(), _command_slugs())
 
 
 def test_claude_skills_mirror_prompts() -> None:
-    _assert_mirrored("`.claude/skills/`", _prompt_slugs() - _SKIP_SELF_REFERENTIAL, _skill_slugs())
+    _assert_mirrored("`.claude/skills/`", _prompt_slugs(), _skill_slugs())
 
 
 def test_clinerules_workflows_mirror_prompts() -> None:
-    _assert_mirrored("`.clinerules/workflows/`", _prompt_slugs() - _SKIP_SELF_REFERENTIAL, _clinerules_slugs())
+    _assert_mirrored("`.clinerules/workflows/`", _prompt_slugs(), _clinerules_slugs())
 
 
 def test_opencode_commands_mirror_prompts() -> None:

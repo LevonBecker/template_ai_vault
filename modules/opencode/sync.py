@@ -31,8 +31,6 @@ def _command_content(slug: str, description: str, body: str) -> str:
 def main(force: bool = False) -> None:
     """Sync .opencode/command/ from .github/prompts/ source of truth."""
     _OPENCODE_COMMAND_DIR.mkdir(parents=True, exist_ok=True)
-    # Unlike Claude Code and Cline, /claude is legitimate here — it proxies to the real `claude`
-    # CLI from within OpenCode, so nothing is skipped.
     cmds = load_commands()
     written = skipped = 0
     for cmd in cmds:

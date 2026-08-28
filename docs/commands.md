@@ -70,7 +70,6 @@ install.
 ## Other Tools
 | Command | Purpose | Details |
 |---------|---------|---------|
-| `/claude [args]` | Run Claude Code CLI directly | Proxies to the `claude` CLI using your Pro/Max subscription — see `modules/claude/README.md` |
 
 Ollama (local LLM) has no slash command — it's invoke-task-only: `inv ollama.install` /
 `inv ollama.list` / `inv ollama.status` / `inv ollama.update` / `inv ollama.uninstall`.
