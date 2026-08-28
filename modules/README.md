@@ -9,7 +9,6 @@ validators in `common/cli.py`.
 ```
 modules/
   chat/         # research chat session lifecycle (start, resume, end, list, active)
-  claude/       # /claude → proxies to the `claude` CLI
   common/       # cli, properties, utils, route_utils, prompt_commands, chat_state, invoke_runner helpers
   docs/         # changelog sync — docs/change_logs/ vs properties.yml
   hermes/       # generates ~/.hermes/ config + SKILL.md from .github/prompts/
@@ -27,7 +26,6 @@ modules/
 | Directory | Purpose |
 |-----------|---------|
 | [`chat/`](chat/README.md) | Research chat session lifecycle — start, resume, end, list, active state |
-| [`claude/`](claude/README.md) | `/claude` CLI passthrough (Pro/Max subscription access from OpenCode) |
 | [`common/`](common/README.md) | CLI helpers, `properties.yml` config reader, output/utility helpers, shared prompt/chat-state parsing |
 | [`docs/`](docs/README.md) | Changelog sync — `docs/change_logs/` vs `properties.yml` |
 | [`hermes/`](hermes/README.md) | Generates the Hermes `quick_commands` config + `r-research` `SKILL.md` from `.github/prompts/` |

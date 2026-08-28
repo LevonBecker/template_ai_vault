@@ -118,8 +118,6 @@ modules/
 │   ├── resume.py
 │   ├── route.py        # /chat routing
 │   └── start.py
-├── claude/
-│   └── route.py        # /claude routing (proxies to claude CLI)
 ├── docs/
 │   ├── update.py       # change_logs() + python -m modules.docs.update CLI entry point
 │   └── lib/

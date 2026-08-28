@@ -7,9 +7,6 @@ all slash commands.
 
 By default only writes NEW commands (files that don't exist yet). Use `--force` to overwrite
 existing hand-crafted command files. Unlike `hermes/sync.py` (and the hand-maintained
-`.claude/commands/`/`.clinerules/workflows/` mirrors), `claude` is **not** skipped here — `/claude`
-legitimately proxies to the real `claude` CLI from within OpenCode, with no circularity or
-filesystem-collision concern.
 
 ## Usage
 

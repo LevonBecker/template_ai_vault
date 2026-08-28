@@ -83,9 +83,6 @@ claude auth login
 # or: export ANTHROPIC_API_KEY="your_api_key_here"
 ```
 
-The repo also ships a `/claude` command that proxies straight to this CLI using your Pro/Max
-subscription — see `modules/claude/README.md`.
-
 #### GitHub CLI
 ```bash
 brew install gh

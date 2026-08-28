@@ -154,8 +154,6 @@ modules/
 ├── skeleton/                    # Locates the shared template_ai_python skeleton repo for /sync-setup
 │   ├── sync.py / route.py
 │   └── README.md
-├── claude/                      # Claude Code CLI passthrough
-│   ├── route.py                 # /claude → proxies to the `claude` CLI
 │   └── README.md
 ├── hermes/
 │   └── sync.py                  # Generates ~/.hermes/ config + SKILL.md from .github/prompts/
