@@ -1,6 +1,6 @@
 [project]
 name = "template-ai-vault"
-dynamic = ["version"]
+dynamic = ["version"]  # read from the VERSION file (see [tool.setuptools.dynamic])
 description = "A local-first AI research workspace for VS Code — every conversation and doc lives in one git-tracked repo, so you can freely switch between AI providers and models while syncing the same context across all your devices."
 readme = "README.md"
 classifiers = [
@@ -20,8 +20,15 @@ dependencies = [
     "tomlkit~=0.15.1",
 ]
 
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [tool.setuptools]
 packages = []
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
 
 [project.urls]
 homepage = "https://github.com/LevonBecker/template_ai_vault"

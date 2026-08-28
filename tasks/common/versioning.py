@@ -24,15 +24,27 @@ def libs(context, dry_run=False, yes=False):
 
 
 @task
-def project_bump_build(context):
-    """Advance VERSION for a dev build (new minor's first build, or next build number)"""
-    context.run("python -m modules.versioning.project")
+def project_bump_patch(context):
+    """X.Y.Z -> X.Y.(Z+1). Every merge to development."""
+    context.run("python -m modules.versioning.project patch")
 
 
 @task
-def project_bump_release(context):
-    """Finalize VERSION for release by dropping the build suffix"""
-    context.run("python -m modules.versioning.project --release")
+def project_bump_minor(context):
+    """X.Y.Z -> X.(Y+1).0. A milestone release bump (release workflow bump=minor)."""
+    context.run("python -m modules.versioning.project minor")
+
+
+@task
+def project_bump_major(context):
+    """X.Y.Z -> (X+1).0.0. A major release bump (release workflow bump=major)."""
+    context.run("python -m modules.versioning.project major")
+
+
+@task
+def project_bump_build(context):
+    """X.Y.Z -> X.Y.Z-001 -> -002. Manual feature-branch use only; never merged or published."""
+    context.run("python -m modules.versioning.project build")
 
 
 @task
