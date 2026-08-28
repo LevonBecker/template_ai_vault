@@ -256,7 +256,7 @@ wheels = [
 
 [[package]]
 name = "template-ai-vault"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "actionlint-py" },
     { name = "invoke" },
