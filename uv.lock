@@ -106,8 +106,8 @@ wheels = [
 
 [[package]]
 name = "fireball-sidecar-toolkit"
-version = "0.4.4"
-source = { git = "https://github.com/fireballenterprise/fireball_sidecar_toolkit?rev=development#9fe0420e85f505f36f4b90d56f780bc239d84a30" }
+version = "0.4.5"
+source = { git = "https://github.com/fireballenterprise/fireball_sidecar_toolkit?rev=development#7d16a1b69e2512ad61df501a9c8ed0fb6605e565" }
 dependencies = [
     { name = "invoke" },
     { name = "pyyaml" },
