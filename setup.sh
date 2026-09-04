@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Clobbered by `invoke sidecar.toolkit.download` — DO NOT EDIT. Repo-specific setup goes in
+# setup.local.sh (git-tracked, never clobbered), which this script sources if present.
 set -e
 
 # ---------------------------------------------------------------------------
@@ -28,8 +30,25 @@ install_tools_macos() {
 
 install_tools_linux() {
   install_uv_curl
-  echo "NOTE: macOS-only features (screenshot integration, /repo set_screenshots) won't work here."
   echo "NOTE: For Windows, use setup.ps1 in PowerShell instead of this script."
+}
+
+# ---------------------------------------------------------------------------
+# Repo-local hook
+# ---------------------------------------------------------------------------
+
+# Source setup.local.sh once, then run its `setup_local_<phase>` function if it defines one.
+# Phases: `tools` (after the OS tool install, before the venv) and `post` (after properties.yml).
+run_local_hook() {
+  [ -f "setup.local.sh" ] || return 0
+  # shellcheck disable=SC1091
+  [ -n "${_SETUP_LOCAL_SOURCED:-}" ] || { source setup.local.sh; _SETUP_LOCAL_SOURCED=1; }
+  local fn="setup_local_$1"
+  if declare -F "$fn" > /dev/null; then
+    echo -e
+    echo "INFO: setup.local.sh -> $fn"
+    "$fn"
+  fi
 }
 
 # ---------------------------------------------------------------------------
@@ -77,8 +96,10 @@ main() {
       ;;
   esac
 
+  run_local_hook tools
   setup_python_env
   configure_properties
+  run_local_hook post
 }
 
 main "$@"

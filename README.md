@@ -23,7 +23,9 @@ cd ai_vault
 pwsh -ExecutionPolicy Bypass -File setup.ps1
 ```
 
-This creates the Python virtual environment, installs dependencies, and configures repo paths. For AI service authentication and optional CLI tool installs, see [`docs/setup.md`](docs/setup.md).
+This installs the Python virtual environment, pulls the shared toolkit
+(`fireball_sidecar_toolkit`), and stamps `properties.yml` with this checkout's paths. All the
+agent-facing rules and the slash-command / invoke-task reference live in `.ai/toolkit/`.
 
 ## Topics
 Our content is organized into `topics/`, nested however makes sense for us — a simple topic can live at the root, like `topics/shopping/`, or nest deeper, like `topics/health/medical/`, with `topics/health/` just being a folder and not a topic itself.
@@ -41,7 +43,8 @@ When we're done, run `/chat end` — this writes the full conversation to that c
 ## Screenshots
 One of the fastest ways to get help: instead of typing out an error message or describing a UI problem, just screenshot it and say `/ss` — the AI looks at the image directly as context for the conversation. No copy-pasting stack traces, no trying to describe what a broken layout looks like.
 
-Screenshots save to a shared `screenshots/` folder at the repo root (once configured with `/repo set_screenshots`), so this works the same way across every topic. See [`docs/screenshots.md`](docs/screenshots.md) for the full workflow and setup commands.
+Screenshots save to a shared `screenshots/` folder at the repo root (once configured with
+`/screenshots configure`), so this works the same way across every topic.
 
 ## Our Content
 Everything — topics, chats, docs — is saved locally in our own private git repo, so we're never locked into one AI provider or model. Because it's just files, we can switch tools freely while keeping one shared history, and sync that same content across every computer or device with a simple push and pull.
@@ -51,7 +54,7 @@ Once we've made changes, run `/push` to commit and push them to our remote; run 
 ## Mobile Access
 Cloning a git repo to a phone isn't really practical, and the GitHub app isn't built for browsing markdown and CSV. My workaround: a small automation can sync the repo to an iCloud folder, which Obsidian (with a CSV viewer plugin) reads on my phone — free, and I can browse any topic, chat, or doc from anywhere.
 
-This is **off by default** — `/push` and `/pull` skip iCloud entirely unless you turn it on. To enable it, set `icloud.enabled: true` and fill in `icloud.path` in `properties.yml` (see [`docs/setup.md`](docs/setup.md)).
+This is **off by default** — `/push` and `/pull` skip iCloud entirely unless you turn it on. To enable it, set `icloud.enabled: true` and fill in `icloud.path` in `properties.yml`.
 
 Obsidian is just one option — anything that can read a synced folder of markdown/CSV works. Some AI tools solve this differently: Hermes, for example, can run as a Telegram bot so you can chat with your own setup straight from your phone.
 
@@ -73,9 +76,10 @@ I've run AI Vault through all of these — pick whichever fits how you like to w
 | GPT/Codex (standalone) | — | No custom command support — bring chats in via [Migrate Data](#migrate-data) |
 
 ## Learn More
-The full setup guide (AI service auth, CLI installs), command reference, and architecture docs live in [`docs/`](docs/README.md).
-- [`docs/setup.md`](docs/setup.md) — install, AI service auth, optional CLI tools
-- [`docs/commands.md`](docs/commands.md) — every slash command
-- [`docs/architecture.md`](docs/architecture.md) — how the multi-tool automation is built
-- [`docs/screenshots.md`](docs/screenshots.md) — `/ss` workflow and macOS setup commands
-- [`docs/custom_prompts.md`](docs/custom_prompts.md) — adding or editing a slash command
+The agent-facing rules, the full slash-command / invoke-task reference, and the toolkit
+architecture live in **`.ai/toolkit/`** (rendered per tool into `.claude/`, `.clinerules/`,
+`.sidecar/`, `.github/`, `AGENTS.md`, `CLAUDE.md`). Start at `AGENTS.md`.
+
+The shared tooling is the [`fireball_sidecar_toolkit`](https://github.com/fireballenterprise/fireball_sidecar_toolkit)
+package — vendored into `modules/toolkit/` + `tasks/toolkit/` and refreshed with
+`invoke sidecar.toolkit.upgrade`.
