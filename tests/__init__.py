@@ -1,1 +1,1 @@
-"""Tests for AI Vault automation."""
+"""Consumer-local tests. The toolkit suite is vendored under tests/toolkit/."""

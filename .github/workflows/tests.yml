@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  actionlint:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -17,83 +17,8 @@ jobs:
       - name: Setup CICD
         uses: ./.github/actions/cicd_setup
 
-      - name: Actionlint
+      - name: invoke test
         run: |
           source .venv/bin/activate
           invoke debug.env
-          invoke tests.actionlint
-
-  check_agents:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup CICD
-        uses: ./.github/actions/cicd_setup
-
-      - name: Check Agents
-        run: |
-          source .venv/bin/activate
-          invoke debug.env
-          invoke tests.check_agents
-
-  pylint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup CICD
-        uses: ./.github/actions/cicd_setup
-
-      - name: Pylint
-        run: |
-          source .venv/bin/activate
-          invoke debug.env
-          invoke tests.pylint
-
-  pytest:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup CICD
-        uses: ./.github/actions/cicd_setup
-
-      - name: Pytest
-        run: |
-          source .venv/bin/activate
-          invoke debug.env
-          invoke tests.pytest
-
-  ruff_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup CICD
-        uses: ./.github/actions/cicd_setup
-
-      - name: Ruff Lint
-        run: |
-          source .venv/bin/activate
-          invoke debug.env
-          invoke tests.rufflint
-
-  yaml_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup CICD
-        uses: ./.github/actions/cicd_setup
-
-      - name: YAML Lint
-        run: |
-          source .venv/bin/activate
-          invoke debug.env
-          invoke tests.yamllint
+          invoke test

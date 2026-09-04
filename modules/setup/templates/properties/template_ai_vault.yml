@@ -1,8 +1,10 @@
 repos:
   LevonBecker:
     - template_ai_vault
-  lineage:
-    LevonBecker/template_ai_vault: LevonBecker/template_ai_python
+
+repo:
+  local: "$HOME/path/to/this/repo"
+  remote: "github.com/<your-username>/<your-repo-name>"
 
 icloud:
   enabled: false
