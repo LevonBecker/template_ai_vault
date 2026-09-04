@@ -9,13 +9,14 @@ classifiers = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "fireball_sidecar_toolkit @ git+https://github.com/fireballenterprise/fireball_sidecar_toolkit@development",
     "actionlint-py~=1.7.12.24",
     "invoke~=3.0.3",
-    "pylint~=4.0.6",
+    "pylint~=4.0.8",
     "pytest~=9.1.1",
     "pytest-cov~=7.1.0",
     "pyyaml~=6.0.3",
-    "ruff~=0.16.0",
+    "ruff~=0.16.6",
     "yamllint~=1.38.0",
     "tomlkit~=0.15.1",
 ]
@@ -37,7 +38,9 @@ repository = "https://github.com/LevonBecker/template_ai_vault"
 [tool.ruff]
 line-length = 120
 target-version = "py314"
-extend-exclude = ["topics/*", "tests/*"]
+# modules/toolkit/** + tasks/toolkit/** are clobbered from fireball_sidecar_toolkit — the toolkit's
+# own CI lints that code; sidecar.toolkit.check gates drift here.
+extend-exclude = ["topics/*", "tests/*", "modules/toolkit/*", "tasks/toolkit/*"]
 
 [tool.ruff.lint]
 select = ["PL", "E", "W", "F", "I", "B", "A", "C4", "N", "UP", "T10", "EXE", "COM819", "C", "Q"]
@@ -58,7 +61,7 @@ max-returns = 10 # default = 6
 max-nested-blocks = 10 # default = 5
 
 [tool.ruff.lint.per-file-ignores]
-"modules/versioning/check_all.py" = ["PLR0915"]
+
 
 [tool.ruff.format]
 exclude = ["topics/*"]
@@ -73,14 +76,14 @@ docstring-code-line-length = "dynamic"
 testpaths = ["tests"]
 norecursedirs = ["tmp", ".venv", ".ruff_cache", "__pycache__"]
 markers = [
-    "agents: .github/prompts/ mirror consistency — tests/agents/",
-    "common: modules/common/ helpers — tests/common/",
-    "drift: gate tests that catch a forgotten regen step before merge — tests/drift/",
-    "hermes: modules/hermes/ (Hermes AI agent sync) — tests/hermes/",
-    "setup: modules/setup/ (properties.yml bootstrap) — tests/setup/",
-    "style: Markdown/doc style checks — tests/style/",
-    "template: modules/template/ (parent-template push) — tests/template/",
-    "topic: modules/topic/ (topic workspace management) — tests/topic/",
+    "common: modules/toolkit/common/ helpers — tests/toolkit/common/",
+    "drift: gate tests that catch a forgotten regen step before merge — tests/toolkit/drift/",
+    "repo: modules/toolkit/repo/ (git/PR ops + repo-family fan-out) — tests/toolkit/repo/",
+    "setup: modules/toolkit/setup/ (properties.yml bootstrap) — tests/toolkit/setup/",
+    "style: Markdown/doc style checks — tests/toolkit/style/",
+    "topic: modules/toolkit/topic/ (topic workspace management) — tests/toolkit/topic/",
+    "versioning: modules/toolkit/versioning/ (dependency/toolchain version checks) — tests/toolkit/versioning/",
+    "backlog: modules/toolkit/backlog/ (GitHub Issues bug/feature/task tracker) — tests/toolkit/backlog/",
 ]
 
 [tool.pylint.main]
@@ -95,6 +98,8 @@ ignore-paths = [
   "^tmp/.*$",
   "^topics/.*$",
   "^tests/.*$",
+  "^modules/toolkit/.*$",
+  "^tasks/toolkit/.*$",
   ".*__pycache__.*$",
 ]
 

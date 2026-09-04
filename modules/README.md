@@ -1,11 +1,9 @@
 # Modules
-
 Reusable Python modules imported by `tasks/*.py` invoke tasks and by the AI-tool command routers
 (`modules/*/route.py`). All functions are module-level — no classes required except small helper
 validators in `common/cli.py`.
 
 ## Structure
-
 ```
 modules/
   chat/         # research chat session lifecycle (start, resume, end, list, active)
@@ -22,7 +20,6 @@ modules/
 ```
 
 ## Submodules
-
 | Directory | Purpose |
 |-----------|---------|
 | [`chat/`](chat/README.md) | Research chat session lifecycle — start, resume, end, list, active state |
@@ -41,7 +38,6 @@ Repo-consistency checks (`check_agents`) live under root `tests/` as pytest test
 `../tests/test_check_agents.py` and `.github/instructions/tests.instructions.md`.
 
 ## Conventions
-
 - One module per file; filename matches the concern in snake_case
 - Each `route.py` file exposes a `main()` entry point and dispatches its slash command's subcommands
 - Shell out via `subprocess.run(..., cwd=repo_path)` — never `shell=True`
