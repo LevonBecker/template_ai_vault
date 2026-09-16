@@ -1,6 +1,6 @@
 # Setup — repo-local `properties.yml` fragments
 The bootstrap code (`inv setup.properties`, called by `setup.sh`) is **shared** — it comes from
-`fireball_sidecar_toolkit` and is clobbered into `modules/toolkit/setup/properties.py`. Never edit
+`fireball_ai_toolkit` and is clobbered into `modules/toolkit/setup/properties.py`. Never edit
 it there.
 
 What stays here is only the **per-tier YAML fragments** it reads — one file per repo in the
@@ -20,4 +20,4 @@ it is committed. On first run `modules/toolkit/setup/properties.py`:
 3. Prompts whether to enable iCloud sync if an `icloud` section is present.
 
 A no-op if `properties.yml` already exists — to regenerate, delete it first. Shared AI tooling
-comes from `invoke sidecar.toolkit.download`, not a `/template` sync (retired).
+comes from `invoke ai_toolkit.download`, not a `/template` sync (retired).

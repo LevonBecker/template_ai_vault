@@ -105,9 +105,9 @@ wheels = [
 ]
 
 [[package]]
-name = "fireball-sidecar-toolkit"
-version = "0.4.7"
-source = { git = "https://github.com/fireballenterprise/fireball_sidecar_toolkit?rev=development#e5ad7944db50c3d2d2950f605fe6bdb069247751" }
+name = "fireball-ai-toolkit"
+version = "0.4.15"
+source = { git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development#1179b62f152b8fcf2d47f7bf237253f4cbdfdadb" }
 dependencies = [
     { name = "invoke" },
     { name = "pyyaml" },
@@ -328,7 +328,7 @@ name = "template-ai-vault"
 source = { editable = "." }
 dependencies = [
     { name = "actionlint-py" },
-    { name = "fireball-sidecar-toolkit" },
+    { name = "fireball-ai-toolkit" },
     { name = "invoke" },
     { name = "pylint" },
     { name = "pytest" },
@@ -342,7 +342,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "actionlint-py", specifier = "~=1.7.12.24" },
-    { name = "fireball-sidecar-toolkit", git = "https://github.com/fireballenterprise/fireball_sidecar_toolkit?rev=development" },
+    { name = "fireball-ai-toolkit", git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development" },
     { name = "invoke", specifier = "~=3.0.3" },
     { name = "pylint", specifier = "~=4.0.8" },
     { name = "pytest", specifier = "~=9.1.1" },

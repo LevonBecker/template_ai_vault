@@ -30,7 +30,7 @@ def _repo(name, purpose="", *, org="fireballenterprise", status="active", pull_r
 _FAMILY = [
     _repo("fireball_sidecar_vscode", "First-party Fireball Sidecar VS Code extension"),
     _repo("fireball_sidecar_chat", "Multi-user chat app on AWS Bedrock", branch="development"),
-    _repo("fireball_sidecar_toolkit", "Canonical shared AI-agent commands + generator", pull_request=True),
+    _repo("fireball_ai_toolkit", "Canonical shared AI-agent commands + generator", pull_request=True),
     _repo("fireball_orchestrator", "Orchestration hub for all Fireball Enterprise repos"),
     _repo("template_python", "Base Python project template", org="levonbecker"),
     _repo("product_metadata", "Shared product metadata", status="retired"),

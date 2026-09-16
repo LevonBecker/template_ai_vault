@@ -1,7 +1,7 @@
 # Windows setup — mirrors setup.sh (macOS/Linux). Run from the repo root in PowerShell:
 #   .\setup.ps1
 #
-# Clobbered by `invoke sidecar.toolkit.download` — DO NOT EDIT. Repo-specific setup goes in
+# Clobbered by `invoke ai_toolkit.download` — DO NOT EDIT. Repo-specific setup goes in
 # setup.local.ps1 (git-tracked, never clobbered), which this script dot-sources if present.
 
 $ErrorActionPreference = "Stop"
