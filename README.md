@@ -24,8 +24,8 @@ pwsh -ExecutionPolicy Bypass -File setup.ps1
 ```
 
 This installs the Python virtual environment, pulls the shared toolkit
-(`fireball_sidecar_toolkit`), and stamps `properties.yml` with this checkout's paths. All the
-agent-facing rules and the slash-command / invoke-task reference live in `.ai/toolkit/`.
+(`fireball_ai_toolkit`), and stamps `properties.yml` with this checkout's paths. All the
+agent-facing rules and the slash-command / invoke-task reference live in `.fireball_ai_toolkit/toolkit/`.
 
 ## Topics
 Our content is organized into `topics/`, nested however makes sense for us — a simple topic can live at the root, like `topics/shopping/`, or nest deeper, like `topics/health/medical/`, with `topics/health/` just being a folder and not a topic itself.
@@ -77,9 +77,9 @@ I've run AI Vault through all of these — pick whichever fits how you like to w
 
 ## Learn More
 The agent-facing rules, the full slash-command / invoke-task reference, and the toolkit
-architecture live in **`.ai/toolkit/`** (rendered per tool into `.claude/`, `.clinerules/`,
+architecture live in **`.fireball_ai_toolkit/toolkit/`** (rendered per tool into `.claude/`, `.clinerules/`,
 `.sidecar/`, `.github/`, `AGENTS.md`, `CLAUDE.md`). Start at `AGENTS.md`.
 
-The shared tooling is the [`fireball_sidecar_toolkit`](https://github.com/fireballenterprise/fireball_sidecar_toolkit)
+The shared tooling is the [`fireball_ai_toolkit`](https://github.com/fireballenterprise/fireball_ai_toolkit)
 package — vendored into `modules/toolkit/` + `tasks/toolkit/` and refreshed with
-`invoke sidecar.toolkit.upgrade`.
+`invoke ai_toolkit.upgrade`.

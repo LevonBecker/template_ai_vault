@@ -2,9 +2,9 @@ from pathlib import Path
 
 from invoke import task
 
-from fireball_sidecar_toolkit.check import check as toolkit_check
-from fireball_sidecar_toolkit.mdfix import check_tree as md_check
-from fireball_sidecar_toolkit.mdfix import fix_tree as md_fix
+from fireball_ai_toolkit.check import check as toolkit_check
+from fireball_ai_toolkit.mdfix import check_tree as md_check
+from fireball_ai_toolkit.mdfix import fix_tree as md_fix
 
 from . import docs, tests
 
@@ -31,5 +31,5 @@ def test(context, repo=None):
     tests.unit(context, repo=repo)
     if repo:
         return
-    toolkit_check(Path.cwd())  # sidecar.toolkit drift gate
+    toolkit_check(Path.cwd())  # ai_toolkit drift gate
     md_check(Path.cwd(), exclude=_MD_EXCLUDE)  # markdown house style — no blank after header, no stray ---

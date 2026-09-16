@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Clobbered by `invoke sidecar.toolkit.download` — DO NOT EDIT. Repo-specific setup goes in
+# Clobbered by `invoke ai_toolkit.download` — DO NOT EDIT. Repo-specific setup goes in
 # setup.local.sh (git-tracked, never clobbered), which this script sources if present.
 set -e
 

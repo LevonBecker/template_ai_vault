@@ -30,5 +30,5 @@ A tool that isn't installed (`shutil.which` miss, or a Gradle task that doesn't 
   `ruff`, `pylint`, `yamllint`, `actionlint` (Python / YAML / Actions); `ktlint`, `detekt`,
   `android_lint` (Kotlin, via `./gradlew`); `pytest`, `gradle_unit` (unit suites)
 
-The `fireball_sidecar_toolkit` drift gate and `mdfix` stay in `tasks/main.py` — they only resolve
-where the `fireball_sidecar_toolkit` package is installed.
+The `fireball_ai_toolkit` drift gate and `mdfix` stay in `tasks/main.py` — they only resolve
+where the `fireball_ai_toolkit` package is installed.

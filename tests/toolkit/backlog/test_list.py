@@ -29,13 +29,13 @@ def _repo(name, *, org="fireballenterprise"):
     )
 
 
-_FAMILY = [_repo("fireball_sidecar_vscode"), _repo("fireball_sidecar_toolkit"), _repo("fireball_orchestrator")]
+_FAMILY = [_repo("fireball_sidecar_vscode"), _repo("fireball_ai_toolkit"), _repo("fireball_orchestrator")]
 
 #: fuzzy `--repo` token → the repo it resolves to.
 _RESOLVE = {
-    "toolkit": "fireball_sidecar_toolkit",
+    "toolkit": "fireball_ai_toolkit",
     "orchestrator": "fireball_orchestrator",
-    "": "fireball_sidecar_toolkit",
+    "": "fireball_ai_toolkit",
 }
 
 
@@ -53,12 +53,12 @@ _ISSUES = {
     "fireballenterprise/fireball_sidecar_vscode": [
         _issue(12, "blank chat panel on a piped | title", ["Sidecar VSCode", "UI"], "fireball_sidecar_vscode"),
     ],
-    "fireballenterprise/fireball_sidecar_toolkit": [
+    "fireballenterprise/fireball_ai_toolkit": [
         _issue(
             52,
             "backlog list --all should aggregate every family repo into one grouped view",
-            ["Sidecar Toolkit", "backlog"],
-            "fireball_sidecar_toolkit",
+            ["AI Toolkit", "backlog"],
+            "fireball_ai_toolkit",
         ),
     ],
     "fireballenterprise/fireball_orchestrator": [],
@@ -79,12 +79,12 @@ def _stub(monkeypatch):
 def test_single_repo_renders_a_heading_and_table(capsys):
     backlog_list.main(repo="toolkit")
     out = capsys.readouterr().out
-    assert "### fireball_sidecar_toolkit · 1" in out
+    assert "### fireball_ai_toolkit · 1" in out
     assert "| # | Title | Labels |" in out
-    assert "| [#52](https://github.com/fireballenterprise/fireball_sidecar_toolkit/issues/52) |" in out
+    assert "| [#52](https://github.com/fireballenterprise/fireball_ai_toolkit/issues/52) |" in out
     # area label stripped, finer label kept
     assert "| backlog |" in out
-    assert "Sidecar Toolkit" not in out
+    assert "AI Toolkit" not in out
 
 
 def test_title_is_truncated_with_an_ellipsis(capsys):
@@ -128,7 +128,7 @@ def test_all_groups_by_repo_and_collapses_empty(capsys):
     assert "## Open issues — family" in out
     assert "**2 open across 3 repos**" in out
     assert "### fireball_sidecar_vscode · 1" in out
-    assert "### fireball_sidecar_toolkit · 1" in out
+    assert "### fireball_ai_toolkit · 1" in out
     assert "fireball_orchestrator" not in out
     assert "*1 other repo: none*" in out
 
@@ -151,7 +151,7 @@ def test_all_json_tags_each_row_with_repo(capsys):
     payload = json.loads(capsys.readouterr().out)
     assert {row["repo"] for row in payload} == {
         "fireballenterprise/fireball_sidecar_vscode",
-        "fireballenterprise/fireball_sidecar_toolkit",
+        "fireballenterprise/fireball_ai_toolkit",
     }
     assert {row["number"] for row in payload} == {12, 52}
 

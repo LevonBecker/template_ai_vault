@@ -32,7 +32,7 @@ def _repo(name, org="fireballenterprise"):
     ("name", "area"),
     [
         ("fireball_sidecar_vscode", "Sidecar VSCode"),
-        ("fireball_sidecar_toolkit", "Sidecar Toolkit"),
+        ("fireball_ai_toolkit", "AI Toolkit"),
         ("fireball_orchestrator", "Orchestrator"),
         ("fireball_gear_shopify", "Gear Shopify"),
         ("template_ai_python", "AI Python"),

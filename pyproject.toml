@@ -9,7 +9,7 @@ classifiers = [
 ]
 requires-python = ">=3.14"
 dependencies = [
-    "fireball_sidecar_toolkit @ git+https://github.com/fireballenterprise/fireball_sidecar_toolkit@development",
+    "fireball_ai_toolkit @ git+https://github.com/fireballenterprise/fireball_ai_toolkit@development",
     "actionlint-py~=1.7.12.24",
     "invoke~=3.0.3",
     "pylint~=4.0.8",
@@ -38,8 +38,8 @@ repository = "https://github.com/LevonBecker/template_ai_vault"
 [tool.ruff]
 line-length = 120
 target-version = "py314"
-# modules/toolkit/** + tasks/toolkit/** are clobbered from fireball_sidecar_toolkit — the toolkit's
-# own CI lints that code; sidecar.toolkit.check gates drift here.
+# modules/toolkit/** + tasks/toolkit/** are clobbered from fireball_ai_toolkit — the toolkit's
+# own CI lints that code; ai_toolkit.check gates drift here.
 extend-exclude = ["topics/*", "tests/*", "modules/toolkit/*", "tasks/toolkit/*"]
 
 [tool.ruff.lint]

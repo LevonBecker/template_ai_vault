@@ -1,4 +1,4 @@
-from fireball_sidecar_toolkit.tasks import collection as toolkit_tasks
+from fireball_ai_toolkit.tasks import collection as toolkit_tasks
 from invoke import Collection
 
 from .toolkit import chat, debug, docs, repo, screenshots, setup, topic, versioning
@@ -7,7 +7,7 @@ from .toolkit import tests as toolkit_tests
 
 namespace = Collection(auto_dash_names=False)
 
-# `toolkit/` — vendored from fireball_sidecar_toolkit, shared with every family repo. Registered at
+# `toolkit/` — vendored from fireball_ai_toolkit, shared with every family repo. Registered at
 # their original top-level names so nothing that calls them needs to change.
 namespace.add_collection(Collection.from_module(debug, auto_dash_names=False), name="debug")
 namespace.add_collection(Collection.from_module(setup, auto_dash_names=False), name="setup")
@@ -20,11 +20,10 @@ namespace.add_collection(Collection.from_module(screenshots, auto_dash_names=Fal
 namespace.add_collection(Collection.from_module(chat, auto_dash_names=False), name="chat")
 namespace.add_collection(Collection.from_module(topic, auto_dash_names=False), name="topic")
 
-# Shared AI-tooling propagation — `sidecar.toolkit.{download,check,sync,upload,release}` from the
-# `fireball_sidecar_toolkit` package. Replaces the retired `/template` sync.
-sidecar_ns = Collection("sidecar")
-sidecar_ns.add_collection(toolkit_tasks, name="toolkit")
-namespace.add_collection(sidecar_ns)
+# Shared AI-tooling propagation — `ai_toolkit.{update,apply,upgrade,sync,contribute,check,release}`
+# from the `fireball_ai_toolkit` package. Top-level, not nested under `sidecar` — the toolkit is
+# generic tooling, not a Sidecar surface. Replaces the retired `/template` sync.
+namespace.add_collection(toolkit_tasks, name="ai_toolkit")
 
 namespace.add_task(common_main.fix, name="fix")
 namespace.add_task(common_main.test, name="test")

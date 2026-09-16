@@ -52,7 +52,7 @@ _AREA_OVERRIDES = {
     "sidecar_chat": "Sidecar Chat",
     "sidecar_landing": "Sidecar Landing",
     "sidecar_llm": "Sidecar LLM",
-    "sidecar_toolkit": "Sidecar Toolkit",
+    "ai_toolkit": "AI Toolkit",
     "sidecar_vscode": "Sidecar VSCode",
 }
 
