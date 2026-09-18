@@ -1,9 +1,9 @@
 from fireball_ai_toolkit.tasks import collection as toolkit_tasks
 from invoke import Collection
 
-from .toolkit import chat, debug, docs, repo, screenshots, setup, topic, versioning
-from .toolkit import main as common_main
-from .toolkit import tests as toolkit_tests
+from .fireball_ai_toolkit import chat, debug, docs, repo, screenshots, setup, topic, versioning
+from .fireball_ai_toolkit import main as common_main
+from .fireball_ai_toolkit import tests as toolkit_tests
 
 namespace = Collection(auto_dash_names=False)
 

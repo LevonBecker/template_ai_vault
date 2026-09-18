@@ -2,26 +2,26 @@
 
 # Agent Instructions
 
-This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/toolkit/` (synced from `fireball_ai_toolkit`) and `.fireball_ai_toolkit/local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is a generated pointer back to them. Read the relevant canonical file before making changes:
+This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/` (synced from `fireball_ai_toolkit`) and `.local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is a generated pointer back to them. Read the relevant canonical file before making changes:
 
-- **AI Commands**: `.fireball_ai_toolkit/toolkit/instructions/ai_commands.md`
-- **AI Skills**: `.fireball_ai_toolkit/toolkit/instructions/ai_skills.md`
-- **Backlog**: `.fireball_ai_toolkit/toolkit/instructions/backlog.md`
-- **Change Log Standards**: `.fireball_ai_toolkit/toolkit/instructions/changelogs.md`
-- **CSV File Standards**: `.fireball_ai_toolkit/toolkit/instructions/csv.md`
-- **Git & PR**: `.fireball_ai_toolkit/toolkit/instructions/git.md`
-- **Logic Architecture**: `.fireball_ai_toolkit/toolkit/instructions/logic.md`
-- **Markdown Style Standards**: `.fireball_ai_toolkit/toolkit/instructions/markdown.md`
-- **Python Modules**: `.fireball_ai_toolkit/toolkit/instructions/modules.md`
-- **Python**: `.fireball_ai_toolkit/toolkit/instructions/python.md`
-- **Repo & Repo-Family**: `.fireball_ai_toolkit/toolkit/instructions/repos.md`
-- **Review**: `.fireball_ai_toolkit/toolkit/instructions/review.md`
-- **Screenshots**: `.fireball_ai_toolkit/toolkit/instructions/screenshots.md`
-- **Setup**: `.fireball_ai_toolkit/toolkit/instructions/setup.md`
-- **Tasks**: `.fireball_ai_toolkit/toolkit/instructions/tasks.md`
-- **Testing**: `.fireball_ai_toolkit/toolkit/instructions/tests.md`
-- **Topics**: `.fireball_ai_toolkit/toolkit/instructions/topics.md`
-- **Versioning**: `.fireball_ai_toolkit/toolkit/instructions/versioning.md`
-- **GitHub Actions**: `.fireball_ai_toolkit/toolkit/instructions/workflows.md`
+- **AI Commands**: `.fireball_ai_toolkit/instructions/ai_commands.md`
+- **AI Skills**: `.fireball_ai_toolkit/instructions/ai_skills.md`
+- **Backlog**: `.fireball_ai_toolkit/instructions/backlog.md`
+- **Change Log Standards**: `.fireball_ai_toolkit/instructions/changelogs.md`
+- **CSV File Standards**: `.fireball_ai_toolkit/instructions/csv.md`
+- **Git & PR**: `.fireball_ai_toolkit/instructions/git.md`
+- **Logic Architecture**: `.fireball_ai_toolkit/instructions/logic.md`
+- **Markdown Style Standards**: `.fireball_ai_toolkit/instructions/markdown.md`
+- **Python Modules**: `.fireball_ai_toolkit/instructions/modules.md`
+- **Python**: `.fireball_ai_toolkit/instructions/python.md`
+- **Repo & Repo-Family**: `.fireball_ai_toolkit/instructions/repos.md`
+- **Review**: `.fireball_ai_toolkit/instructions/review.md`
+- **Screenshots**: `.fireball_ai_toolkit/instructions/screenshots.md`
+- **Setup**: `.fireball_ai_toolkit/instructions/setup.md`
+- **Tasks**: `.fireball_ai_toolkit/instructions/tasks.md`
+- **Testing**: `.fireball_ai_toolkit/instructions/tests.md`
+- **Topics**: `.fireball_ai_toolkit/instructions/topics.md`
+- **Versioning**: `.fireball_ai_toolkit/instructions/versioning.md`
+- **GitHub Actions**: `.fireball_ai_toolkit/instructions/workflows.md`
 
-**Source of truth: `.fireball_ai_toolkit/toolkit/` and `.fireball_ai_toolkit/local/`** — all rules, slash commands, and skills live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.
+**Source of truth: `.fireball_ai_toolkit/` and `.local/`** — all rules, slash commands, and skills live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.

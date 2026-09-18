@@ -3,6 +3,6 @@
 # Copilot Instructions
 
 See `AGENTS.md` at the repo root for the project overview and the instruction-file map. The
-canonical rules, commands, and skills live under `.fireball_ai_toolkit/toolkit/` (from `fireball_ai_toolkit`)
-and `.fireball_ai_toolkit/local/` (this repo's own). Everything under `.github/instructions/*.instructions.md`
+canonical rules, commands, and skills live under `.fireball_ai_toolkit/` (from `fireball_ai_toolkit`)
+and `.local/` (this repo's own). Everything under `.github/instructions/*.instructions.md`
 auto-applies by its `applyTo` glob and points back there. Never hand-edit a generated file.

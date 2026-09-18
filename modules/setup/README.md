@@ -1,6 +1,6 @@
 # Setup — repo-local `properties.yml` fragments
 The bootstrap code (`inv setup.properties`, called by `setup.sh`) is **shared** — it comes from
-`fireball_ai_toolkit` and is clobbered into `modules/toolkit/setup/properties.py`. Never edit
+`fireball_ai_toolkit` and is clobbered into `modules/fireball_ai_toolkit/setup/properties.py`. Never edit
 it there.
 
 What stays here is only the **per-tier YAML fragments** it reads — one file per repo in the
@@ -11,7 +11,7 @@ lineage, kept repo-local because they come from the parent repos, not the toolki
 
 ## What the bootstrap does
 `properties.yml` is gitignored **only in template repos** (`template_*`); this is a real repo, so
-it is committed. On first run `modules/toolkit/setup/properties.py`:
+it is committed. On first run `modules/fireball_ai_toolkit/setup/properties.py`:
 
 1. Assembles `properties.yml` from every `templates/properties/*.yml` fragment, deep-merging each
    fragment's `repos:` block into one nested org/repo + lineage tree.

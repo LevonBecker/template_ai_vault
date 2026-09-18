@@ -2,7 +2,7 @@
 
 # Claude Code Instructions
 
-See `AGENTS.md` for all instructions — it links to every canonical file under `.fireball_ai_toolkit/toolkit/` and
-`.fireball_ai_toolkit/local/`, the source of truth for this repo's rules, slash commands, and skills.
+See `AGENTS.md` for all instructions — it links to every canonical file under `.fireball_ai_toolkit/` and
+`.local/`, the source of truth for this repo's rules, slash commands, and skills.
 
-**Source of truth: `.fireball_ai_toolkit/toolkit/` and `.fireball_ai_toolkit/local/`** — all rules, slash commands, and skills live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.
+**Source of truth: `.fireball_ai_toolkit/` and `.local/`** — all rules, slash commands, and skills live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.
