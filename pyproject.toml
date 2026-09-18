@@ -38,9 +38,9 @@ repository = "https://github.com/LevonBecker/template_ai_vault"
 [tool.ruff]
 line-length = 120
 target-version = "py314"
-# modules/toolkit/** + tasks/toolkit/** are clobbered from fireball_ai_toolkit — the toolkit's
+# modules/fireball_ai_toolkit/** + tasks/fireball_ai_toolkit/** are clobbered from fireball_ai_toolkit — the toolkit's
 # own CI lints that code; ai_toolkit.check gates drift here.
-extend-exclude = ["topics/*", "tests/*", "modules/toolkit/*", "tasks/toolkit/*"]
+extend-exclude = ["topics/*", "tests/*", "modules/fireball_ai_toolkit/*", "tasks/fireball_ai_toolkit/*"]
 
 [tool.ruff.lint]
 select = ["PL", "E", "W", "F", "I", "B", "A", "C4", "N", "UP", "T10", "EXE", "COM819", "C", "Q"]
@@ -76,14 +76,14 @@ docstring-code-line-length = "dynamic"
 testpaths = ["tests"]
 norecursedirs = ["tmp", ".venv", ".ruff_cache", "__pycache__"]
 markers = [
-    "common: modules/toolkit/common/ helpers — tests/toolkit/common/",
-    "drift: gate tests that catch a forgotten regen step before merge — tests/toolkit/drift/",
-    "repo: modules/toolkit/repo/ (git/PR ops + repo-family fan-out) — tests/toolkit/repo/",
-    "setup: modules/toolkit/setup/ (properties.yml bootstrap) — tests/toolkit/setup/",
-    "style: Markdown/doc style checks — tests/toolkit/style/",
-    "topic: modules/toolkit/topic/ (topic workspace management) — tests/toolkit/topic/",
-    "versioning: modules/toolkit/versioning/ (dependency/toolchain version checks) — tests/toolkit/versioning/",
-    "backlog: modules/toolkit/backlog/ (GitHub Issues bug/feature/task tracker) — tests/toolkit/backlog/",
+    "common: modules/fireball_ai_toolkit/common/ helpers — tests/fireball_ai_toolkit/common/",
+    "drift: gate tests that catch a forgotten regen step before merge — tests/fireball_ai_toolkit/drift/",
+    "repo: modules/fireball_ai_toolkit/repo/ (git/PR ops + repo-family fan-out) — tests/fireball_ai_toolkit/repo/",
+    "setup: modules/fireball_ai_toolkit/setup/ (properties.yml bootstrap) — tests/fireball_ai_toolkit/setup/",
+    "style: Markdown/doc style checks — tests/fireball_ai_toolkit/style/",
+    "topic: modules/fireball_ai_toolkit/topic/ (topic workspace management) — tests/fireball_ai_toolkit/topic/",
+    "versioning: modules/fireball_ai_toolkit/versioning/ (dependency/toolchain version checks) — tests/fireball_ai_toolkit/versioning/",
+    "backlog: modules/fireball_ai_toolkit/backlog/ (GitHub Issues bug/feature/task tracker) — tests/fireball_ai_toolkit/backlog/",
 ]
 
 [tool.pylint.main]
@@ -98,8 +98,8 @@ ignore-paths = [
   "^tmp/.*$",
   "^topics/.*$",
   "^tests/.*$",
-  "^modules/toolkit/.*$",
-  "^tasks/toolkit/.*$",
+  "^modules/fireball_ai_toolkit/.*$",
+  "^tasks/fireball_ai_toolkit/.*$",
   ".*__pycache__.*$",
 ]
 
