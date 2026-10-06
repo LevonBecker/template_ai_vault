@@ -14,6 +14,7 @@ This repo's rules for any AI coding tool are authored once under `.fireball_ai_t
 - **Git & PR**: `.fireball_ai_toolkit/instructions/git.md`
 - **Logic Architecture**: `.fireball_ai_toolkit/instructions/logic.md`
 - **Markdown Style Standards**: `.fireball_ai_toolkit/instructions/markdown.md`
+- **Minimum OS Versions Rule**: `.fireball_ai_toolkit/instructions/minimum_os_versions.md`
 - **Python Modules**: `.fireball_ai_toolkit/instructions/modules.md`
 - **Python**: `.fireball_ai_toolkit/instructions/python.md`
 - **Repo & Repo-Family**: `.fireball_ai_toolkit/instructions/repos.md`
