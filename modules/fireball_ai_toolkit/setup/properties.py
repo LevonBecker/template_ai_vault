@@ -79,7 +79,45 @@ def get_properties() -> dict[str, Any]:
     props_file = repo_root / "properties.yml"
 
     with props_file.open() as f:
-        return yaml.safe_load(f)
+        props = yaml.safe_load(f)
+    if os.environ.get(REPO_ROOT_ENV):
+        return props
+    return _relocate_to_checkout(props, repo_root)
+
+
+def _relocate_to_checkout(props: dict[str, Any], repo_root: Path) -> dict[str, Any]:
+    """Point `repo.local` and its `repos_local` family base at the checkout actually running.
+
+    A second full clone of the family elsewhere (e.g. an automation worker's own sibling set) reads
+    the same committed properties.yml, whose paths name the primary checkout. Without this, its
+    `repos_local` lookups would build/edit the primary checkout's siblings. The primary checkout is
+    unchanged: its paths already match.
+
+    Every org base under the same root as the primary family moves with it, keeping its relative
+    place (e.g. `~/Development/other_org` → `<clone root>/other_org`), so family-wide commands in the
+    second clone never reach the primary machine's other orgs; a base with no clone there is simply
+    absent. Bases outside that root are left alone.
+    """
+    repo = props.get("repo") or {}
+    configured = repo.get("local")
+    if not configured:
+        return props
+    configured_path = _expand_path(configured).resolve()
+    actual = repo_root.resolve()
+    if configured_path == actual:
+        return props
+    repo["local"] = str(actual)
+    old_root, new_root = configured_path.parent.parent, actual.parent.parent
+    repos_local = props.get("repos_local") or {}
+    for org, base in repos_local.items():
+        if not base:
+            continue
+        base_path = _expand_path(base).resolve()
+        if base_path == configured_path.parent:
+            repos_local[org] = str(actual.parent)
+        elif base_path.is_relative_to(old_root):
+            repos_local[org] = str(new_root / base_path.relative_to(old_root))
+    return props
 
 
 def get_repo_local() -> Path:

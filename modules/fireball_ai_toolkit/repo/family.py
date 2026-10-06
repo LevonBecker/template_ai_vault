@@ -15,6 +15,7 @@ from pathlib import Path
 
 from ..common import cli
 from ..common.route_utils import REPO_ROOT_ENV, build_env
+from ..common.target_repo import pkg_root
 from ..setup.properties import FamilyRepo, find_current_repo, get_family_repos, get_repo_local
 
 _SINGLETON_NOTE = (
@@ -23,15 +24,10 @@ _SINGLETON_NOTE = (
 )
 
 
-def _pkg_root(path: Path) -> str:
-    """Importable prefix for a repo's vendored toolkit modules (consumer vs. template layout)."""
-    return "modules.fireball_ai_toolkit" if (path / "modules" / "toolkit" / "repo").is_dir() else "modules"
-
-
 def _repo_module(path: Path, verb: str) -> str:
     """The ``python -m`` target for ``verb`` inside ``path`` (handles the pr_cleanup→cleanup rename
     in family repos that haven't synced the new toolkit yet)."""
-    pkg = _pkg_root(path)
+    pkg = pkg_root(path)
     if verb == "cleanup":
         repo_dir = path / pkg.replace(".", "/") / "repo"
         leaf = "cleanup" if (repo_dir / "cleanup.py").exists() else "pr_cleanup"
@@ -95,15 +91,16 @@ def _pull_one(repo: FamilyRepo) -> tuple[str, str]:
 
 
 def _run_module(repo: FamilyRepo, verb: str) -> tuple[str, str]:
-    """Run a repo's own ``push`` / ``cleanup`` module in its own checkout + venv.
+    """Run a repo's own ``push`` / ``sync`` / ``cleanup`` module in its own checkout + venv.
 
-    ``push`` takes a ``--no-confirm`` flag; ``cleanup`` takes no argv (it calls ``pull``'s command
-    entrypoint internally) so its prompt is suppressed with ``AUTO_CONFIRM`` instead.
+    ``push`` and ``sync`` take a ``--no-confirm`` flag (the family run confirmed once up front);
+    ``cleanup`` takes no argv (it calls ``pull``'s command entrypoint internally) so its prompt is
+    suppressed with ``AUTO_CONFIRM`` instead.
     """
     module = _repo_module(repo.path, verb)
     env = build_env(repo.path)
     env[REPO_ROOT_ENV] = str(repo.path)
-    extra = ["--no-confirm"] if verb == "push" else []
+    extra = ["--no-confirm"] if verb in ("push", "sync") else []
     if verb == "cleanup":
         env["AUTO_CONFIRM"] = "1"
     completed = subprocess.run(
@@ -142,8 +139,8 @@ def _print_summary(label: str, results: list[tuple[str, str, str]]) -> None:
 
 
 def run_family(verb: str, *, assume_yes: bool = False, scope: str | None = None) -> int:
-    """Run ``verb`` (``pull`` | ``push`` | ``cleanup``) across the family (optionally a ``scope``:
-    ``ai`` or ``dev_prd``)."""
+    """Run ``verb`` (``pull`` | ``push`` | ``sync`` | ``cleanup``) across the family (optionally a
+    ``scope``: ``ai`` or ``dev_prd``)."""
     label = f"/repo {verb} {scope or 'all'}"
     repos = get_family_repos(include_self=True, scope=scope)
     if len(repos) <= 1:
@@ -151,12 +148,16 @@ def run_family(verb: str, *, assume_yes: bool = False, scope: str | None = None)
         cli.echo()
         return _dispatch_single(verb)
 
-    if verb in ("push", "cleanup") and not assume_yes:
+    if verb in ("push", "sync", "cleanup") and not assume_yes:
         cli.echo(f"{label} — {len(repos)} repos:")
         for repo in repos:
             cli.echo(f"  • {repo.org}/{repo.name}")
         if verb == "push":
             cli.echo("\nEach runs the full /push: invoke fix + invoke test + commit + push.")
+        if verb == "sync":
+            cli.echo(
+                "\nEach runs the full /sync: pull (auto-resolving lock/binary conflicts) + invoke fix + invoke test + commit + push."
+            )
         if not cli.confirm(f"Run '{verb}' in all {len(repos)} repos?", default=False):
             cli.echo("Cancelled.")
             return 1
