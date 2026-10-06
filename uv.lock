@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14"
 
 [[package]]
@@ -106,8 +106,8 @@ wheels = [
 
 [[package]]
 name = "fireball-ai-toolkit"
-version = "1.0.1"
-source = { git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development#0da5b8f13bfa34a8cf95599c42c1c3f3fc5dcea0" }
+version = "1.0.12"
+source = { git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development#0919b8665e1df69f28c1f53fb32119d021f7d07a" }
 dependencies = [
     { name = "invoke" },
     { name = "pyyaml" },

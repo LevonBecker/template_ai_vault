@@ -11,6 +11,9 @@ Source of truth: `.fireball_ai_toolkit/skills/pull.md`
 - pull
 - pull the latest
 - pull all repos
+- pull everything
+- pull the latest everywhere
+- update all repos
 
 When this skill fires, read and follow:
 
