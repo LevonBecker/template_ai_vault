@@ -11,6 +11,7 @@ This repo's rules for any AI coding tool are authored once under `.fireball_ai_t
 - **Company Name Rule**: `.fireball_ai_toolkit/instructions/company_name.md`
 - **CSV File Standards**: `.fireball_ai_toolkit/instructions/csv.md`
 - **Fireball Kit Rule**: `.fireball_ai_toolkit/instructions/fireball_kit.md`
+- **FireballLog Rule**: `.fireball_ai_toolkit/instructions/fireball_log.md`
 - **Git & PR**: `.fireball_ai_toolkit/instructions/git.md`
 - **Logic Architecture**: `.fireball_ai_toolkit/instructions/logic.md`
 - **Markdown Style Standards**: `.fireball_ai_toolkit/instructions/markdown.md`
