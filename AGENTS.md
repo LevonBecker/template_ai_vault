@@ -2,7 +2,7 @@
 
 # Agent Instructions
 
-This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/` (synced from `fireball_ai_toolkit`) and `.local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is a generated pointer back to them. Read the relevant canonical file before making changes:
+This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/` (synced from `fireball_ai_toolkit`) and `.local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is generated from them. Skills are the slash commands (`/<name>`, or loaded by the AI): `/add_bug`, `/add_feature`, `/add_task`, `/backlog`, `/chat`, `/cleanup`, `/docs`, `/fix`, `/pr`, `/pr-notes`, `/pull`, `/push`, `/rebase`, `/repo`, `/screenshots`, `/setup`, `/ship-it`, `/squash`, `/ss`, `/sync`, `/test`, `/topic`, `/update`, `/upgrade`. Read the relevant canonical file before making changes:
 
 - **AI Commands**: `.fireball_ai_toolkit/instructions/ai_commands.md`
 - **AI Skills**: `.fireball_ai_toolkit/instructions/ai_skills.md`
@@ -29,4 +29,4 @@ This repo's rules for any AI coding tool are authored once under `.fireball_ai_t
 - **Versioning**: `.fireball_ai_toolkit/instructions/versioning.md`
 - **GitHub Actions**: `.fireball_ai_toolkit/instructions/workflows.md`
 
-**Source of truth: `.fireball_ai_toolkit/` and `.local/`** — all rules, slash commands, and skills live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.
+**Source of truth: `.fireball_ai_toolkit/` and `.local/`** — all rules and skills (slash commands) live there as tool-neutral markdown. Never hand-edit a generated provider file (`.github/`, `.claude/`, `.clinerules/`, `.sidecar/`, `AGENTS.md`, `CLAUDE.md`); edit the `.fireball_ai_toolkit/` source and run `invoke ai_toolkit.apply`.

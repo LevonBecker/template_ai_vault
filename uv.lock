@@ -106,8 +106,8 @@ wheels = [
 
 [[package]]
 name = "fireball-ai-toolkit"
-version = "1.0.15"
-source = { git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development#0eefe125b05b152805fb3893a0aea2f0415f1480" }
+version = "2.0.0"
+source = { git = "https://github.com/fireballenterprise/fireball_ai_toolkit?rev=development#afb02051b1332d5ccc2f51c9a09f495ab920bacb" }
 dependencies = [
     { name = "invoke" },
     { name = "pyyaml" },
