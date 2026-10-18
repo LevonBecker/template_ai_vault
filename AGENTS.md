@@ -2,7 +2,7 @@
 
 # Agent Instructions
 
-This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/` (synced from `fireball_ai_toolkit`) and `.local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is generated from them. Skills are the slash commands (`/<name>`, or loaded by the AI): `/add_bug`, `/add_feature`, `/add_task`, `/backlog`, `/chat`, `/cleanup`, `/docs`, `/fix`, `/pr`, `/pr-notes`, `/pull`, `/push`, `/rebase`, `/repo`, `/screenshots`, `/setup`, `/ship-it`, `/squash`, `/ss`, `/sync`, `/test`, `/topic`, `/update`, `/upgrade`. Read the relevant canonical file before making changes:
+This repo's rules for any AI coding tool are authored once under `.fireball_ai_toolkit/` (synced from `fireball_ai_toolkit`) and `.local/` (this repo's own). Every `.github/`, `.claude/`, `.clinerules/`, and `.sidecar/` file is generated from them. Skills are the slash commands (`/<name>`, or loaded by the AI): `/add-bug`, `/add-feature`, `/add-task`, `/backlog`, `/chat`, `/cleanup`, `/docs`, `/fix`, `/pr`, `/pr-notes`, `/pull`, `/push`, `/rebase`, `/repo`, `/screenshots`, `/setup`, `/ship-it`, `/squash`, `/ss`, `/sync`, `/test`, `/topic`, `/update`, `/upgrade`. Read the relevant canonical file before making changes:
 
 - **AI Commands**: `.fireball_ai_toolkit/instructions/ai_commands.md`
 - **AI Skills**: `.fireball_ai_toolkit/instructions/ai_skills.md`

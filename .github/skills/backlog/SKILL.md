@@ -1,6 +1,6 @@
 ---
 name: backlog
-description: Use for tracking bugs / features / tasks as GitHub Issues on any repo in the family — filing, listing, viewing, working, commenting, closing. Equivalent to /backlog (and the /add_bug, /add_feature, /add_task aliases).
+description: Use for tracking bugs / features / tasks as GitHub Issues on any repo in the family — filing, listing, viewing, working, commenting, closing. Equivalent to /backlog (and the /add-bug, /add-feature, /add-task aliases).
 argument-hint: add bug|feature|task --repo <name> --title "..." | list [--repo <name> | --all] | start --repo <name> --number N | close --repo <name> --number N --pr M
 user-invocable: true
 disable-model-invocation: false
@@ -59,8 +59,8 @@ For the issue body format and the guardrails every `add` / `comment` must follow
 When this skill fires, read and follow:
 
 - `.fireball_ai_toolkit/instructions/backlog.md`
-- `.fireball_ai_toolkit/skills/add_bug.md`
-- `.fireball_ai_toolkit/skills/add_feature.md`
-- `.fireball_ai_toolkit/skills/add_task.md`
+- `.fireball_ai_toolkit/skills/add-bug.md`
+- `.fireball_ai_toolkit/skills/add-feature.md`
+- `.fireball_ai_toolkit/skills/add-task.md`
 
 Source of truth: `.fireball_ai_toolkit/skills/backlog.md`
